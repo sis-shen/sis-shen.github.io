@@ -4,13 +4,19 @@
   
     
     <entry>
-      <title>create-mylist</title>
+      <title>通过设计list类深入理解iterator迭代器</title>
       <link href="/2024/04/26/create-mylist/"/>
       <url>/2024/04/26/create-mylist/</url>
       
         <content type="html"><![CDATA[]]></content>
       
       
+      
+        <tags>
+            
+            <tag> C++类和对象 </tag>
+            
+        </tags>
       
     </entry>
     
