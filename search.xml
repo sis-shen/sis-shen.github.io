@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>C++文件操作</title>
+      <link href="/2024/05/14/cpp-file-op/"/>
+      <url>/2024/05/14/cpp-file-op/</url>
+      
+        <content type="html"><![CDATA[<p><em>注:追求代码简洁,有一致的C++风格，可参阅本篇博客，若追求更高的读写效率，建议参阅C语言篇</em> <a href="">但文章还没写</a></p><p>本篇文章主要研究头文件<code>fstream</code>中的<strong>函数</strong>和<strong>类</strong></p><p>目前C++文件操作主要有两种流派,一种是声明<code>fstream</code>对象,另一种是分开声明<code>ifstream</code>和<code>ofstream</code></p><h2 id="fstream的使用"><a href="#fstream的使用" class="headerlink" title="fstream的使用"></a>fstream的使用</h2><p>先写一段示例代码</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">fstream f;</span><br><span class="line">f.<span class="built_in">open</span>(<span class="string">&quot;file.txt&quot;</span>, ios::out);<span class="comment">//以out模式打开file.txt 注:out模式下file.txt 会自动创建</span></span><br><span class="line">string str = <span class="string">&quot;This is a sentence&quot;</span>;<span class="comment">//在内存中准备一段字符串</span></span><br><span class="line">f &lt;&lt; str;<span class="comment">//将字符串从内存写入文件</span></span><br><span class="line">f.<span class="built_in">close</span>();<span class="comment">//关闭文件流</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//f对象可以复用</span></span><br><span class="line">f.<span class="built_in">open</span>(<span class="string">&quot;file.txt&quot;</span>, ios::in);<span class="comment">//以in模式打开file.txt</span></span><br><span class="line">string content;<span class="comment">//声明变量</span></span><br><span class="line">f &gt;&gt; content;<span class="comment">//从文件流读取数据写入变量(内存)</span></span><br><span class="line">cout &lt;&lt; content;<span class="comment">//打印出来看一眼</span></span><br><span class="line">    f.<span class="built_in">close</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p><em>输出结果</em><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/PixPin_2024-05-14_18-49-56.png"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> C++ 文件 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>通过设计list类深入理解iterator迭代器</title>
       <link href="/2024/04/26/create-mylist/"/>
       <url>/2024/04/26/create-mylist/</url>
@@ -14,22 +33,9 @@
       
         <tags>
             
-            <tag> C++类和对象 </tag>
+            <tag> C++ 类和对象 </tag>
             
         </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>~=C语言=把玩文件操作系列函数（实验向）~(修改中)</title>
-      <link href="/2023/12/18/file-ex/"/>
-      <url>/2023/12/18/file-ex/</url>
-      
-        <content type="html"><![CDATA[<p>C语言的<code>stdio</code>头文件提供了一系列用于<code>文件操作</code>的函数，本篇文章将以偏向实验的方式玩玩这些函数</p><p><em>注：这里使用vs2022编译器，所有文件均已显示后缀名</em></p><p><em>下图为初始的源文件和普通文件目录</em><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/PixPin_2023-12-18_11-35-37.png"></p><h1 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h1><p>咱们话不多说，赶紧打开一个 <code>文件</code><strong>看看</strong>。如何打开？就用<code>fopen</code>函数吧</p><h4 id="r-只读模式"><a href="#r-只读模式" class="headerlink" title="r-只读模式"></a>r-只读模式</h4><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/PixPin_2023-12-19_09-17-49.png"></p><p>诶呀，出错了，<code>不存在这样的文件</code>,不要慌，我们再仔细看看代码和文件名，发现<strong>少写了文件后缀</strong>，由此得出结论，只读模式打开不仅只能打开<strong>已存在</strong>的文件，而且对文件<strong>后缀</strong>也相当严格</p>]]></content>
-      
-      
       
     </entry>
     
@@ -44,18 +50,11 @@
       
       
       
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Linux中vim的配置和插件安装</title>
-      <link href="/2023/12/11/linux-vim-set-plug/"/>
-      <url>/2023/12/11/linux-vim-set-plug/</url>
-      
-        <content type="html"><![CDATA[<p><strong>权限</strong>: 要改配置或插件的用户<code>user</code>(强烈不建议用root)</p><p><em>注:本篇博客的用户名均用<code>supdriver</code>替代，包括用户的工作目录</em></p><p><strong>vim配置文件</strong><code>/home/supdriver/.vimrc</code></p><p><strong>vim插件安装文件夹</strong><code>/home/supdriver/.vim</code></p>]]></content>
-      
-      
+        <tags>
+            
+            <tag> Linux vim </tag>
+            
+        </tags>
       
     </entry>
     
@@ -72,7 +71,7 @@
       
         <tags>
             
-            <tag> C++ </tag>
+            <tag> C++ 类和对象 </tag>
             
         </tags>
       
@@ -102,6 +101,12 @@
       
       
       
+        <tags>
+            
+            <tag> C语言 字符串 数组 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -115,6 +120,12 @@
       
       
       
+        <tags>
+            
+            <tag> C语言 实践项目 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -127,6 +138,12 @@
         <content type="html"><![CDATA[<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>当我们在写IO型OJ时，<code>多组输入</code>便是我们绕过不开的话题了，但<strong>不用担心</strong>，可能初见多组输入会觉得难以理解，但用多了之后就会发现，<code>多组输入</code> 花样并不多，混熟了就<strong>很简单了</strong></p><h2 id="先看看一组输入输出如何完成的"><a href="#先看看一组输入输出如何完成的" class="headerlink" title="先看看一组输入输出如何完成的"></a>先看看一组输入输出如何完成的</h2><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/Snipaste_2023-10-19_17-06-13.jpg"></p><p><em>如图</em>：一组输入时，用<code>scanf</code>获取一组输入，并在主体部分完成数据的处理，产生结果，最后用<code>printf</code>输出产生的一组结果。</p><p><em>以下用实现加法的程序做演示</em></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;a,&amp;b);<span class="comment">//获取一组输入</span></span><br><span class="line">    <span class="type">int</span> sum = a + b;<span class="comment">//产生结果</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,sum);<span class="comment">//输出结果</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="然后升级到N组输入"><a href="#然后升级到N组输入" class="headerlink" title="然后升级到N组输入"></a>然后升级到N组输入</h1><p>有的OJ题在一个测试文件中会先输入一个<code>n</code>,告诉你接下来有<code>n</code>组输入，你就要产生<code>n</code>组输出,也就是说要将<code>一组输入输出</code><strong>重复性地</strong>完成<code>n次</code>。难道我们要把代码重复<code>n次</code>吗？显然不现实。</p><p>所以是时候使用<strong>循环</strong>了，具体用法如下</p><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/Snipaste_2023-10-20_07-34-35.jpg"></p><p>如图，先用一个<code>scanf</code>获取循环次数<code>n</code>,然后创建一个循环，将<code>一组输入输出</code>放入循环体，一次一次循环处理即可</p><h2 id="变量的重置"><a href="#变量的重置" class="headerlink" title="变量的重置"></a>变量的重置</h2><p>为防止前后两次循环产生干扰，有两种处理<code>变量</code>的方式</p><p>1.(推荐)除了输入的变量，<strong>其它所有变量</strong>在循环体内声明，这些变量会在一次循环后<em>销毁</em>，下一次循环开始时<strong>自动</strong><em>重新声明</em>，从而完成<strong>变量的自动重置</strong></p><p><em>以下面这个一次求和3个数的程序为例</em></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);<span class="comment">//获取循环次数n</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>;i&lt;n;i++)<span class="comment">//创建循环</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//以下完成一组输入输出</span></span><br><span class="line">        <span class="type">int</span> sum = <span class="number">0</span>;<span class="comment">//声明一个局部变量，下次循环时会自动重声明</span></span><br><span class="line">        <span class="type">int</span> num = <span class="number">0</span>;<span class="comment">//储存输入的数字</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j =<span class="number">0</span>;j&lt;<span class="number">3</span>;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;num);</span><br><span class="line">            sum+=num;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,sum);<span class="comment">//完成输出</span></span><br><span class="line">        <span class="comment">//本次循环走完后变量sum被销毁，然后进入下一次循环,完成重置</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>2.在循环外部声明变量，然后在<strong>循环末尾</strong>手动重置变量</p><p><em>以下面这个一次求和3个数的程序为例</em></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;<span class="comment">//声明在循环外部</span></span><br><span class="line">    <span class="type">int</span> n = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);<span class="comment">//获取循环次数n</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>;i&lt;n;i++)<span class="comment">//创建循环</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//以下完成一组输入输出</span></span><br><span class="line">        <span class="type">int</span> num = <span class="number">0</span>;<span class="comment">//储存输入的数字</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j =<span class="number">0</span>;j&lt;<span class="number">3</span>;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;num);</span><br><span class="line">            sum+=num;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,sum);<span class="comment">//完成输出</span></span><br><span class="line">        sum = <span class="number">0</span>;<span class="comment">//重置sum</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><h2 id="要不要用数组储存输入，或储存结果再一次性输出？"><a href="#要不要用数组储存输入，或储存结果再一次性输出？" class="headerlink" title="要不要用数组储存输入，或储存结果再一次性输出？"></a>要不要用数组储存输入，或储存结果再一次性输出？</h2><p>答案是：<strong>可以，但没必要</strong>。</p><p>只需要像上图那么写即可，因为输入是一次性喂进去的 。存数组再输出，和每产生一个结果就输出一次，最终呈现出来是一样的（如下图）</p><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/%E5%A4%9A%E7%BB%84%E8%BE%93%E5%87%BA.gif"></p><h1 id="现在，勇士，来挑战多组输入吧"><a href="#现在，勇士，来挑战多组输入吧" class="headerlink" title="现在，勇士，来挑战多组输入吧"></a>现在，勇士，来挑战多组输入吧</h1><h2 id="scanf的返回值"><a href="#scanf的返回值" class="headerlink" title="scanf的返回值"></a>scanf的返回值</h2><p>多组输入时，究竟会输入多少组数据，也不告诉你了，<strong>但是</strong>，此时<code>scanf</code>的返回值就派上用场了。和我们在终端手打输入不同,OJ的输入是喂一个文件进去，所以当<strong>输入结束时</strong>，<code>scanf</code>的返回值是<code>EOF</code><em>(意为文件结尾end of file)</em>,而当成功输入数据时，则会返回输入数据的个数(文档截图如下)</p><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/Snipaste_2023-10-20_20-46-54.jpg"></p><h2 id="结合循环"><a href="#结合循环" class="headerlink" title="结合循环"></a>结合循环</h2><p>那么就把<code>scanf</code>放入<code>while</code>循环吧,每次试图获取下一组输入时，检测是否返回值为<code>EOF</code>,若是，则跳出循环，结束程序；若否，则继续循环</p><p><em>以下面这个一次求和3个数的程序为例</em></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> num = <span class="number">0</span>;<span class="comment">//先声明至少一个待输入的变量</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n) != EOF)<span class="comment">//创建循环，每次循环开始时scanf一次，并检测是否返回EOF</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//开始构建循坏体</span></span><br><span class="line">        <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        sum+=n;</span><br><span class="line">        <span class="comment">//完成剩下的两次输入</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>; i &lt; <span class="number">3</span> - <span class="number">1</span>;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">            sum+=n</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,sum);<span class="comment">//完成一次输出</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//scanf返回EOF后跳出循环</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="基本架构"><a href="#基本架构" class="headerlink" title="基本架构"></a>基本架构</h2><p>以后再要写<code>多组输入</code>，基本就像上面那个程序一样</p><p>1.先声明至少一个待输入的变量</p><p>2.创建循环，每次循环开始时scanf一次，并检测是否返回EOF</p><p>3.开始构建循坏体(包括完成剩下的输入,完成一组输出)<strong>别忘了回车！！！</strong></p><p>4.直至scanf返回EOF后跳出循环</p><h1 id="想模拟一下多组输入看看？"><a href="#想模拟一下多组输入看看？" class="headerlink" title="想模拟一下多组输入看看？"></a>想模拟一下多组输入看看？</h1><p>像下图一样每组数据间加个<code>空格</code>就行，什么？题目的样例输入有<code>回车</code>？不用管它，放心大胆地<code>换成空格</code>就行。自己<code>测试</code>程序，只需要<strong>输出</strong>一样就行，至于怎么输入，<strong>没必要</strong>和题目一模一样</p><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/mutiInpuut.gif"></p><h1 id="注意！！！不要试图在终端停止程序"><a href="#注意！！！不要试图在终端停止程序" class="headerlink" title="注意！！！不要试图在终端停止程序"></a>注意！！！不要试图在终端停止程序</h1><p>因为和OJ不同，在本地运行程序时，不是文件输入，而是终端输入,没法让<code>scanf</code>返回<code>EOF</code>,<del>炫迈，根本停不来</del></p><p>你要是想立即<code>中断</code>程序，那就按<code>ctrl+c</code></p>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> C语言 多组输入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -160,6 +177,12 @@
       
       
       
+        <tags>
+            
+            <tag> C语言 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -172,6 +195,12 @@
         <content type="html"><![CDATA[<p><a href="https://picbed.supdriver.top/html/prj_basis++/index.html">👉点我去作业一</a></p><p><a href="https://picbed.supdriver.top/html/adc_v2/index.html">👉点我去作业二</a></p><p><a href="http://localhost:5173/">👉点我去作业三</a>(抱歉，还没部署到服务器里，这个只能在我自己的电脑里用)</p><p><a href="https://picbed.supdriver.top/video/never.mp4">👉点我去作业四</a></p><p><del>其实这依然是个博客</del></p><hr><h1 id="粗糙的作业一"><a href="#粗糙的作业一" class="headerlink" title="粗糙的作业一"></a>粗糙的作业一</h1><p>当时只学过html,css,js的快速入门，对盒子<code>&lt;div&gt;</code>的玩法还不太熟，还只会用浮动盒子<code>float</code>和绝对定位,结局就是写两句html就得清除浮动<del>233</del>,甚至<code>&lt;lenged&gt;</code>也不认识，结果手动用css给实现了。总之就挺简陋的</p><h1 id="精致-并不-作业二"><a href="#精致-并不-作业二" class="headerlink" title="精致(并不)作业二"></a>精致<del>(并不)</del>作业二</h1><p>用vscode写作业二的时候，写一半发现鼠标悬停在<code>tag</code>时，它会给出去往<a href="https://developer.mozilla.org/zh-CN/"><em>MDN</em></a>对应参考页的连接,然后就开始一边写一边阅读MDN,结果一发不可收拾，开始读的时间比写的时间还长。最后成功学到神器<del>bushi</del><code>flex</code><strong>弹性盒子模型。</strong>。</p><p>但还没完，除了参阅文档，我还多次在B站首页和MC百度百科首页打开<code>F12</code>,查看，学习他们是如何布局盒子的，别说，学成品也挺有用的，对盒子的排版，嵌套的想法成熟多了</p><p>结合二者，照着图片做一个网页便没什么问题了。那个作业二我甚至直接弃掉了初版（已经把顶部做好了）version2基本完全采用<code>flex盒子</code>。比较遗憾的是，虽然每个菜单按钮都加了超链接，但是对应的网页并没有做出来（创作力有限）。但至少是个合格的花瓶，嘿嘿</p><h1 id="速成作业三"><a href="#速成作业三" class="headerlink" title="速成作业三"></a>速成作业三</h1><p>因为作业三没部署到服务器上，只能文字描述了（悲）</p><p>作业三我选的是用<code>vue</code>搭建个人博客，我先是自学了几天vue,结果发现光学vue就做不了个人博客，于是在B站上找了个时长6小时的全栈开发，用<code>js</code>写的服务端，数据库用<code>sqlite</code>,前端框架是<code>vue</code>.</p><p>好家伙，5天爆肝项目（包括但不限于<em>抄代码</em>,<em>找bug</em>,<em>找bug</em>,<em>找bug</em>），成功把博客的基本功能写完了。除了<code>Naive UI</code>的代码是复制<strong>组件库</strong>里的，剩下的代码基本都是我<strong>手打</strong>的，可以说忙得不亦乐乎，而且当时我并不太懂<code>js语法</code>，体验可以说是相当刺激了。</p><p>但<strong>回报不小</strong>，就算不能说入门吧，到时候自己加功能，照葫芦画瓢，自己写<code>js</code>的能力还是有了滴。而且这也是我首次<strong>接触数据库</strong>,混个脸熟，嘿嘿。而且<strong>最重要</strong>的一点，我成功增加了一个<strong>高自由度的个人博客</strong>，<del>讲真hexo的各自魔改我不太玩的懂</del>。</p><h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>作业三部曲之后，我大概就不太去碰前端了，至少一周爆肝一个全栈开发项目这种疯狂的行为不会再有了，权当是一次挑战罢，一次冒险，一次对边界的探索罢。重心很明确，对前端顶多写写像这篇博客一样的感悟，技术博客主要还是在后端语言，算法，数据结构之类</p>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> 回顾 </tag>
+            
+        </tags>
       
     </entry>
     
