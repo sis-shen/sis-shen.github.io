@@ -4,11 +4,11 @@
   
     
     <entry>
-      <title>初识进程</title>
+      <title>初识进程(修改中)</title>
       <link href="/2024/07/04/progress/"/>
       <url>/2024/07/04/progress/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h1 id="概念抽象"><a href="#概念抽象" class="headerlink" title="概念抽象"></a>概念抽象</h1><h2 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h2><p><code>程序</code> &#x3D; <code>代码</code> + <code>数据</code></p><p>程序是储存在硬盘上的可执行文件</p><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>将<code>程序</code>加载到<code>内存</code>后，就在<code>内存</code>中程序的就是进程。也就是说一个正在运行的程序就能叫做进程</p><p><em>结构关系如下</em></p><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/PixPin_2024-07-06_13-55-08.png"></p><p>如图，操作系统为了管理内存中的进程,使用了<code>PCB</code>结构体来描述进程,依然是<em>先描述再组织</em></p><p><code>PCB</code>:进程控制块的数据结构(process control block)</p>]]></content>
       
       
       
@@ -49,7 +49,7 @@
     
     
     <entry>
-      <title>初识动静态库</title>
+      <title>初识动静态库(修改中)</title>
       <link href="/2024/06/28/libs/"/>
       <url>/2024/06/28/libs/</url>
       
