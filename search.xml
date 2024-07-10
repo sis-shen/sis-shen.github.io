@@ -4,6 +4,32 @@
   
     
     <entry>
+      <title>=C++= sizeof关键字详解</title>
+      <link href="/2024/07/10/cppsizeof/"/>
+      <url>/2024/07/10/cppsizeof/</url>
+      
+        <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><code>sizeof</code>作为C&#x2F;C++关键字,基本用法是求<code>字节大小</code>，但仅仅这一项用法在细节上就有很多说法了</p><h2 id="求内置类型变量的大小"><a href="#求内置类型变量的大小" class="headerlink" title="求内置类型变量的大小"></a>求内置类型变量的大小</h2><p>有两种写法，以<code>int a = 0</code>的变量<code>a</code>为例</p><ul><li><code>sizeof a</code></li><li><code>sizeof(a)</code></li></ul><p>都可以求变量<code>a</code>的大小，但<strong>注意</strong>，该变量的大小仅与<code>变量类型</code>有关，而与值无关</p><h2 id="求内置类型的大小"><a href="#求内置类型的大小" class="headerlink" title="求内置类型的大小"></a>求内置类型的大小</h2><p>求类型大小时必须<strong>加上括号</strong></p><p>例如<code>sizeof(int)</code></p><h2 id="求数组的大小"><a href="#求数组的大小" class="headerlink" title="求数组的大小"></a>求数组的大小</h2><ul><li>当数组声明在<code>全局</code>或<code>sizeof</code>处于数组声明语句的<code>局部作用范围</code>时,能够用<code>sizeof(&lt;数组名&gt;)</code>求数组大小</li><li>当数组名经过<strong>函数传参</strong>或<code>加减常量运算</code>后，退化为<code>指针变量</code>,类型大小在<code>32位机器</code>中为<code>4</code>,<code>64位机器</code>中为<code>8</code></li></ul><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> g_arr[<span class="number">10</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">int</span> st_arr[])</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(st_arr) &lt;&lt; <span class="built_in">endl</span>;<span class="comment">//此处退化为指针变量，输出4或8</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="type">int</span> arr[<span class="number">10</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(g_arr) &lt;&lt; <span class="built_in">endl</span>;<span class="comment">//输出40</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(arr) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//输出40</span></span><br><span class="line">func(arr);<span class="comment">//输出4/8</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="求类-对象的大小"><a href="#求类-对象的大小" class="headerlink" title="求类&#x2F;对象的大小"></a>求类&#x2F;对象的大小</h2><h3 id="一般情况的内存对齐"><a href="#一般情况的内存对齐" class="headerlink" title="一般情况的内存对齐"></a>一般情况的内存对齐</h3><p>为了访问效率问题，类的大小遵循<code>内存对齐</code>规则，计算理论大小时需考虑<code>成员变量的大小</code>和<code>内存对齐</code>,而不考虑普通成员函数,这里不详细讨论</p><h2 id="含有虚函数"><a href="#含有虚函数" class="headerlink" title="含有虚函数"></a>含有虚函数</h2><p>C++的编译器一旦发现一个类型中<strong>有虚函数</strong>，就会为该类型生成<code>虚函数表</code>，每一个实例化出的<code>对象</code>都含有一个<code>指向虚函数表的指针</code>。所以<code>sizeof</code>求出来的值还要考虑<code>该指针</code>以及<code>内存对齐</code>等因素</p><h3 id="没有成员变量的特殊情况"><a href="#没有成员变量的特殊情况" class="headerlink" title="没有成员变量的特殊情况"></a>没有成员变量的特殊情况</h3><h4 id="没有成员函数"><a href="#没有成员函数" class="headerlink" title="没有成员函数"></a>没有成员函数</h4><p>这样的类型可以称为<code>空类型</code>,因为这样的类型实例化后不含任何信息,本来求<code>sizeof</code>应该是<code>O</code>，但考虑实际使用时，我们需将类<strong>实例化</strong>为对象，它必须在内存中占有一定的空间，否则无法使用或管理这些实例。至于分配内存，由编译器决定。但出于节省不必要的内存占用原则，理应分配最小内存单元，即<code>1字节</code>。正好在<code>VisualStudio</code>中，每个空类型的实例占用<code>1字节</code>的空间。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//空类型</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">sizeof</span>(A);<span class="comment">//visual studio 中值为1</span></span><br></pre></td></tr></table></figure><h4 id="只有普通的成员函数"><a href="#只有普通的成员函数" class="headerlink" title="只有普通的成员函数"></a>只有普通的成员函数</h4><p>和上一条一样也是<code>1字节</code>。因为考虑实例化时，调用这些普通成员函数只需知道<code>函数地址</code>即可，而这些函数地址只与用户自定义的<code>类</code>有关，而与实例化出来的<code>对象</code>无关，所以不会在<code>对象</code>中存储相关信息，不会改变其大小。</p><h4 id="含有虚函数-1"><a href="#含有虚函数-1" class="headerlink" title="含有虚函数"></a>含有虚函数</h4><p>实例化出的<code>对象</code>含有了指向虚函数的<code>指针</code>,所以<code>sizeof</code>求出来的大小为一个<code>指针</code>的大小，<code>32位机器</code>求得<code>4</code>字节,<code>64位机器</code>求得<code>8</code>字节</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>基础IO</title>
+      <link href="/2024/07/10/basicIO/"/>
+      <url>/2024/07/10/basicIO/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>初识动静态库(修改中)</title>
       <link href="/2024/07/08/libs/"/>
       <url>/2024/07/08/libs/</url>
