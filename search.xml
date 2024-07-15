@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>C语言文件操作</title>
+      <link href="/2024/07/15/cfileop/"/>
+      <url>/2024/07/15/cfileop/</url>
+      
+        <content type="html"><![CDATA[<h1 id="用户级文件操作"><a href="#用户级文件操作" class="headerlink" title="用户级文件操作"></a>用户级文件操作</h1><p><code>C语言</code>的文件操作也是用户级的文件操作，通过<code>FILE</code>对象来<strong>管理</strong>每一个被打开的文件，以及提供了<strong>用户级</strong>文件缓冲区，因此还涉及到冲刷缓冲区等问题</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>=C++= sizeof关键字详解</title>
       <link href="/2024/07/10/cppsizeof/"/>
       <url>/2024/07/10/cppsizeof/</url>
@@ -21,7 +34,7 @@
       <link href="/2024/07/10/basicIO/"/>
       <url>/2024/07/10/basicIO/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h2 id="共识原理"><a href="#共识原理" class="headerlink" title="共识原理"></a>共识原理</h2><ul><li>文件 &#x3D; 内容 + 属性</li><li>被打开的文件需要加载到内存中</li><li><strong>内存中</strong>的文件需要被操作系统<strong>管理</strong></li></ul><h2 id="用户级文件接口"><a href="#用户级文件接口" class="headerlink" title="用户级文件接口"></a>用户级文件接口</h2><p><a href="https://www.supdriver.top/2024/05/14/cpp-file-op/">详见C++文件操作</a></p>]]></content>
       
       
       
