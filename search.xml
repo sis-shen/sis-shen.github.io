@@ -8,7 +8,7 @@
       <link href="/2024/07/27/BSTree/"/>
       <url>/2024/07/27/BSTree/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h1 id="什么是二叉搜索树"><a href="#什么是二叉搜索树" class="headerlink" title="什么是二叉搜索树"></a>什么是二叉搜索树</h1><p>二叉搜索树的<code>定义</code>是一颗二叉树的所有节点满足:<code>根的左右孩子存在时，满足 左孩子 &lt; 根 &lt; 右孩子</code></p><p><code>递归定义</code>则是:</p><ol><li><code>左子树的根</code> &lt; <code>根</code> &lt; <code>右子树的根</code></li><li><code>左子树是二叉搜索树</code>,<code>右子树是二叉搜索树</code></li></ol><h2 id="写一个验证二叉搜索树的函数"><a href="#写一个验证二叉搜索树的函数" class="headerlink" title="写一个验证二叉搜索树的函数"></a>写一个验证二叉搜索树的函数</h2><p><a href="https://leetcode.cn/problems/validate-binary-search-tree/">Leetecode题目链接🔗</a></p><h1 id="封装一个二叉树类"><a href="#封装一个二叉树类" class="headerlink" title="封装一个二叉树类"></a>封装一个二叉树类</h1><h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> key_value</span><br></pre></td></tr></table></figure><p>这里使用<code>key_value</code>作为命名空间，表示这是键值表示的搜索二叉树</p><h2 id="定义节点"><a href="#定义节点" class="headerlink" title="定义节点"></a>定义节点</h2>]]></content>
       
       
       
