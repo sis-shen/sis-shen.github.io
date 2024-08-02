@@ -4,6 +4,38 @@
   
     
     <entry>
+      <title>progressMSG</title>
+      <link href="/2024/08/02/progressMSG/"/>
+      <url>/2024/08/02/progressMSG/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>进程间通信--匿名管道与命名管道</title>
+      <link href="/2024/08/02/pipe/"/>
+      <url>/2024/08/02/pipe/</url>
+      
+        <content type="html"><![CDATA[<h1 id="什么是管道文件"><a href="#什么是管道文件" class="headerlink" title="什么是管道文件"></a>什么是管道文件</h1><h1 id="匿名管道"><a href="#匿名管道" class="headerlink" title="匿名管道"></a>匿名管道</h1><h2 id="小小项目–进程池"><a href="#小小项目–进程池" class="headerlink" title="小小项目–进程池"></a>小小项目–进程池</h2><p>详见<a href="https://www.supdriver.top/2024/08/02/processPool/">此博客🔗</a></p><h1 id="命名管道"><a href="#命名管道" class="headerlink" title="命名管道"></a>命名管道</h1>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【Linux】简易进程池</title>
       <link href="/2024/08/02/processPool/"/>
       <url>/2024/08/02/processPool/</url>
