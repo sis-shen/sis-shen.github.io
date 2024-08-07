@@ -21,7 +21,7 @@
       <link href="/2024/08/02/pipe/"/>
       <url>/2024/08/02/pipe/</url>
       
-        <content type="html"><![CDATA[<h1 id="什么是管道文件"><a href="#什么是管道文件" class="headerlink" title="什么是管道文件"></a>什么是管道文件</h1><h1 id="匿名管道"><a href="#匿名管道" class="headerlink" title="匿名管道"></a>匿名管道</h1><h2 id="小小项目–进程池"><a href="#小小项目–进程池" class="headerlink" title="小小项目–进程池"></a>小小项目–进程池</h2><p>详见<a href="https://www.supdriver.top/2024/08/02/processPool/">此博客🔗</a></p><h1 id="命名管道"><a href="#命名管道" class="headerlink" title="命名管道"></a>命名管道</h1>]]></content>
+        <content type="html"><![CDATA[<h1 id="什么是管道文件"><a href="#什么是管道文件" class="headerlink" title="什么是管道文件"></a>什么是管道文件</h1><p>首先，管道是Unix中最古老的进程间通信的形式。</p><p>那么具体是怎样实现的呢？从标题里就可以发现，是基于<code>文件</code></p><p>既然一个文件可以被多个进程打开，那么不妨将文件作为两个进程通信的<strong>媒介</strong>。但是一般位于磁盘上的文件，IO效率相比于<code>CPU</code>，<code>内存</code>之类的读写速度慢了几个数量级，但文件是可以被加载到内存中的，而专门建立在<strong>内存中</strong>,而没有磁盘文件，专门用于进程间通信的<strong>内存级</strong>文件，我们就叫它<code>管道文件</code></p><h1 id="匿名管道"><a href="#匿名管道" class="headerlink" title="匿名管道"></a>匿名管道</h1><h2 id="小小项目–进程池"><a href="#小小项目–进程池" class="headerlink" title="小小项目–进程池"></a>小小项目–进程池</h2><p>详见<a href="https://www.supdriver.top/2024/08/02/processPool/">此博客🔗</a></p><h1 id="命名管道"><a href="#命名管道" class="headerlink" title="命名管道"></a>命名管道</h1>]]></content>
       
       
       
@@ -149,7 +149,7 @@
       <link href="/2024/07/08/libs/"/>
       <url>/2024/07/08/libs/</url>
       
-        <content type="html"><![CDATA[<h1 id="动态库"><a href="#动态库" class="headerlink" title="动态库"></a>动态库</h1><h1 id="静态库"><a href="#静态库" class="headerlink" title="静态库"></a>静态库</h1>]]></content>
+        <content type="html"><![CDATA[<h1 id="静态库-a"><a href="#静态库-a" class="headerlink" title="静态库(.a)"></a>静态库(.a)</h1><p>程序在<strong>编译链接</strong>的时候把库的代码链接到可执行文件中。编译出的程序<strong>运行时不再需要</strong>静态库</p><h1 id="动态库-so"><a href="#动态库-so" class="headerlink" title="动态库(.so)"></a>动态库(.so)</h1><p>动态库的作用是使程序在<strong>运行时</strong>才去链接动态库的代码，多个程序共享使用库的代码，从而使编译出的可执行文件更小，节省磁盘空间。使用动态库时，动态库也要<strong>加载到内存中</strong></p><h2 id="使用动态库的过程"><a href="#使用动态库的过程" class="headerlink" title="使用动态库的过程"></a>使用动态库的过程</h2><ol><li>使用动态库编译可执行程序：一个与动态库链接的可执行文件仅仅包含它用到的函数入口地址的一个表，而不是外部函数所在目标文件的整个机器码</li><li>动态链接: 在可执行文件开始运行以前，外部函数的机器码由操作系统从磁盘上的该动态库中复制(加载)到内存中，这个过程称为<code>动态链接</code>（dynamic linking）</li><li>运行时调用动态库：调用来自动态库的函数时，实现函数功能的机器码将由动态库提供</li></ol>]]></content>
       
       
       
