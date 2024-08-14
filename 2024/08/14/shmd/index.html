@@ -1,0 +1,294 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Ssystem V 共享内存 | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="共享内存区是最快的IPC形式。一旦这样的内存映射到共享它的进程的地址空间，这些进程间数据传递不再涉及到内核，换句话说是进程不再通过执行进入内核的系统调用来传递彼此的数据,而是直接使用内存中的共享区。  我们接下来认识一下常用的接口 接口shmget 创建共享内存需要同时引入&lt;sys&#x2F;ipc.h&gt; &lt;sys&#x2F;shm.h&gt; int shmget(key_t key, size_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ssystem V 共享内存">
+<meta property="og:url" content="http://supdriver.top/2024/08/14/shmd/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="共享内存区是最快的IPC形式。一旦这样的内存映射到共享它的进程的地址空间，这些进程间数据传递不再涉及到内核，换句话说是进程不再通过执行进入内核的系统调用来传递彼此的数据,而是直接使用内存中的共享区。  我们接下来认识一下常用的接口 接口shmget 创建共享内存需要同时引入&lt;sys&#x2F;ipc.h&gt; &lt;sys&#x2F;shm.h&gt; int shmget(key_t key, size_">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/24aec23065665be0a32f41a35f786911.jpg">
+<meta property="article:published_time" content="2024-08-14T06:55:06.000Z">
+<meta property="article:modified_time" content="2024-08-14T14:44:16.122Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/24aec23065665be0a32f41a35f786911.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://supdriver.top/2024/08/14/shmd/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ssystem V 共享内存',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-14 22:44:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/24aec23065665be0a32f41a35f786911.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Ssystem V 共享内存</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-08-14T06:55:06.000Z" title="发表于 2024-08-14 14:55:06">2024-08-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-14T14:44:16.122Z" title="更新于 2024-08-14 22:44:16">2024-08-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Ssystem V 共享内存"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>共享内存区是最快的IPC形式。一旦这样的内存映射到共享它的进程的地址空间，这些进程间数据传递<strong>不再涉及</strong>到<br><code>内核</code>，换句话说是进程不再通过执行进入内核的系统调用来传递彼此的数据,而是直接使用内存中的共享区。</p>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/shared_mm.png"></p>
+<p>我们接下来认识一下常用的接口</p>
+<h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><h2 id="shmget-创建共享内存"><a href="#shmget-创建共享内存" class="headerlink" title="shmget 创建共享内存"></a>shmget 创建共享内存</h2><p>需要同时引入<code>&lt;sys/ipc.h&gt;</code> <code>&lt;sys/shm.h&gt;</code></p>
+<p><code>int shmget(key_t key, size_t size, int shmflg);</code></p>
+<ul>
+<li><code>key</code> 是生成<code>共享内存标示符</code>的 关键字,唯一的<code>key</code>值能返回唯一的<code>共享内存标示符</code>,这是获得同一个共享内存的关键参数</li>
+<li><code>size</code>是指共享内存的大小,按字节算</li>
+<li><code>shmflg</code>是一个位图,控制创建时的行为和 共享内存文件的<code>权限</code>(缺省时为<code>0</code>),常见选项如下<ul>
+<li><code>IPC_CREAT</code>:单独一个时，如果申请的共享内存不存在，就创建，然后返回；若存在，则获取并返回</li>
+<li><code>IPC_CREAT | IPC_EXCL</code>: 如果申请的共享内存不存在，则创建；若存在，则出错并返回<code>-1</code></li>
+<li><code>IPC_EXCL</code>:不能单独使用</li>
+<li><code>IPC_CREAT | 0666</code>:创建一个权限为<code>0666</code>的共享内存文件,注：<code>0666</code>可改成其它权限</li>
+</ul>
+</li>
+<li><code>返回值</code>：若成功，则返回<code>共享内存标示符</code> ;若失败，则返回<code>-1</code></li>
+</ul>
+<p>由上可知，保证<code>key</code>的唯一性是获得同一个共享内存的关键步骤，那么如何获得唯一的<code>key_t</code>类型的呢？</p>
+<p>这里使用新的接口<code>ftok</code>,（需同时引入<code>&lt;sys/types.h&gt;</code> 和 <code>&lt;sys/ipc.h&gt;</code>）</p>
+<p><code>key_t ftok(const char *pathname, int proj_id);</code></p>
+<ul>
+<li><code>pathname</code>:必须指向一个存在的目录，或者有权限的文件</li>
+<li><code>proj_id</code>: 该参数必须是<strong>非零</strong>的且至少有八位有效位的整型,可传<code>0x8888</code>这样的大整型</li>
+<li><code>返回值</code>：成功时生成<code>key</code>,失败时返回<code>-1</code></li>
+</ul>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/keytoshmid.png"></p>
+<p>经过一系列操作便可以创建共享内存了</p>
+<h3 id="查看共享内存"><a href="#查看共享内存" class="headerlink" title="查看共享内存"></a>查看共享内存</h3><p>在<code>shell</code>命令里输入命令<code>ipcs -m</code>就可以看到的共享内存列表</p>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202408142027880.png"></p>
+<p>可以看到我创建了一个大小为<code>1145</code>比特的共享内存</p>
+<p>然而共享内存的声明周期与内核相同，必须要<strong>手动</strong>删除，所以在命令行上还有指令<code>ipcrm -m</code>指令删除共享内存</p>
+<p>那么应该用表里的<code>key</code>还是<code>shmid</code>呢？结论是在用户层，统一使用<code>shmid</code>管理共享内存（毕竟全称就是 <code>共享内存描述符</code>）</p>
+<p>例如上图就需要输入<code>ipcrm -m 0</code></p>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202408142026217.png"></p>
+<p>可以看到共享内存被删掉了</p>
+<h3 id="共享内存的权限"><a href="#共享内存的权限" class="headerlink" title="共享内存的权限"></a>共享内存的权限</h3><p><code>ipcs -m</code>列表中的<code>perms</code>列就是共享内存文件的权限，没错，共享内存也是文件</p>
+<p>当创建时没指定权限时，则默认为<code>全0</code>，若要指定权限,需要在<code>shmflg</code>处在<code>|</code>上权限，例如<code>0666</code></p>
+<h3 id="共享内存的挂接数"><a href="#共享内存的挂接数" class="headerlink" title="共享内存的挂接数"></a>共享内存的挂接数</h3><p><code>ipcs -m</code>列表中的<code>nattch</code>下标注了共享内存的挂接数</p>
+<h2 id="shmat-挂接共享内存"><a href="#shmat-挂接共享内存" class="headerlink" title="shmat 挂接共享内存"></a>shmat 挂接共享内存</h2><p><code>void *shmat(int shmid, const void *shmaddr, int shmflg);</code></p>
+<ul>
+<li><code>shmid</code>:前面获取的<code>共享内存描述符</code></li>
+<li><code>shmadder</code>:一般传<code>nullptr</code>让系统自动选择挂接用的共享内存段地址</li>
+<li><code>shmflg</code>:位图<ul>
+<li><code>0</code>:传<code>0</code>时默认以<code>读写模式</code>挂接</li>
+<li><code>SHM_RDONLY</code>: 以<code>只读模式</code>挂接</li>
+<li><strong>没有</strong>只写模式挂接</li>
+</ul>
+</li>
+<li><code>返回值</code>: 若成功，返回共享内存段地址；若失败，返回<code>(void *) -1</code></li>
+</ul>
+<h3 id="shmdt-取消挂接"><a href="#shmdt-取消挂接" class="headerlink" title="shmdt 取消挂接"></a>shmdt 取消挂接</h3><p>虽然进程退出时会自动取消挂接，但如果要在进程内取消挂接，就要用<code>shmdt</code>函数取消挂接</p>
+<p><code>int shmdt(const void *shmaddr);</code></p>
+<p>把<code>shmat</code>返回的指针传进去即可</p>
+<h3 id="读写共享区内存"><a href="#读写共享区内存" class="headerlink" title="读写共享区内存"></a>读写共享区内存</h3><p>挂接上的进程是真正意义上的看到同一块内存，而且完全可以像<code>malloc</code>申请出的一段内存一样操作,比如把共享区的内存当成字符串的缓冲区,直接把标准输入用<code>fgets</code>拷贝到共享内存中</p>
+<p>不过默认的共享内存并没有同步互斥行为,需要额外控制,比如使用<code>system V</code>信号量</p>
+<h2 id="shmctl-控制共享内存"><a href="#shmctl-控制共享内存" class="headerlink" title="shmctl 控制共享内存"></a>shmctl 控制共享内存</h2><p><code>int shmctl(int shmid, int cmd, struct shmid_ds *buf);</code></p>
+<p>该函数内容较多，下面只列举常见用法，更多信息请查阅<code>man</code>手册</p>
+<ul>
+<li><code>shmid</code>:共享内存描述符</li>
+<li><code>cmd</code>:控制指令，有很多种<ul>
+<li><code>IPC_RMID</code>:由共享内存创建者调用，声明该段共享内存已经取消挂接，传该参数时，后面的<code>buf</code>可传<code>nullptr</code></li>
+<li><code>IPC_STAT</code>:获取共享内存的状态并拷贝到<code>buf</code>指向的内存中</li>
+</ul>
+</li>
+<li><code>buf</code>:输出型参数,指向输出的内存缓冲区</li>
+</ul>
+<p><code>shmid_ds</code>的部分声明如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">shmid_ds</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ipc_perm</span> <span class="title">shm_perm</span>;</span>    <span class="comment">/* Ownership and permissions */</span></span><br><span class="line">    <span class="type">size_t</span>          shm_segsz;   <span class="comment">/* Size of segment (bytes) */</span></span><br><span class="line">    <span class="type">time_t</span>          shm_atime;   <span class="comment">/* Last attach time */</span></span><br><span class="line">    <span class="type">time_t</span>          shm_dtime;   <span class="comment">/* Last detach time */</span></span><br><span class="line">    <span class="type">time_t</span>          shm_ctime;   <span class="comment">/* Last change time */</span></span><br><span class="line">    <span class="type">pid_t</span>           shm_cpid;    <span class="comment">/* PID of creator */</span></span><br><span class="line">    <span class="type">pid_t</span>           shm_lpid;    <span class="comment">/* PID of last shmat(2)/shmdt(2) */</span></span><br><span class="line">    <span class="type">shmatt_t</span>        shm_nattch;  <span class="comment">/* No. of current attaches */</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2024/08/14/shmd/">http://supdriver.top/2024/08/14/shmd/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/24aec23065665be0a32f41a35f786911.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/08/13/logSystem/" title="Linux日志系统"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/d13a1291622bbd20e6b92dd4c9aab2b0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linux日志系统</div></div></a></div><div class="next-post pull-right"><a href="/2024/08/14/signal/" title="信号"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/8329fbf20c80cb47e69112360c9d351e.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">信号</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.</span> <span class="toc-text">接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shmget-%E5%88%9B%E5%BB%BA%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">1.1.</span> <span class="toc-text">shmget 创建共享内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">1.1.1.</span> <span class="toc-text">查看共享内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E6%9D%83%E9%99%90"><span class="toc-number">1.1.2.</span> <span class="toc-text">共享内存的权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%82%E6%8E%A5%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text">共享内存的挂接数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shmat-%E6%8C%82%E6%8E%A5%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">1.2.</span> <span class="toc-text">shmat 挂接共享内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#shmdt-%E5%8F%96%E6%B6%88%E6%8C%82%E6%8E%A5"><span class="toc-number">1.2.1.</span> <span class="toc-text">shmdt 取消挂接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E5%85%B1%E4%BA%AB%E5%8C%BA%E5%86%85%E5%AD%98"><span class="toc-number">1.2.2.</span> <span class="toc-text">读写共享区内存</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shmctl-%E6%8E%A7%E5%88%B6%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">1.3.</span> <span class="toc-text">shmctl 控制共享内存</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
