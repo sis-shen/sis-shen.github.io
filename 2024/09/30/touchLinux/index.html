@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>初识Linux编程&amp;初识makefile | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="前言本文将以实用的视角，以快速上手Linux平台的C++编程为目的，介绍:  Linux的基本操作  gcc&#x2F;g++的常用指令 makefile的常用编写方式  软件准备如果选择用虚拟机，那请自己解决 这里介绍使用Linux服务器配合本地ssh链接软件的方式在服务器上编写代码 首先是服务器，可以在主流服务器平台(阿里云，腾讯云，华为云)等购买服务器，一般有学生认证会更便宜,服务器配置不限">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识Linux编程&amp;初识makefile">
+<meta property="og:url" content="http://supdriver.top/2024/09/30/touchLinux/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="前言本文将以实用的视角，以快速上手Linux平台的C++编程为目的，介绍:  Linux的基本操作  gcc&#x2F;g++的常用指令 makefile的常用编写方式  软件准备如果选择用虚拟机，那请自己解决 这里介绍使用Linux服务器配合本地ssh链接软件的方式在服务器上编写代码 首先是服务器，可以在主流服务器平台(阿里云，腾讯云，华为云)等购买服务器，一般有学生认证会更便宜,服务器配置不限">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/12a4cf6640ed132e210ab645ff95c1e2.jpg">
+<meta property="article:published_time" content="2024-09-30T07:12:06.000Z">
+<meta property="article:modified_time" content="2024-10-01T02:11:48.827Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/12a4cf6640ed132e210ab645ff95c1e2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://supdriver.top/2024/09/30/touchLinux/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '初识Linux编程&初识makefile',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-01 10:11:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">47</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/12a4cf6640ed132e210ab645ff95c1e2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">初识Linux编程&amp;初识makefile</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-09-30T07:12:06.000Z" title="发表于 2024-09-30 15:12:06">2024-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-01T02:11:48.827Z" title="更新于 2024-10-01 10:11:48">2024-10-01</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="初识Linux编程&amp;初识makefile"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文将以实用的视角，以快速上手Linux平台的C++编程为目的，介绍:</p>
+<ul>
+<li>Linux的基本操作 </li>
+<li>gcc&#x2F;g++的常用指令</li>
+<li>makefile的常用编写方式</li>
+</ul>
+<h1 id="软件准备"><a href="#软件准备" class="headerlink" title="软件准备"></a>软件准备</h1><p><em>如果选择用虚拟机，那请自己解决</em></p>
+<p>这里介绍使用<code>Linux服务器</code>配合<code>本地ssh链接软件</code>的方式在服务器上编写代码</p>
+<p>首先是服务器，可以在主流服务器平台(阿里云，腾讯云，华为云)等购买服务器，一般有学生认证会更便宜,服务器配置不限，若要使用Linux,可以选择Ubuntu内核，(CentOs也行，就是太老了，且停止维护了)，然后自行查阅相关教程，设置默认管理员账户和密码，以及配置服务器，<strong>开启ssh远程链接权限</strong></p>
+<p>关于本地的ssh链接软件，这里我只推荐两个我使用过的</p>
+<ul>
+<li>xshell7</li>
+<li>vscode+ssh插件</li>
+</ul>
+<p>其中<code>xshell</code>比较简单，安装好就能用 <a target="_blank" rel="noopener" href="https://www.xshell.com/en/free-for-home-school/#:~:text=We%20believe%20users%20from%20all%20backgrounds%20and%20circumstances">戳我去下载免费版xshell🔗</a>，怎么登录服务器？自行百度~。但缺点是仅支持控制台，所以写代码只能用<code>vim</code>等支持控制台的文本编辑器</p>
+<p><code>vscode</code>+<code>ssh</code>插件会比<code>xshell</code>麻烦点，还要修改配置文件，具体教程可参考<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13Z421T7oz/">b战视频🔗</a></p>
+<p>但优点是<code>vscode</code>在支持终端(控制台)的同时还支持原本的<code>文本编辑器界面</code>,相当于可以用windows的<code>GUI可视化窗口</code>写代码了</p>
+<p><em>下图为xshell(左)和vscode(右)的界面对比</em></p>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409302132012.png"></p>
+<h1 id="Linux快速入门"><a href="#Linux快速入门" class="headerlink" title="Linux快速入门"></a>Linux快速入门</h1><p>不同于Windows平台的<code>GUI可视化</code>界面，在服务器编写代码，由于为了节省服务器资源，是不会安装GUI可视化界面的，所以还需要适应和学习终端的操作</p>
+<h2 id="Linux-常用指令"><a href="#Linux-常用指令" class="headerlink" title="Linux 常用指令"></a>Linux 常用指令</h2><h3 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h3><p><code>ls</code>指令用于查看当前<code>目录</code>所含有的文件</p>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409302202715.png"></p>
+<p>但是单纯的ls显示的内容太简略了，所幸它是能加参数的,格式是<code>-参数字符(串)</code>,多个参数时直接连在一起，不用间隔</p>
+<p>常用参数如下</p>
+<ul>
+<li><code>-l</code>显示更多的详细信息</li>
+<li><code>-a</code>显示全部文件，包括隐藏文件(以<code>.</code>开头的目录&#x2F;文件)</li>
+<li><code>-i</code>显示唯一文件标示符s</li>
+</ul>
+<p>但是每次都打参数太麻烦了怎么办？没关系~！还有快捷命令<code>ll</code>，相当于<code>ls -al</code></p>
+<p>平时最常用的就是<code>ll</code></p>
+<h3 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h3><p>那么怎么切换路径呢？使用<code>cd 路径名称</code>即可</p>
+<p><strong>关于路径</strong>，又分为<code>绝对路径</code>和<code>相对路径</code></p>
+<p>在<code>Linux</code>中，所有目录的最终根目录都是<code>/</code>,没错，单一个<code>/</code></p>
+<p>而用户登录后所在的文件夹是用户文件夹，以用户<code>supdriver</code>为例,一般路径为<code>/home/supdriver</code>,其中这个目录也可以用<code>~</code>指代</p>
+<p>至于<code>相对目录</code>,对于除了根目录的普通目录，都会存在一个<code>.</code>目录和<code>..</code>目录，其中<code>.</code>目录就是指这个目录自己，而<code>..</code>则是上级目录</p>
+<p>在了解完路径的基本概念后，使用<code>cd</code>命令就很简单了</p>
+<p>下面举几个简单例子</p>
+<ul>
+<li><code>cd /home</code>打开家目录，所有的用户文件夹都在这</li>
+<li><code>cd ~</code>打开当前登录用户的用户文件夹</li>
+<li><code>cd -</code>打开上次<code>cd</code>打开的文件夹</li>
+<li><code>cd /</code>打开根目录</li>
+<li><code>cd ./tmp</code>打开当前目录</li>
+<li><code>cd ../</code>打开上级目录</li>
+</ul>
+<h3 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h3><p>既然已经知道了路径的概念，有时候我们想获取当前所在路径怎么办呢？使用<code>pwd</code>指令吧,不需要参数</p>
+<h3 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h3><p><code>mkdir</code>是专门用于创建普通目录的指令，用法有:</p>
+<ul>
+<li><code>mkdir 目录名</code>在当前目录创建目录</li>
+<li><code>mkdir 路径/目录名</code>在指定路径创建目录（如果有权限的话）</li>
+</ul>
+<h2 id="touch"><a href="#touch" class="headerlink" title="touch"></a>touch</h2><p><code>touch</code>指令可以用于生成文件,<code>linux</code>下的文件都是同样的种类，而且在linux中文件的后缀对操作系统识别文件类型并不重要</p>
+<p><code>touch file</code>在当前目录创建一个名为<code>file</code>的普通文件,默认权限为<code>不可执行，可读，可写</code>，当然touch支持生成不同权限的文件，这里不作讨论，对与Linux权限系统有兴趣的可以自行学习</p>
+<h2 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h2><p><code>rm</code>可用于删除文件,同时也有可选参数，不带参数删除文件时，会询问确认</p>
+<ul>
+<li><code>rm &lt;文件名&gt;</code>删除文件，但会先询问确认</li>
+<li><code>rm -f &lt;文件名&gt;</code>强制删除文件，不会确认</li>
+<li><code>rm -rf &lt;文件名/目录名&gt;</code>强制递归删除文件&#x2F;目录，可用于删除含有多层结构的目录</li>
+</ul>
+<p>千万不要执行<code>rm -rf /</code>，否则会把系统文件也删了，这个操作系统就废掉了</p>
+<h2 id="Linux编程"><a href="#Linux编程" class="headerlink" title="Linux编程"></a>Linux编程</h2><p>不同于Windows上常用的<code>集成开发环境</code>，如<code>Visual Studio</code>,<code>devC++</code>,Linux的开发环境为<code>文本编辑器</code>+<code>gcc/g++</code>编译器，二者是独立的。</p>
+<h3 id="文本编辑器"><a href="#文本编辑器" class="headerlink" title="文本编辑器"></a>文本编辑器</h3><h4 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h4><p>最常用的Linux文本编辑器当属<code>vim</code>了，因为基本每台Linux服务器都是自带<code>vim</code>的，支持插件扩展和配置文件，这里不多作介绍</p>
+<p><code>Vim</code>是一款文本编辑器,下面介绍在vim界面中的常用指令</p>
+<p><strong>三种模式</strong>:<code>命令模式(Command Mode)</code> <code>插入模式（Insert Mode</code> <code>命令行模式（Command-Line Mode）</code>（这里称命令行模式为<code>底行模式</code>）</p>
+<p>三者关系如下图</p>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/PixPin_2023-12-11_10-39-04.png"></p>
+<ul>
+<li><p>命令模式<br><code>vim</code>界面中多摁几次<code>ESC</code>就能退出其它模式回到<code>命令模式</code>，在这个模式下可以使用一系列vim<a target="_blank" rel="noopener" href="https://linux.cn/article-8144-1.html">快捷键</a></p>
+</li>
+<li><p>底行模式<br><code>tips</code>:不管目前是什么模式,先狂按<code>ESC</code>,回到<code>命令模式</code>,然后输入<code>:</code>进入<code>底行模式</code>,准备开始输命令</p>
+</li>
+</ul>
+<p><code>命令组成</code><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/PixPin_2023-12-11_12-48-54.png"></p>
+<ul>
+<li><p>保存<code>:w</code>-&gt;强制保存<code>!w</code></p>
+</li>
+<li><p>退出<code>:q</code>-&gt;强制退出<code>:!q</code></p>
+</li>
+<li><p>保存并退出<code>:wq</code>-.强制保存并退出<code>:!wq</code></p>
+</li>
+<li><p>对比<code>:vs </code>+<code>(源文件路径)</code></p>
+</li>
+<li><p>插入模式<br>在<code>命令模式</code>下按键盘<code>i</code>进入<code>插入模式</code>，执行正常的文本编辑功能</p>
+</li>
+</ul>
+<h4 id="vscode"><a href="#vscode" class="headerlink" title="vscode"></a>vscode</h4><p><code>vscode</code>本身就是<strong>文本编辑器</strong>,这是各种插件让它的功能多了起来,这里推荐安装<code>C/C++</code>相关的插件（其实它自己识别到C++文件就会推荐你安装的）。至于<code>vscode</code>怎么用，就跟平时在Windows上用一样，不过同时也可以用终端命令行来辅助操作。</p>
+<h3 id="gcc-g-编译器"><a href="#gcc-g-编译器" class="headerlink" title="gcc&#x2F;g++编译器"></a>gcc&#x2F;g++编译器</h3><p><strong>gcc是专门编译C语言文件的，拿去编译C++文件会报错！！</strong></p>
+<p>这里介绍g++的使用</p>
+<p><code>g++</code>默认编译终端当前文件夹下的源文件，接下来介绍常见用法</p>
+<ol>
+<li>直接编译<br><code>g++ &lt;源文件&gt;</code>将直接编译目标源文件，并产生<code>a.out</code>可执行文件</li>
+</ol>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410010914401.png"></p>
+<ol start="2">
+<li>自定义产生的目标可执行文件<br><code>g++ -o &lt;源文件&gt; &lt;可执行文件名&gt;</code>&#x2F;<code>g++ &lt;源文件&gt; -o &lt;可执行文件名&gt;</code>,二者皆可</li>
+</ol>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410010932958.png"></p>
+<ol start="3">
+<li>编译产生目标文件(<code>*.o</code>)并链接产生可执行文件</li>
+</ol>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410011007675.png"></p>
+<p>如图，使用<code>-c</code>参数可以编译产生<code>*.o</code>目标文件，最后再链接到同一个文件中。下面举一个实际例子</p>
+<p>我们有如下源文件<code>main.cpp</code> <code>add.cpp</code> <code>sub.cpp</code> <code>add.hpp</code> <code>sub.hpp</code>(其中main.cpp已经#include了头文件)</p>
+<p>我们将依次输入如下指令产生<code>mycmd</code>可执行文件</p>
+<ul>
+<li><code>g++ -c main.cpp -o main.o</code></li>
+<li><code>g++ -c add.cpp -o add.o</code></li>
+<li><code>g++ -c sub.cpp -o sub.o</code></li>
+<li></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2024/09/30/touchLinux/">http://supdriver.top/2024/09/30/touchLinux/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/12a4cf6640ed132e210ab645ff95c1e2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/09/24/DP-singelton-pattern/" title="初识设计模式&amp;单例模式&amp;代理模式--设计模式介绍(1)"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/f4b8dbf6edada39bca87d0feae1edeac.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">初识设计模式&amp;单例模式&amp;代理模式--设计模式介绍(1)</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">47</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%87%86%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">软件准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-number">3.</span> <span class="toc-text">Linux快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="toc-number">3.1.</span> <span class="toc-text">Linux 常用指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ls"><span class="toc-number">3.1.1.</span> <span class="toc-text">ls</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cd"><span class="toc-number">3.1.2.</span> <span class="toc-text">cd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwd"><span class="toc-number">3.1.3.</span> <span class="toc-text">pwd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mkdir"><span class="toc-number">3.1.4.</span> <span class="toc-text">mkdir</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#touch"><span class="toc-number">3.2.</span> <span class="toc-text">touch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rm"><span class="toc-number">3.3.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E7%BC%96%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">Linux编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">3.4.1.</span> <span class="toc-text">文本编辑器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vim"><span class="toc-number">3.4.1.1.</span> <span class="toc-text">Vim</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vscode"><span class="toc-number">3.4.1.2.</span> <span class="toc-text">vscode</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gcc-g-%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-number">3.4.2.</span> <span class="toc-text">gcc&#x2F;g++编译器</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
