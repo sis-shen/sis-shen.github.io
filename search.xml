@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>初识Linux套接字(socket)和TCP/UDP协议</title>
+      <link href="/2024/10/08/LinuxSocket/"/>
+      <url>/2024/10/08/LinuxSocket/</url>
+      
+        <content type="html"><![CDATA[<p>在Linux环境中，套接字（Socket）是一种用于<code>进程间通信</code>（IPC）的机制，但这里的进程，包括了同一网络下<strong>其它主机的进程</strong>，所以它被广泛应用于网络编程。它允许不同计算机上的进程或同一计算机上的不同进程之间进行数据交换。</p><p>由于此时我们的网络编程基础较少，所以本文的内容更<strong>偏向于实践</strong>,而不是原理。希望能在动手实践中加深对网络编程的熟悉程度，减少陌生感</p><p>在本文中，我们将：</p><ul><li><code>知识铺垫</code>:认识IP地址, 端口号, 网络字节序等网络编程中的基本概念（简略）</li><li><code>socket API学习</code></li><li>实现一个简单的UPD<code>客户端</code>&#x2F;<code>服务器</code></li><li>实现一个简单的TCP<code>客户端</code>&#x2F;<code>服务器</code>（服务器包括单连接版本，多进程版本，多线程版本）</li></ul><h1 id="知识铺垫"><a href="#知识铺垫" class="headerlink" title="知识铺垫"></a>知识铺垫</h1><h2 id="理解源IP地址和目的IP地址"><a href="#理解源IP地址和目的IP地址" class="headerlink" title="理解源IP地址和目的IP地址"></a>理解源IP地址和目的IP地址</h2>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>初识Linux编程&amp;初识makefile</title>
       <link href="/2024/09/30/touchLinux/"/>
       <url>/2024/09/30/touchLinux/</url>
