@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>C++连接MySQL接口测试 | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="MySQL准备为了便于测试，我们专门创建一个用于测试的用户和数据库，并给予相关权限 12345create user &amp;#x27;conn&amp;#x27;@&amp;#x27;localhost&amp;#x27; identified by &amp;#x27;12345678&amp;#x27;;create database testDB;grant all privileges on testDB.* to &amp;#x27;co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++连接MySQL接口测试">
+<meta property="og:url" content="http://supdriver.top/2024/10/22/mysql-cppConnector/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="MySQL准备为了便于测试，我们专门创建一个用于测试的用户和数据库，并给予相关权限 12345create user &amp;#x27;conn&amp;#x27;@&amp;#x27;localhost&amp;#x27; identified by &amp;#x27;12345678&amp;#x27;;create database testDB;grant all privileges on testDB.* to &amp;#x27;co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/7be4e5cabc1892f13a8ce4d55cbd787c.jpg">
+<meta property="article:published_time" content="2024-10-22T07:02:10.000Z">
+<meta property="article:modified_time" content="2024-10-23T02:06:05.415Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/7be4e5cabc1892f13a8ce4d55cbd787c.jpg"><link rel="shortcut icon" href="/%5Bobject%20Object%5D"><link rel="canonical" href="http://supdriver.top/2024/10/22/mysql-cppConnector/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++连接MySQL接口测试',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-23 10:06:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">55</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/7be4e5cabc1892f13a8ce4d55cbd787c.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++连接MySQL接口测试</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-22T07:02:10.000Z" title="发表于 2024-10-22 15:02:10">2024-10-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-23T02:06:05.415Z" title="更新于 2024-10-23 10:06:05">2024-10-23</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++连接MySQL接口测试"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="MySQL准备"><a href="#MySQL准备" class="headerlink" title="MySQL准备"></a>MySQL准备</h1><p>为了便于测试，我们专门创建一个用于测试的用户和数据库，并给予相关权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">create user &#x27;conn&#x27;@&#x27;localhost&#x27; identified by &#x27;12345678&#x27;;</span><br><span class="line"></span><br><span class="line">create database testDB;</span><br><span class="line"></span><br><span class="line">grant all privileges on testDB.* to &#x27;conn&#x27;@&#x27;localhost&#x27;;</span><br></pre></td></tr></table></figure>
+<h1 id="认识接口-类"><a href="#认识接口-类" class="headerlink" title="认识接口&#x2F;类"></a>认识接口&#x2F;类</h1><p>我们将逐个介绍如下类及其相关接口</p>
+<ul>
+<li><code>sql::SQLString</code></li>
+<li><code>sql::mysql::MySQL_Driver</code><ul>
+<li><code>sql::mysql::get_mysql_driver_instance()</code></li>
+</ul>
+</li>
+<li><code>sql::Connection</code></li>
+<li><code>sql::Statement</code></li>
+<li><code>sql::ResultSet</code></li>
+<li><code>sql::SQLException</code></li>
+</ul>
+<h2 id="sql-SQLString"><a href="#sql-SQLString" class="headerlink" title="sql::SQLString"></a>sql::SQLString</h2><p>从名字就能看出，这是<code>SQL</code>语言所用的字符串类。主要用于对<code>SQL</code>语句的字符串操作。我们来看看它的特点</p>
+<h3 id="构造函数的支持"><a href="#构造函数的支持" class="headerlink" title="构造函数的支持"></a>构造函数的支持</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//访问限定符是博客作者手动加的，与源码的位置和数量略有差异</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">SQLString</span>() &#123;&#125;<span class="comment">//默认构造函数</span></span><br><span class="line">    <span class="comment">//拷贝构造</span></span><br><span class="line">    <span class="built_in">SQLString</span>(<span class="type">const</span> SQLString &amp; other) : <span class="built_in">realStr</span>(other.realStr) &#123;&#125;</span><br><span class="line">    <span class="comment">//std::string构造</span></span><br><span class="line">    <span class="built_in">SQLString</span>(<span class="type">const</span> std::string &amp; other) : <span class="built_in">realStr</span>(other) &#123;&#125;</span><br><span class="line">    <span class="comment">//原生字符串构造</span></span><br><span class="line">    <span class="built_in">SQLString</span>(<span class="type">const</span> <span class="type">char</span> other[]) : <span class="built_in">realStr</span>(other) &#123;&#125;</span><br><span class="line">    <span class="comment">//指定长度构造</span></span><br><span class="line">    <span class="built_in">SQLString</span>(<span class="type">const</span> <span class="type">char</span> * s, <span class="type">size_t</span> n) : <span class="built_in">realStr</span>(s, n) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::string realStr;</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>SQLString</code>的构造已经支持了常用的字符串结构,尤其是<code>std::string</code>和<code>C语言字符串</code></p>
+<p>接下来我们看看它的其它比较特别的接口</p>
+<h2 id="隐式类型转换重载"><a href="#隐式类型转换重载" class="headerlink" title="隐式类型转换重载"></a>隐式类型转换重载</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">operator</span> <span class="type">const</span> std::string &amp;() <span class="type">const</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">return</span> realStr;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这种类型的重载函数可能比较少见，但是它出现于<code>C++98</code>，且在后续版本没有改变，都是支持的。</p>
+<p>它的效果是为自定义类型提供了自定义的隐式类型转换。有了上述代码的重载后，<code>sql::SQLString</code>就支持了以下写法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">sql::SQLString <span class="title">sql_str</span><span class="params">(<span class="string">&quot;这原本是一条SQLString类型的字符串！&quot;</span>)</span></span>;</span><br><span class="line">std::String std_string = sql_str;<span class="comment">//sql_str发生隐式类型转换，转换成const std::string类型,由`realStr`构造</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串比较函数"><a href="#字符串比较函数" class="headerlink" title="字符串比较函数"></a>字符串比较函数</h3><p>首先是严格比较的函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">compare</span><span class="params">(<span class="type">const</span> SQLString&amp; str)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> realStr.<span class="built_in">compare</span>(str.realStr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">compare</span><span class="params">(<span class="type">const</span> <span class="type">char</span> * s)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> realStr.<span class="built_in">compare</span>(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">compare</span><span class="params">(<span class="type">size_t</span> pos1, <span class="type">size_t</span> n1, <span class="type">const</span> <span class="type">char</span> * s)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> realStr.<span class="built_in">compare</span>(pos1, n1, s);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这三个比较函数会对两个字符串进行<strong>严格的大小比较</strong>,唯一的区别就是传参不同，<strong>后续统一以<code>SQLString</code>为例介绍字符串相关的操作，但是要知道它也支持另外两种类型的字符串</strong></p>
+<p>接下来介绍不严格比较（忽略大小写）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">caseCompare</span><span class="params">(<span class="type">const</span> SQLString &amp;s)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">      <span class="function">std::string <span class="title">tmp</span><span class="params">(realStr)</span>, <span class="title">str</span><span class="params">(s)</span></span>;</span><br><span class="line">      std::<span class="built_in">transform</span>(tmp.<span class="built_in">begin</span>(), tmp.<span class="built_in">end</span>(), tmp.<span class="built_in">begin</span>(), ::tolower);</span><br><span class="line">      std::<span class="built_in">transform</span>(str.<span class="built_in">begin</span>(), str.<span class="built_in">end</span>(), str.<span class="built_in">begin</span>(), ::tolower);</span><br><span class="line">      <span class="keyword">return</span> tmp.<span class="built_in">compare</span>(str);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这个函数拷贝了两个字符串，并全都统一转换成了小写，这样就可以忽略大小写进行比较了</p>
+<h3 id="重载流插入"><a href="#重载流插入" class="headerlink" title="重载流插入"></a>重载流插入</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> std</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// operator &lt;&lt; for SQLString output</span></span><br><span class="line">  <span class="keyword">inline</span> ostream &amp; <span class="keyword">operator</span> &lt;&lt; (ostream &amp; os, <span class="type">const</span> sql::SQLString &amp; str )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span> os &lt;&lt; str.<span class="built_in">asStdString</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到它直接支持流插入。</p>
+<h2 id="sql-mysql-MySQL-Driver"><a href="#sql-mysql-MySQL-Driver" class="headerlink" title="sql::mysql::MySQL_Driver"></a>sql::mysql::MySQL_Driver</h2><p>来自头文件<code>&lt;mysql_driver.h&gt;</code></p>
+<p>这是一种<code>MySQL 驱动程序类</code>，它主要用于创建连接对象来<code>连接数据库</code>并返回<code>sql::Connection*</code>,在代码上就是实例化出了一个对象并返回它的指针。</p>
+<p>至于获取driver实例，可以通过命名空间内提供的全局函数获取: <code>sql::mysql::get_mysql_driver_instance();</code>。这个函数会返回一个<code>sql::mysql::MySQL_Driver *</code>指针</p>
+<p>示例如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sql::mysql::MySQL_Driver *driver;<span class="comment">//声明指针</span></span><br><span class="line">driver = sql::mysql::<span class="built_in">get_mysql_driver_instance</span>();<span class="comment">//获取实例</span></span><br></pre></td></tr></table></figure>
+
+<p>主要用途:这个对象提供了一个<code>connect()</code>方法来创建连接对象并连接到数据库,参数要先后提供<code>ip地址</code>,<code>用户名</code>,<code>用户密码</code></p>
+<p><code>sql::Connection * connect(const sql::SQLString&amp; hostName, const sql::SQLString&amp; userName, const sql::SQLString&amp; password);</code></p>
+<p>创建连接</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_ptr&lt;sql::Connection&gt; <span class="title">con</span><span class="params">(driver-&gt;connect(<span class="string">&quot;tcp://127.0.0.1:3306&quot;</span>, <span class="string">&quot;conn&quot;</span>, <span class="string">&quot;12345678&quot;</span>))</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="sql-Connection"><a href="#sql-Connection" class="headerlink" title="sql::Connection"></a>sql::Connection</h2><p><code>sql::Connection</code>这个类用于表示与数据库的连接，提供了多种方法来执行 SQL 查询、管理事务、以及处理与数据库交互的各种操作。以下是关于 sql::Connection 的一些关键点</p>
+<h3 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h3><ul>
+<li><strong>连接管理</strong>: <code>sql::Connection</code> 负责管理与数据库的连接，包括建立和关闭连接。</li>
+<li><strong>执行查询</strong>: 通过该类，可以执行 <code>SQL语句</code>（如 <code>SELECT</code>、<code>INSERT</code>、<code>UPDATE</code> 和 <code>DELETE</code>）。</li>
+<li><strong>事务控制</strong>: 支持事务处理，可以<strong>开始、提交和回滚事务</strong>。</li>
+</ul>
+<h3 id="主要成员函数"><a href="#主要成员函数" class="headerlink" title="主要成员函数"></a>主要成员函数</h3><ul>
+<li><code>reconnect</code>: 用于以相同的连接参数重连</li>
+<li><code>createStatement</code>: 创建一个用于执行 SQL 语句的 <code>sql::Statement</code> 对象。并返回一个<code>sql::Statement*</code>指针</li>
+<li><code>prepareStatement</code>: 创建一个用于执行<strong>预处理</strong> SQL 语句的 <code>sql::PreparedStatement</code> 对象。并返回一个<code>sql::PreparedStatement*</code>指针</li>
+<li><code>setAutoCommit</code>: 设置<strong>是否自动提交事务</strong>。</li>
+<li><code>commit</code>: 提交当前事务的更改。</li>
+<li><code>setSavepoint</code>: 创建存档点。会产生一个<code>sql::Savepoint</code>对象并返回一个<code>sql::Savepoint*</code>指针<ul>
+<li>有两种重载，可以不传参，也可以传字符串作为存档点的名称</li>
+</ul>
+</li>
+<li><code>rollback</code>: 回滚当前事务的更改。<ul>
+<li>有两种重载，可以不传参，也可以传入<code>sql::Savepoint*</code>指针,回滚到存档点</li>
+</ul>
+</li>
+<li><code>close</code>: 关闭与数据库的连接。</li>
+</ul>
+<p>这里仅演示部分成员函数</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2024/10/22/mysql-cppConnector/">http://supdriver.top/2024/10/22/mysql-cppConnector/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/7be4e5cabc1892f13a8ce4d55cbd787c.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/10/22/mysql-users/" title="MySQL用户管理"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/c82e6022b30725d0d994fef978ec2948.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MySQL用户管理</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">55</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">MySQL准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E6%8E%A5%E5%8F%A3-%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">认识接口&#x2F;类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#sql-SQLString"><span class="toc-number">2.1.</span> <span class="toc-text">sql::SQLString</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9A%84%E6%94%AF%E6%8C%81"><span class="toc-number">2.1.1.</span> <span class="toc-text">构造函数的支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E9%87%8D%E8%BD%BD"><span class="toc-number">2.2.</span> <span class="toc-text">隐式类型转换重载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83%E5%87%BD%E6%95%B0"><span class="toc-number">2.2.1.</span> <span class="toc-text">字符串比较函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E6%B5%81%E6%8F%92%E5%85%A5"><span class="toc-number">2.2.2.</span> <span class="toc-text">重载流插入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql-mysql-MySQL-Driver"><span class="toc-number">2.3.</span> <span class="toc-text">sql::mysql::MySQL_Driver</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql-Connection"><span class="toc-number">2.4.</span> <span class="toc-text">sql::Connection</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="toc-number">2.4.1.</span> <span class="toc-text">基本功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="toc-number">2.4.2.</span> <span class="toc-text">主要成员函数</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
