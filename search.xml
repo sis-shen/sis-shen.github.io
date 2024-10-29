@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>设计模式的C++实现(5)——原型模式</title>
+      <link href="/2024/10/29/DP-prototype/"/>
+      <url>/2024/10/29/DP-prototype/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><strong>模式名称</strong>: 原型模式-Prototype<br><strong>类型</strong>: 创建型模式<br><strong>问题-使用场景</strong>: 当创建不同对象的过程过于复杂，或者需要隐藏&#x2F;封装创建对象的具体过程，或者<strong>组织项目需要创建过多的子类，类的数目需要优化减少时</strong><br><strong>解决方案</strong>： 用原型实例指定创建对象的种类，并通过<strong>拷贝</strong>这些原型来创建新的对象<br><strong>效果</strong>： 相比其它模式，用户只需考虑怎么检索到所需要的<code>原型对象</code>来拷贝出新的对象给自己用，而不用考虑如何构造。这样的设计能简化用户操作，且能极大地增加扩展性。</p></blockquote>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Python特殊函数设计</title>
       <link href="/2024/10/29/python-sp-function/"/>
       <url>/2024/10/29/python-sp-function/</url>
