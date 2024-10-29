@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>高并发内存池--C++项目实践</title>
+      <link href="/2024/10/29/tcmalloc/"/>
+      <url>/2024/10/29/tcmalloc/</url>
+      
+        <content type="html"><![CDATA[<h1 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这是一款高并发的C++内存管理项目，原型是google的一个开源项目<code>tcmalloc</code>,全称<code>Thread_Caching Malloc</code>,即线程缓存的malloc，<code>tcmalloc</code>实现了高效的多线程内存管理，可以用于替代系统的内存分配的相关的函数<code>malloc,new,free,delete</code>等</p><p>实际上原型项目内容很多，但本着渐进学习的理念，我们可以先把<code>tcmalloc</code>最核心的框架简化，模拟实现出一个自己的高并发内存池。在掌握了其中的精华的设计思想和编程技巧后，我们可以再进一步实现或改造原本的<code>tcmalloc</code>项目，或者将学习成果用于其它项目或者更多用途</p><h2 id="应用背景"><a href="#应用背景" class="headerlink" title="应用背景"></a>应用背景</h2><p><code>tcmalloc</code>是一项十分常用的技术，很多对性能要求较高的场景都能用到它</p><ol><li>高性能服务器<ul><li><code>TCMalloc</code>被广泛应用于高并发的服务器程序中，如<code>Web</code>服务器和数据库服务器。这些场景下，需要快速分配和释放内存，<code>TCMalloc</code>通过线程缓存机制减少了锁的竞争，提升了性能。</li></ul></li><li>游戏开发<ul><li>游戏引擎通常需要频繁分配和释放内存，尤其是在运行时动态创建和销毁对象。<code>TCMalloc</code>的低延迟和高吞吐量使其成为游戏开发的理想选择。</li></ul></li><li>大数据处理<ul><li>在处理大数据时，内存管理效率至关重要。许多大数据框架（如<code>TensorFlow</code>和<code>Apache Beam</code>）采用<code>TCMalloc</code>作为内存分配器，以提高性能和降低内存碎片。</li></ul></li><li>机器学习和深度学习<ul><li>在训练和推理过程中，机器学习和深度学习模型通常需要频繁地进行内存分配。<code>TCMalloc</code>s能够有效管理这些内存请求，提升模型的训练和推理效率。</li></ul></li><li>微服务架构<ul><li>在微服务架构中，服务之间的请求通常会涉及大量的内存分配。使用<code>TCMalloc</code>可以减少内存分配的延迟，提高服务的响应速度。</li></ul></li><li>高性能计算（HPC）<br>在高性能计算环境中，内存分配的效率直接影响计算性能。<code>TCMalloc</code>的设计使其能够在这种环境中表现出色，提供更快的内存管理。</li><li>C++ 应用程序<br>TCMalloc 是 C++ 应用程序中常用的内存分配器之一，特别是在需要处理大量小对象的情况下。它可以替代默认的<code>malloc</code>和<code>free</code>函数，提高内存分配的效率。</li><li>实时系统<br>在实时系统中，内存分配的确定性和性能至关重要。<code>TCMalloc</code>提供了较低的延迟和稳定的性能，使其适合用于此类应用。</li></ol><ul><li>总结<ul><li>TCMalloc 的高效性能和线程安全特性使其在多线程应用、服务器、游戏、数据处理和高性能计算等领域得到了广泛应用。选择 TCMalloc 作为内存分配器，可以显著提高应用程序的性能和响应能力。</li></ul></li></ul><h2 id="技能应用"><a href="#技能应用" class="headerlink" title="技能应用"></a>技能应用</h2><p>在本次项目，您将应用如下技能甚至更多</p><ul><li>C++面向对象设计</li><li>链表、哈希表等数据结构</li><li>操作系统内存管理</li><li>单例模式</li><li>多线程</li><li>互斥锁</li></ul><p>以及本次项目的<strong>核心技术: 池化技术</strong></p><h2 id="池化技术介绍"><a href="#池化技术介绍" class="headerlink" title="池化技术介绍"></a>池化技术介绍</h2><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410292014754.png"></p><p>很多情况下，不论资源是否稀缺，以及申请资源的操作是否成功，前往<strong>申请资源这一操作本身就消耗了不少性能&#x2F;其它资源（尤其时间）</strong>。此时采用池化技术，一次性申请一大块资源，然后优先使用提前申请好的资源，这样可以就可以提高运行效率，减小不必要的额外开销。</p><p>实际上在计算机领域已经有很多应用池化技术的地方了。举例如下图</p><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410292031101.png"></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>设计模式的C++实现(5)——原型模式</title>
       <link href="/2024/10/29/DP-prototype/"/>
       <url>/2024/10/29/DP-prototype/</url>
