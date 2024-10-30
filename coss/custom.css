@@ -21,3 +21,9 @@
   [data-theme="dark"] #page-header::before {
     background: transparent !important;
   }
+
+  /* 翻页按钮居中 */
+#pagination {
+  width: 100%;
+  margin: auto;
+}
