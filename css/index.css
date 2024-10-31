@@ -2613,7 +2613,7 @@ figure.highlight pre .javascript .function {
 .recent-posts .recent-post-item {
   border-radius: 15px;
   overflow: hidden;
-  background: #fff;
+  background: var(--card-bg);
 }
 .recent-posts .recent-post-item .recent-post-content {
   -webkit-box-orient: vertical;
