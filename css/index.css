@@ -2473,6 +2473,8 @@ figure.highlight pre .javascript .function {
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 .recent-posts .recent-post-item .recent-post-content .recent-post-info .article-title .article-title-link {
   color: var(--text-highlight-color);
@@ -2483,13 +2485,14 @@ figure.highlight pre .javascript .function {
   transition: all 0.2s ease-in-out;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
 }
 .recent-posts .recent-post-item .recent-post-content .recent-post-info .article-title .article-title-link:hover {
   color: var(--theme-color);
 }
 .recent-posts .recent-post-item .recent-post-content .recent-post-info .recent-post-meta {
-  height: 50%;
+  height: 20%;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
