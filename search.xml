@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>初识计网应用层协议HTTP</title>
+      <link href="/2024/11/17/cn-http/"/>
+      <url>/2024/11/17/cn-http/</url>
+      
+        <content type="html"><![CDATA[<h1 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h1><h2 id="数据组织与传输"><a href="#数据组织与传输" class="headerlink" title="数据组织与传输"></a>数据组织与传输</h2><p>我们所写的提供<strong>网络服务的程序</strong>都是运行在<code>应用层</code>上的。在这些程序中，我们往往会使用<code>结构体</code>、<code>类和对象</code>等结构化的方式<strong>组织数据</strong></p><p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409240926465.png"></p><p>但是在使用<code>socket api</code>接口时，我们只能使用<code>字符串/字节流</code>的格式来发送&#x2F;接收信息，实现网络通信。但是对于提到的<strong>结构化数据</strong>，又该怎么使用网络通信传输呢？</p><h2 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h2><p>针对应用层内的通信问题，我们依然使用<code>协议</code>解决。只要发送方和接收方按照同一’约定’对结构化数据进行<code>字节流编码</code>和<code>字节流解析</code>，就能够实现通过网络进行通信。这样的约定就是 <code>协议</code>。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>C++课设--ATM机模拟实现</title>
       <link href="/2024/11/11/ATM-cpp/"/>
       <url>/2024/11/11/ATM-cpp/</url>
