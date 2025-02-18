@@ -1,0 +1,292 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>高级IO】②poll实现IO多路转接 | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="以系统提供的函数poll为核心实现多路转接，即高级网络IO 认识 poll 函数123#include &lt;poll.h&gt;    int poll(struct pollfd *fds, nfds_t nfds, int timeout);  特殊的结构体pollfd 12345struct pollfd &amp;#123;    int   fd;         &#x2F;* 文件描述符 *&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级IO】②poll实现IO多路转接">
+<meta property="og:url" content="http://supdriver.top/2025/02/17/advanceIO-poll/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="以系统提供的函数poll为核心实现多路转接，即高级网络IO 认识 poll 函数123#include &lt;poll.h&gt;    int poll(struct pollfd *fds, nfds_t nfds, int timeout);  特殊的结构体pollfd 12345struct pollfd &amp;#123;    int   fd;         &#x2F;* 文件描述符 *&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191626076.jpg">
+<meta property="article:published_time" content="2025-02-17T11:10:38.000Z">
+<meta property="article:modified_time" content="2025-02-18T12:59:41.380Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191626076.jpg"><link rel="shortcut icon" href="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/sup_avator.webp"><link rel="canonical" href="http://supdriver.top/2025/02/17/advanceIO-poll/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '高级IO】②poll实现IO多路转接',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-18 20:59:41'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">75</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191626076.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">高级IO】②poll实现IO多路转接</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-17T11:10:38.000Z" title="发表于 2025-02-17 19:10:38">2025-02-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-18T12:59:41.380Z" title="更新于 2025-02-18 20:59:41">2025-02-18</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="高级IO】②poll实现IO多路转接"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>以系统提供的函数<code>poll</code>为核心实现多路转接，即高级网络IO</p>
+<h1 id="认识-poll-函数"><a href="#认识-poll-函数" class="headerlink" title="认识 poll 函数"></a>认识 poll 函数</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;poll.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="title function_">poll</span><span class="params">(<span class="keyword">struct</span> pollfd *fds, <span class="type">nfds_t</span> nfds, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>特殊的结构体<code>pollfd</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> &#123;</span></span><br><span class="line">    <span class="type">int</span>   fd;         <span class="comment">/* 文件描述符 */</span></span><br><span class="line">    <span class="type">short</span> events;     <span class="comment">/* 请求事件 */</span></span><br><span class="line">    <span class="type">short</span> revents;    <span class="comment">/* 应答事件 */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p><code>poll</code>也类似于<code>select</code>函数，能够同时监听多个文件描述符的<strong>就绪事件</strong></p>
+<h3 id="参数解释"><a href="#参数解释" class="headerlink" title="参数解释"></a>参数解释</h3><ul>
+<li><code>fds</code>是<code>pollfd</code>结构体数组的指针&#x2F;地址，提供待监听文件描述符的列表。其中结构体中的位图提供了每个文件描述符的<strong>各种状态的可能性</strong></li>
+<li><code>nfds</code>表示传入数组的长度</li>
+<li><code>timeout</code>表示<code>poll</code>函数的超时时间，单位是毫秒(ms)</li>
+</ul>
+<p>其中<code>events</code>和<code>revents</code>都是位图，可以有如下取值</p>
+<p>| 事件          | 描述                                  | 是否可作为输入 | 是否可作为输出     |<br>| <code>POLLIN</code>      | 数据(包括普通数据和优先级数据)可读      |   是          | 是 |<br>| <code>POLLRDNORM</code>  | 普通数据可读                          |   是          | 是 |<br>| <code>POLLRDBAND</code>  | 优先级带数据可读                      |   是          | 是 |<br>| <code>POLLPRI</code>     | 高优先级数据可读，比如TCP带外数据       | 是             | 是 |<br>| <code>POLLOUT</code>     | 数据（包括普通数据和优先数据）可写        | 是            | 是 |<br>| <code>POLLWRNORM</code>  | 普通数据可写                          | 是            | 是 |<br>| <code>POLLWRBAND</code>  | 优先级带数据可写                      | 是            | 是 |<br>| <code>POLLRDHUP</code>   | TCP连接被对方关闭，或者对方关闭了写操作，它由GNU引入 | 是 | 是 |<br>| <code>POLLERR</code>     | 错误                                  | 否        | 是    |<br>| <code>POLLHUP</code>     | 挂起。比如管道的写端被关闭后，读端描述符上将收到POLLHUP事件 | 否 | 是 |<br>| <code>POLLNVAL</code>    | 文件描述符没有打开                    | 否            | 是 |</p>
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><code>&lt;0</code>,表示出错</li>
+<li><code>=0</code>,表示等待超时</li>
+<li><code>&gt;0</code>,表示就绪的文件描述符数量</li>
+</ul>
+<h2 id="poll就绪条件"><a href="#poll就绪条件" class="headerlink" title="poll就绪条件"></a>poll就绪条件</h2><p>与select相同</p>
+<h3 id="读就绪"><a href="#读就绪" class="headerlink" title="读就绪"></a>读就绪</h3><ul>
+<li>socket内核中, 接收缓冲区中的字节数, <strong>大于等于</strong>低水位标记SO_RCVLOWAT. 此时可以无阻塞的读该文件描述符, 并且返回值大于0;</li>
+<li>socket TCP通信中, <strong>对端关闭连接</strong>, 此时对该socket读, 则返回0;</li>
+<li>监听的socket上有<strong>新的连接请求</strong>;</li>
+<li>socket上有<strong>未处理的错误</strong>;</li>
+</ul>
+<h3 id="写就绪"><a href="#写就绪" class="headerlink" title="写就绪"></a>写就绪</h3><ul>
+<li>socket内核中, 发送缓冲区中的可用字节数(发送缓冲区的空闲位置大小), 大于等于低水位标记</li>
+<li><code>SO_SNDLOWAT</code>, 此时可以无阻塞的写, 并且返回值大于0;</li>
+<li>socket的<strong>写操作被关闭</strong>(close或者shutdown). 对一个写操作被关闭的socket进行写操作, 会触发SIGPIPE信号;</li>
+<li>socket使用<code>非阻塞connect连接</code>成功或失败之后;</li>
+<li>socket上有<strong>未读取的错误</strong>;</li>
+</ul>
+<h2 id="poll-的优点"><a href="#poll-的优点" class="headerlink" title="poll 的优点"></a>poll 的优点</h2><ul>
+<li><strong>对象化</strong>维护文件描述符</li>
+</ul>
+<p>不同于<code>select</code>使用三个位图来表示三个<code>fdset</code>的方式，<code>poll</code>所使用的<code>pollfd</code>结构体将功能集成到了一个<code>pollfd</code>对象中，在<code>poll</code>服务器中每个<code>fd</code>的封装性和独立性更高，更接近面向对象编程的思想，这导致了如下优点:</p>
+<ul>
+<li><code>poll</code>所需的传参比<code>select</code>更简单更方便</li>
+<li><code>poll</code>使用的是数组而不是位图，没有最大数量限制（当然数量太大会导致性能下降）</li>
+</ul>
+<h2 id="poll-的缺点"><a href="#poll-的缺点" class="headerlink" title="poll 的缺点"></a>poll 的缺点</h2><p>难以<strong>高效</strong>处理大量的文件描述符</p>
+<ul>
+<li><code>后续处理效率低</code>: <code>poll</code>函数返回后，用户仍然需要遍历轮询<code>pollfd</code>数组来获取就绪的描述符</li>
+<li><code>大量的拷贝消耗</code>： 每次调用<code>poll</code>都需要把大量的<code>pollfd</code>结构从<strong>用户态</strong>拷贝到<strong>内核</strong>中</li>
+<li><code>线性下降的效率</code>: 同时连接的大量客户端在一时刻可能只有很少的处于就绪状态, 因此随着监视的描述符数量的增长, 其效<br>率也会线性下降</li>
+</ul>
+<h1 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h1><p>实际上<code>poll服务器</code>和<code>select服务器</code>差别不是很大，仅仅只是<code>核心函数</code>和<code>要维护的数组</code>发生了变化</p>
+<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><ol>
+<li><code>Socket.h</code> 基于先前封装过的<a target="_blank" rel="noopener" href="https://www.supdriver.top/2024/10/08/LinuxSocket/?highlight=socket"><code>Socket</code>类</a>，但修改了日志输出方式</li>
+<li><code>main.cpp</code>，启动服务的源文件</li>
+<li><code>selectServer.hpp</code>，服务器的实现文件</li>
+<li><code>makefile</code> 项目构建文件。</li>
+</ol>
+<h2 id="框架函数设计"><a href="#框架函数设计" class="headerlink" title="框架函数设计"></a>框架函数设计</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PollServer</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">PollServer</span>(<span class="type">const</span> <span class="type">uint16_t</span> port)</span><br><span class="line">    :_port(port)</span><br><span class="line">    &#123;&#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">PollServer</span>()&#123;<span class="built_in">close</span>(_listen_sock.<span class="built_in">Fd</span>());&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化函数</span></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="comment">//负责调用监听链接请求 或 接收消息</span></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">dispatcher</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="comment">//负责接收所有就绪的连接请求</span></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">acceptor</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="comment">//负责接收指定fd的信息</span></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">recver</span><span class="params">(<span class="keyword">struct</span> pollfd&amp; fd,<span class="type">int</span> pos)</span></span>;</span><br><span class="line">        <span class="comment">//启动函数</span></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">start</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Sock _listen_sock;</span><br><span class="line">    std::vector&lt;<span class="keyword">struct</span> pollfd&gt; _fd_array;</span><br><span class="line">    <span class="type">uint16_t</span> _port;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>可以看到我们这次使用了<code>vector容器</code>管理待监听的文件描述符，因为在<code>poll服务器</code>中文件描述符数组的动态性更强，使用<code>vector</code>更加适用于动态维护</p>
+<h2 id="makefile-实现"><a href="#makefile-实现" class="headerlink" title="makefile 实现"></a>makefile 实现</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">pollserver:main.cpp</span></span><br><span class="line">	g++ -o <span class="variable">$@</span> <span class="variable">$^</span> -std=c++11</span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>:clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f pollserver</span><br></pre></td></tr></table></figure>
+
+<h2 id="完整代码实现"><a href="#完整代码实现" class="headerlink" title="完整代码实现"></a>完整代码实现</h2><blockquote>
+<p>PollServer.hpp</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;poll.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Socket.hpp&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">uint16_t</span> defaultport = <span class="number">25565</span>;</span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">uint16_t</span> fd_num_max = <span class="number">8</span>;</span><br><span class="line"><span class="type">static</span> <span class="keyword">struct</span> <span class="title class_">pollfd</span> default_fd = &#123;<span class="number">-1</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PollServer</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">PollServer</span>(<span class="type">const</span> <span class="type">uint16_t</span> port)</span><br><span class="line">    :_port(port)</span><br><span class="line">    &#123;&#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">PollServer</span>()&#123;<span class="built_in">close</span>(_listen_sock.<span class="built_in">Fd</span>());&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        _listen_sock.<span class="built_in">Socket</span>();</span><br><span class="line">        _listen_sock.<span class="built_in">Bind</span>(_port);</span><br><span class="line">        _listen_sock.<span class="built_in">Listen</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//负责调用监听链接请求 或 接收消息</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">dispatcher</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::vector&lt;<span class="type">int</span>&gt; del_list;</span><br><span class="line">        <span class="type">int</span> size = _fd_array.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>;i&lt;size;++i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">struct</span> <span class="title class_">pollfd</span> fd = _fd_array[i];</span><br><span class="line">            <span class="keyword">if</span>(fd.fd == default_fd.fd)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(fd.fd == _listen_sock.<span class="built_in">Fd</span>() == fd.revents == POLLIN)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">acceptor</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (fd.revents == POLLIN)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;recver\n&quot;</span>);</span><br><span class="line">                <span class="built_in">recver</span>(fd,i,del_list);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = del_list.<span class="built_in">size</span>()<span class="number">-1</span>;i&gt;=<span class="number">0</span>;--i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//从后向前删</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;已删除连接fd : %d \n&quot;</span>,_fd_array[i].fd);</span><br><span class="line">            _fd_array.<span class="built_in">erase</span>(_fd_array.<span class="built_in">begin</span>() + del_list[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//负责接收所有就绪的连接请求</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">acceptor</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::string client_ip;</span><br><span class="line">        <span class="type">uint16_t</span> client_port;</span><br><span class="line">        <span class="type">int</span> sock = _listen_sock.<span class="built_in">Accept</span>(&amp;client_ip,&amp;client_port);</span><br><span class="line">        <span class="keyword">if</span>(sock &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;[Info]accept success,[%s,%d]\n&quot;</span>,client_ip.<span class="built_in">c_str</span>(),client_port);</span><br><span class="line">        </span><br><span class="line">        _fd_array[<span class="number">0</span>].revents = <span class="number">0</span>;<span class="comment">//重置状态</span></span><br><span class="line">        <span class="keyword">if</span>(_fd_array.<span class="built_in">size</span>() &lt; fd_num_max)</span><br><span class="line">        &#123;</span><br><span class="line">            _fd_array.<span class="built_in">push_back</span>(&#123;sock,POLLIN,<span class="number">0</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;[Warning] 连接数超载，已丢弃本次连接 fd :%d&quot;</span>,sock);</span><br><span class="line">            <span class="built_in">close</span>(sock);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//负责接收指定fd的信息</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">recver</span><span class="params">(<span class="keyword">struct</span> pollfd&amp; fd,<span class="type">int</span> pos,std::vector&lt;<span class="type">int</span>&gt;&amp; del_list)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">char</span> buffer[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">        <span class="type">int</span> n = <span class="built_in">read</span>(fd.fd,buffer,<span class="number">1024</span><span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(n&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            fd.revents = <span class="number">0</span>;<span class="comment">//重置状态</span></span><br><span class="line">            std::cout&lt;&lt;<span class="string">&quot;poll get msgs#&quot;</span> &lt;&lt; buffer &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//连接断开</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;[INFO] client quit,close fd : %d&quot;</span>,fd.fd);</span><br><span class="line">            <span class="built_in">close</span>(fd.fd);</span><br><span class="line">            del_list.<span class="built_in">push_back</span>(pos);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;[Warning] read error, fd: %d&quot;</span>,fd.fd);</span><br><span class="line">            <span class="built_in">close</span>(fd.fd);</span><br><span class="line">            del_list.<span class="built_in">push_back</span>(pos);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//启动函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">start</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">int</span> listenfd = _listen_sock.<span class="built_in">Fd</span>();</span><br><span class="line">        _fd_array.<span class="built_in">push_back</span>(&#123;listenfd,POLLIN,<span class="number">0</span>&#125;);</span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(;;)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//DEBUG</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; fd : _fd_array)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,fd.fd);</span><br><span class="line">            &#125;<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">            <span class="type">int</span> ret = <span class="built_in">poll</span>(_fd_array.<span class="built_in">data</span>(),_fd_array.<span class="built_in">size</span>(),<span class="number">1000</span>);</span><br><span class="line">            <span class="keyword">if</span>(ret &lt; <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//发生错误</span></span><br><span class="line">                <span class="built_in">perror</span>(<span class="string">&quot;poll&quot;</span>);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (ret == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;[INFO] poll time out %d\n&quot;</span>,cnt++);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">dispatcher</span>();</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Sock _listen_sock;</span><br><span class="line">    std::vector&lt;<span class="keyword">struct</span> pollfd&gt; _fd_array;</span><br><span class="line">    <span class="type">uint16_t</span> _port;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>main.cpp</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;PollServer.hpp&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">PollServer <span class="title">svr</span><span class="params">(<span class="number">8818</span>)</span></span>;</span><br><span class="line">    svr.<span class="built_in">init</span>();</span><br><span class="line">    svr.<span class="built_in">start</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2025/02/17/advanceIO-poll/">http://supdriver.top/2025/02/17/advanceIO-poll/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191626076.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/02/14/why-blog-1/" title="为什么写博客-540天总结"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052350188.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">为什么写博客-540天总结</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">75</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86-poll-%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">认识 poll 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.</span> <span class="toc-text">功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A"><span class="toc-number">1.1.1.</span> <span class="toc-text">参数解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number">1.1.2.</span> <span class="toc-text">返回值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poll%E5%B0%B1%E7%BB%AA%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">poll就绪条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%B0%B1%E7%BB%AA"><span class="toc-number">1.2.1.</span> <span class="toc-text">读就绪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E5%B0%B1%E7%BB%AA"><span class="toc-number">1.2.2.</span> <span class="toc-text">写就绪</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poll-%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">poll 的优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poll-%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">1.4.</span> <span class="toc-text">poll 的缺点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">代码实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">文件结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.2.</span> <span class="toc-text">框架函数设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#makefile-%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.3.</span> <span class="toc-text">makefile 实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.4.</span> <span class="toc-text">完整代码实现</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2025 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="/js/title.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
