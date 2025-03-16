@@ -1,0 +1,439 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>初阶】初识Redis与指令学习 | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="认识RedisRedis 是⼀种基于键值对（key-value）的NoSQL数据库，同时它也是一款高性能的内存数据库，与很多键值对数据库不同的是，Redis中的值可以是由string（字符串）、hash（哈希）、list（列表）、set（集合）、zset（有序集合）、Bitmaps（位图）、HyperLogLog、GEO（地理信息定位）等多种数据结构和算法组成，因此Redis可以满⾜很多的应⽤场景">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初阶】初识Redis与指令学习">
+<meta property="og:url" content="http://supdriver.top/2025/03/15/Redis/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="认识RedisRedis 是⼀种基于键值对（key-value）的NoSQL数据库，同时它也是一款高性能的内存数据库，与很多键值对数据库不同的是，Redis中的值可以是由string（字符串）、hash（哈希）、list（列表）、set（集合）、zset（有序集合）、Bitmaps（位图）、HyperLogLog、GEO（地理信息定位）等多种数据结构和算法组成，因此Redis可以满⾜很多的应⽤场景">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/79a1ae1ec4f74ee0c4f8f5468523e892.jpg">
+<meta property="article:published_time" content="2025-03-15T11:33:31.000Z">
+<meta property="article:modified_time" content="2025-03-16T03:43:42.171Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/79a1ae1ec4f74ee0c4f8f5468523e892.jpg"><link rel="shortcut icon" href="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/sup_avator.webp"><link rel="canonical" href="http://supdriver.top/2025/03/15/Redis/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '初阶】初识Redis与指令学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-16 11:43:42'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">90</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/79a1ae1ec4f74ee0c4f8f5468523e892.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">初阶】初识Redis与指令学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-15T11:33:31.000Z" title="发表于 2025-03-15 19:33:31">2025-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-16T03:43:42.171Z" title="更新于 2025-03-16 11:43:42">2025-03-16</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="初阶】初识Redis与指令学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="认识Redis"><a href="#认识Redis" class="headerlink" title="认识Redis"></a>认识Redis</h1><p><code>Redis</code> 是⼀种基于键值对（key-value）的<code>NoSQL数据库</code>，同时它也是一款<strong>高性能</strong>的<code>内存数据库</code>，与很多键值对数据库不同的是，<code>Redis</code>中的值可以是由<code>string</code>（字符串）、<code>hash</code>（哈希）、<code>list</code>（列表）、<code>set</code>（集合）、<code>zset</code>（有序集合）、<code>Bitmaps</code>（位图）、<code>HyperLogLog</code>、<code>GEO</code>（地理信息定位）等多种数据结构和算法组成，因此Redis可以满⾜很多的应⽤场景，⽽且因为Redis会将所有数据都存放再内存中，所以它的读写性能⾮常惊⼈。</p>
+<h2 id="Redis的八大特性"><a href="#Redis的八大特性" class="headerlink" title="Redis的八大特性"></a>Redis的八大特性</h2><p><code>Redis</code>有着八大令人青睐的特性<br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202503152037727.webp"></p>
+<h3 id="1-速度快"><a href="#1-速度快" class="headerlink" title="1. 速度快"></a>1. 速度快</h3><p>Redis最突出的特点就是<strong>速度快</strong>,官⽅给出的读写性能可以高达10万&#x2F;秒，而保证它能有如此之高性能的基础，主要有如下四点：</p>
+<ol>
+<li><code>基于内存</code>:相比于传统数据库基于外存上存储的数据库文件，<code>Redis</code><strong>所有的数据</strong>都是存放在<code>内存</code>中的，由于内存和外存的读写速率差异是以数量级论的，所以<code>Redis</code>相比之下速度特别快</li>
+<li><code>C语言实现</code>：C语言本身就具有高性能的特点</li>
+<li><code>单线程数据处理</code>: 单线程的处理方式避免了锁竞争造成的性能损耗</li>
+<li><code>高性能的代码实现</code></li>
+</ol>
+<h3 id="2-基于键值对的数据结构服务器"><a href="#2-基于键值对的数据结构服务器" class="headerlink" title="2. 基于键值对的数据结构服务器"></a>2. 基于键值对的数据结构服务器</h3><p>尽管<code>Redis</code>键值对中的<code>键</code>固定为<code>字符串</code>类型，<code>Redis</code>提供了更为丰富的键值对中的<code>值</code>类型，包括基础的<code>string</code>（字符串）、<code>hash</code>（哈希）、<code>list</code>（列表）、<code>set</code>（集合）、<code>zset</code>（有序集合）和更为高级的<code>Bitmaps</code>（位图）、<code>HyperLogLog</code>、<code>GEO</code>（地理信息定位）等，大大提高了<code>Redis</code>的可用范围</p>
+<h3 id="3-丰富的功能服务"><a href="#3-丰富的功能服务" class="headerlink" title="3.丰富的功能服务"></a>3.丰富的功能服务</h3><p>除了基本的数据库功能，Redis还提供了额外的功能</p>
+<ul>
+<li><code>键过期功能</code>:可以用来实现缓存</li>
+<li><code>发布订阅功能</code>:可以用来实现消息系统</li>
+<li><code>支持Lua脚本功能</code>:可以利用Lua创造出新的Redis指令</li>
+<li><code>提供简单的事务功能</code></li>
+<li><code>流水线(Pipline)功能</code>：客户端能将一批命名一次性传到Redis,通过减少网络IO次数的方式减少开销</li>
+</ul>
+<h3 id="4-简单稳定"><a href="#4-简单稳定" class="headerlink" title="4.简单稳定"></a>4.简单稳定</h3><p><code>Redis</code>的简单体现在三个方面</p>
+<ul>
+<li><code>源码代码量少</code>:即使迭代到<code>7.2.4</code>版本，它也仅有约<code>12万</code>行的代码,与其它数据库产品相比属于极致精简</li>
+<li><code>单线程模型</code>：单线程的数据处理模型使得程序结构十分简单</li>
+<li><code>操作系统依赖性小</code>：Redis不依赖操作系统中的类库</li>
+</ul>
+<p><code>简单</code>也使得<code>Redis</code>具备相当的<strong>稳定性</strong>,能够使得在大量使用的过程中，很少出现因为<code>Redis</code>自身bug导致宕机的情况</p>
+<p>2023年统计</p>
+<table>
+<thead>
+<tr>
+<th>数据库</th>
+<th>代码行数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Redis</td>
+<td>≈12万</td>
+</tr>
+<tr>
+<td>Memcached</td>
+<td>≈8.5万</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td>≈350万</td>
+</tr>
+<tr>
+<td>MongoDB</td>
+<td>≈420万</td>
+</tr>
+</tbody></table>
+<h3 id="5-客户端语言众多"><a href="#5-客户端语言众多" class="headerlink" title="5. 客户端语言众多"></a>5. 客户端语言众多</h3><p>Redis 提供了<strong>简单的TCP通信协议</strong>，很多编程语⾔可以很⽅便地接⼊到Redis，并且由于Redis受到社区和各⼤公司的⼴泛认可，所以⽀持Redis的客⼾端语⾔也⾮常多，⼏乎涵盖了主流的编程语⾔，例如C、C++、Java、PHP、Python、NodeJS等</p>
+<p>像是未来我们要使用的<code>redis-plis-plus</code>就是用于编写<code>C++</code>客户端十分好用的开源项目</p>
+<h3 id="6-持久化"><a href="#6-持久化" class="headerlink" title="6. 持久化"></a>6. 持久化</h3><p>因为内存有掉电易失性，对数据的存储来说是不安全，为此<code>Redis</code>提供了两种持久化策略<code>RDB</code>和<code>AOF</code>，它们可以将内存的数据保存到硬盘中，借此保证了数据的可持久性</p>
+<h3 id="7-主从复制"><a href="#7-主从复制" class="headerlink" title="7. 主从复制"></a>7. 主从复制</h3><p>Redis提供了复制功能，复制功能是分布式Redis的基础，它能够大大提高Redis的并发能力</p>
+<h3 id="8-高可用和分布式"><a href="#8-高可用和分布式" class="headerlink" title="8.高可用和分布式"></a>8.高可用和分布式</h3><p>Redis 提供了⾼可⽤实现的Redis哨兵（RedisSentinel），能够保证Redis结点的故障发现和故障⾃动转移。也提供了Redis集群（RedisCluster），是真正的分布式实现，提供了⾼可⽤、读写和容量的扩展性</p>
+<h2 id="Redis使用场景"><a href="#Redis使用场景" class="headerlink" title="Redis使用场景"></a>Redis使用场景</h2><p>Redis有很多茶昂见的应用</p>
+<ol>
+<li>缓存<ol>
+<li>Redis提供了键值过期时间</li>
+<li>Redis提供了最大内存控制和内存溢出后的淘汰策略</li>
+</ol>
+</li>
+<li>排行榜系统<ol>
+<li>Redis提供了列表和有序集合的数据结构</li>
+<li>Redis提供了可供复杂维度计算排行榜的功能</li>
+</ol>
+</li>
+<li>计数器应用<ol>
+<li>Redis天然支持计数功能且性能很好，可以应对高并发量访问</li>
+</ol>
+</li>
+<li>社交网络<ol>
+<li>Redis可以很好地应对社交网站的高访问量问题下对<code>赞/踩、粉丝、共同好友/喜好、推送、下拉刷新等</code>的服务提供</li>
+</ol>
+</li>
+<li>消息队列系统<ol>
+<li>消息队列系统可以说是⼀个⼤型⽹站的必备基础组件，因为其具有业务解耦、⾮实时业务削峰等特性。Redis提供了发布订阅功能和阻塞队列的功能，虽然和专业的消息队列⽐还不够⾜够强⼤，但是对于⼀般的消息队列功能基本可以满⾜</li>
+</ol>
+</li>
+</ol>
+<h2 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h2><h3 id="Ubuntu安装"><a href="#Ubuntu安装" class="headerlink" title="Ubuntu安装"></a>Ubuntu安装</h3><p>使用apt源安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装Redis核心服务</span></span><br><span class="line">sudo apt install redis-server -y</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">让Redis开机自启</span></span><br><span class="line">sudo systemctl enable redis-server</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查服务状态</span></span><br><span class="line">sudo systemctl status redis-server</span><br></pre></td></tr></table></figure>
+<h3 id="镜像安装"><a href="#镜像安装" class="headerlink" title="镜像安装"></a>镜像安装</h3><p>这里对在宿主机上的<code>Redis</code>安装不作重点介绍，仅作为客户端的安装，对于服务端的安装，则是使用更易于搭建集群的从<code>docker平台</code>的<code>Redis</code>镜像启动容器，我们通过连接容器来使用<code>Redis</code>服务</p>
+<h2 id="Redis重要文件及作用"><a href="#Redis重要文件及作用" class="headerlink" title="Redis重要文件及作用"></a>Redis重要文件及作用</h2><p>相关的命令&#x2F;脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/redis-benchmark</span><br><span class="line"> /usr/bin/redis-check-aof -&gt; /usr/bin/redis-server</span><br><span class="line"> /usr/bin/redis-check-rdb -&gt; /usr/bin/redis-server</span><br><span class="line"> /usr/bin/redis-cli</span><br><span class="line"> /usr/bin/redis-sentinel -&gt; /usr/bin/redis-server</span><br><span class="line"> /usr/bin/redis-server</span><br><span class="line"> /usr/libexec/redis-shutdown</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>redis-server</code> 是 Redis 服务器程序，其余的⼏个例如：redis-check-aof、redis-check-rdb、redissentinel 也都是redis-server 的软链接。<ul>
+<li><code>redis-check-aof</code>是修复AOF⽂件⽤的⼯具，</li>
+<li><code>redis-check-rdb</code> 是修复RDB⽂件的⼯具，redis-sentinel是Redis哨兵程序</li>
+</ul>
+</li>
+<li><code>redis-cli</code> 是在我们学习阶段需要频繁⽤到的⼀个命令⾏客⼾端程序</li>
+<li><code>redis-benchmark</code> ⽤于对Redis做性能基准测试的⼯具。</li>
+<li><code>redis-shutdown</code> 是⽤于停⽌Redis的专⽤脚本</li>
+</ul>
+<p><strong>配置文件</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/etc/redis-sentinel.conf</span><br><span class="line">/etc/redis.conf</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>/etc/redis.conf</code> 是 Redis 服务器的配置⽂件。</li>
+<li><code>/etc/redis-sentinel.conf</code>是RedisSentinel的配置⽂件。</li>
+</ul>
+<p><em>RedisSentinel</em>用于主从切换,替换出故障的主节点</p>
+<p><strong>持久化文件存储目录</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/redis/</span><br></pre></td></tr></table></figure>
+<p><code>Redis</code> 持久化⽣产的RDB和AOF⽂件都默认⽣成于该⽬录下。在容器构建中可以对此目录创建创建存储卷</p>
+<p><strong>日志文件目录</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/log/redis/</span><br></pre></td></tr></table></figure>
+<p> &#x2F;var&#x2F;log&#x2F;redis&#x2F; ⽬录下会保存Redis运⾏期间⽣产的⽇志⽂件，默认按照天进⾏分割，并且会将⼀定⽇期的⽇⼦⽂件使⽤gzip格式压缩保存。可以使⽤任意⽂本编辑器打开</p>
+<h1 id="Redis服务端"><a href="#Redis服务端" class="headerlink" title="Redis服务端"></a>Redis服务端</h1><h2 id="高效的单线程模型"><a href="#高效的单线程模型" class="headerlink" title="高效的单线程模型"></a>高效的单线程模型</h2><p>虽然作为C&#x2F;S架构，一个<code>Redis</code>服务端能似乎能”同时”和多个客户端交互，实际上服务端仍然是<strong>单线程串行执行</strong>所有事务的。但是就这么一个单线程的串行是怎么做到每秒万级别的处理能力呢？其原因主要有三点</p>
+<ol>
+<li><code>纯内存访问</code>:内存的响应时长大约为100纳秒，这是Redis达到每秒万级别访问的重要基础</li>
+<li><code>非阻塞IO</code>:Redis有着高效的网络IO机制，Redis使⽤epoll作为I&#x2F;O多路复⽤技术的实现，再加上Redis⾃⾝的事件处理模型将epoll中的连接、读写、关闭都转换为事件，不在⽹络I&#x2F;O上浪费过多的时间。<a target="_blank" rel="noopener" href="https://www.supdriver.top/2025/02/19/advanceIO-epoll/">戳我去epoll的介绍博客🔗</a></li>
+<li>单线程避免了线程切换和锁竞争产生的消耗</li>
+</ol>
+<h2 id="数据结构和内部编码"><a href="#数据结构和内部编码" class="headerlink" title="数据结构和内部编码"></a>数据结构和内部编码</h2><p>type 命令实际返回的就是当前键的数据结构类型，它们分别是：string（字符串）、list（列表）、hash（哈希）、set（集合）、zset（有序集合）,但这些只是Redis<strong>对外的数据结构</strong>。</p>
+<p>但若深入底层实现，实际上Redis针对每种数据结构都有⾃⼰的<strong>底层内部编码实现</strong>，⽽且是多种实现，这样Redis会在合适的场景选择合适的内部编码。</p>
+<table>
+<tr>
+  <td rowspan="2">左列单行</td>
+  <td>右列第一行</td>
+</tr>
+<tr>
+  <td>右列第二行</td>
+</tr>
+</table>
+
+<h1 id="Redis命令行客户端"><a href="#Redis命令行客户端" class="headerlink" title="Redis命令行客户端"></a>Redis命令行客户端</h1><p>在安装Redis时，它自带安装了一个<code>命令行客户端工具</code>，<code>Redis</code>是一个典型的<code>C/S</code>架构的应用服务，因此只要能对接<code>redis-server</code>的网络API，都能作为Redis的客户端。<code>redis-cli</code>就是官方提供的命令行工具。它有两种交互方式</p>
+<ol>
+<li>前台交互方式：这是一种类似通过<code>mysql -u</code>指令连接<code>MySQL</code>的连接方式，指令格式是<code>redis-cli -h &#123;host&#125; -p &#123;port&#125;</code>，连接成功后便可以持续地使用<code>Redis指令</code>一直交互</li>
+<li>命令方式:这就是第一种方式在后面加上要运行的<code>Redis指令</code>,<code>redis-cli -h &#123;host&#125; -p &#123;port&#125; &#123;command&#125;</code>可以直接得到命令的返回结果，而不会进入交互模式</li>
+</ol>
+<p><strong>注</strong>，使用默认端口<code>6379</code>时，可以省略端口号，使用默认本地环回ip <code>127.0.0.1</code>时，可以省略主机地址</p>
+<h2 id="基本全局命令"><a href="#基本全局命令" class="headerlink" title="基本全局命令"></a>基本全局命令</h2><h3 id="FLUSHALL"><a href="#FLUSHALL" class="headerlink" title="FLUSHALL"></a>FLUSHALL</h3><p>虽然是介绍的第一个指令，但是<strong>慎用！慎用！慎用！</strong>，它会清除掉Redis内的所有键值对</p>
+<h3 id="KEYS"><a href="#KEYS" class="headerlink" title="KEYS"></a>KEYS</h3><p>返回所有匹配格式串的<code>key</code>，它使用的匹配模式类似<code>正则表达式</code>，但是更为简单</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>Redis模式</th>
+<th>正则表达式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>任意字符</td>
+<td><code>*</code></td>
+<td><code>.*</code></td>
+</tr>
+<tr>
+<td>单个字符</td>
+<td><code>?</code></td>
+<td><code>.</code></td>
+</tr>
+<tr>
+<td>字符集合</td>
+<td><code>[aeiou]</code></td>
+<td><code>[aeiou]</code></td>
+</tr>
+<tr>
+<td>范围匹配</td>
+<td><code>[a-z]</code></td>
+<td><code>[a-z]</code></td>
+</tr>
+<tr>
+<td>反向匹配</td>
+<td><code>[^abc]</code></td>
+<td><code>[^abc]</code></td>
+</tr>
+<tr>
+<td>精确匹配</td>
+<td><code>\*</code> (转义星号)</td>
+<td><code>\*</code></td>
+</tr>
+<tr>
+<td>分组匹配</td>
+<td>❌ 不支持</td>
+<td><code>(ab|cd)</code></td>
+</tr>
+<tr>
+<td>量词</td>
+<td>❌ 不支持</td>
+<td><code>&#123;n,m&#125;</code> <code>+</code> <code>?</code></td>
+</tr>
+</tbody></table>
+<p>时间复杂度:O(N),需要遍历所有的KEY</p>
+<p><strong>注</strong>:因为其较高的时间复杂度，慎用<code>keys *</code>,因为Redis是单线程模型，过大的任务量会阻塞Redis服务</p>
+<h3 id="EXISTS"><a href="#EXISTS" class="headerlink" title="EXISTS"></a>EXISTS</h3><p>判断某个或某几个key是否存在</p>
+<ul>
+<li>时间复杂度:O(1)</li>
+<li>返回值: key存在的个数<br>示例:<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; SET key1 &quot;hi&quot;</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; EXISTS noSuchKey</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; EXISTS key1</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; SET key2 &quot;hh&quot;</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; EXISTS key1 key2 noSuchKey</span><br><span class="line">(integer) 2</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="DEL"><a href="#DEL" class="headerlink" title="DEL"></a>DEL</h3><p>删除指定的key ,（可以是多个</p>
+<ul>
+<li>时间复杂度:O(1)</li>
+<li>返回值:删除key的个数</li>
+</ul>
+<h3 id="EXPIRE"><a href="#EXPIRE" class="headerlink" title="EXPIRE"></a>EXPIRE</h3><p>为已存在的指定key设置秒级过期时间,<em>注：毫秒级的可以用PEXPIRE</em></p>
+<ul>
+<li>时间复杂度:O(1)</li>
+<li>返回值：成功设置key的数量</li>
+</ul>
+<p>且重复设置会按从<strong>最后一条</strong><code>EXPIRE</code>指令开始，<strong>按最后一条</strong>设置的时间计时</p>
+<h3 id="TTL"><a href="#TTL" class="headerlink" title="TTL"></a>TTL</h3><p>获取指定key的当前过期时间（秒级），<em>毫秒级可以用PTTL</em></p>
+<ul>
+<li>返回值：剩余时间，若key不存在，则返回<code>-2</code></li>
+</ul>
+<p><em>键的过期机制</em><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202503161110830.webp"></p>
+<p><em>EXPIRE和TTL的使用示例</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; SET key1 111</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; EXPIRE key1 100</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; TTL key1</span><br><span class="line">(integer) 96</span><br><span class="line">127.0.0.1:6379&gt; TTL key1</span><br><span class="line">(integer) 93</span><br><span class="line">127.0.0.1:6379&gt; EXPIRE key1 100</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; TTL key1</span><br><span class="line">(integer) 97</span><br></pre></td></tr></table></figure>
+
+<h3 id="TYPE"><a href="#TYPE" class="headerlink" title="TYPE"></a>TYPE</h3><p>返回key对应的数据类型</p>
+<ul>
+<li>时间复杂度: O(1)</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2025/03/15/Redis/">http://supdriver.top/2025/03/15/Redis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/79a1ae1ec4f74ee0c4f8f5468523e892.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/03/15/redis-pp/" title="Redis-Plus-Plus库使用探究"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191623428.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Redis-Plus-Plus库使用探究</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">90</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86Redis"><span class="toc-number">1.</span> <span class="toc-text">认识Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E7%9A%84%E5%85%AB%E5%A4%A7%E7%89%B9%E6%80%A7"><span class="toc-number">1.1.</span> <span class="toc-text">Redis的八大特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%80%9F%E5%BA%A6%E5%BF%AB"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 速度快</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E9%94%AE%E5%80%BC%E5%AF%B9%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 基于键值对的数据结构服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%B0%E5%AF%8C%E7%9A%84%E5%8A%9F%E8%83%BD%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.丰富的功能服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%AE%80%E5%8D%95%E7%A8%B3%E5%AE%9A"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.简单稳定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%AD%E8%A8%80%E4%BC%97%E5%A4%9A"><span class="toc-number">1.1.5.</span> <span class="toc-text">5. 客户端语言众多</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">1.1.6.</span> <span class="toc-text">6. 持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-number">1.1.7.</span> <span class="toc-text">7. 主从复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%92%8C%E5%88%86%E5%B8%83%E5%BC%8F"><span class="toc-number">1.1.8.</span> <span class="toc-text">8.高可用和分布式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.</span> <span class="toc-text">Redis使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Redis"><span class="toc-number">1.3.</span> <span class="toc-text">安装Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ubuntu%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.1.</span> <span class="toc-text">Ubuntu安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.2.</span> <span class="toc-text">镜像安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E9%87%8D%E8%A6%81%E6%96%87%E4%BB%B6%E5%8F%8A%E4%BD%9C%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">Redis重要文件及作用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-number">2.</span> <span class="toc-text">Redis服务端</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E6%95%88%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">高效的单线程模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81"><span class="toc-number">2.2.</span> <span class="toc-text">数据结构和内部编码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">3.</span> <span class="toc-text">Redis命令行客户端</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%85%A8%E5%B1%80%E5%91%BD%E4%BB%A4"><span class="toc-number">3.1.</span> <span class="toc-text">基本全局命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#FLUSHALL"><span class="toc-number">3.1.1.</span> <span class="toc-text">FLUSHALL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KEYS"><span class="toc-number">3.1.2.</span> <span class="toc-text">KEYS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EXISTS"><span class="toc-number">3.1.3.</span> <span class="toc-text">EXISTS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DEL"><span class="toc-number">3.1.4.</span> <span class="toc-text">DEL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EXPIRE"><span class="toc-number">3.1.5.</span> <span class="toc-text">EXPIRE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TTL"><span class="toc-number">3.1.6.</span> <span class="toc-text">TTL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TYPE"><span class="toc-number">3.1.7.</span> <span class="toc-text">TYPE</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2025 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="/js/title.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
