@@ -1,0 +1,251 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Rust自学一周初印象 | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="经过一周对Rust语言圣经的学习和第三方包的使用体验，我成功从纯Rust小白成为了Rust爱好者,已经有了能进行网络编程和数据库交互的基本能力。 概括一下Rust的特点 超高效的运行时效率 大聪明编译器 干费我2核2G服务器的rust analyzer 安全，安全，还是安全！ 特征，特征对象,超牛的泛型编程方式  又见堆栈我原本是以C&#x2F;C++为主语言的，在使用Python或Java这种有GC垃圾回">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust自学一周初印象">
+<meta property="og:url" content="http://supdriver.top/2025/03/31/rust-week1/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="经过一周对Rust语言圣经的学习和第三方包的使用体验，我成功从纯Rust小白成为了Rust爱好者,已经有了能进行网络编程和数据库交互的基本能力。 概括一下Rust的特点 超高效的运行时效率 大聪明编译器 干费我2核2G服务器的rust analyzer 安全，安全，还是安全！ 特征，特征对象,超牛的泛型编程方式  又见堆栈我原本是以C&#x2F;C++为主语言的，在使用Python或Java这种有GC垃圾回">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052352864.jpg">
+<meta property="article:published_time" content="2025-03-31T05:56:54.000Z">
+<meta property="article:modified_time" content="2025-03-31T06:47:31.395Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052352864.jpg"><link rel="shortcut icon" href="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/sup_avator.webp"><link rel="canonical" href="http://supdriver.top/2025/03/31/rust-week1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Rust自学一周初印象',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-31 14:47:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052352864.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Rust自学一周初印象</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-31T05:56:54.000Z" title="发表于 2025-03-31 13:56:54">2025-03-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-31T06:47:31.395Z" title="更新于 2025-03-31 14:47:31">2025-03-31</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">980</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Rust自学一周初印象"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>经过一周对<a target="_blank" rel="noopener" href="https://course.rs/about-book.html">Rust语言圣经</a>的学习和第三方包的使用体验，我成功从纯<code>Rust小白</code>成为了<code>Rust爱好者</code>,已经有了能进行网络编程和数据库交互的基本能力。</p>
+<h1 id="概括一下Rust的特点"><a href="#概括一下Rust的特点" class="headerlink" title="概括一下Rust的特点"></a>概括一下Rust的特点</h1><ul>
+<li>超高效的运行时效率</li>
+<li>大聪明编译器</li>
+<li>干费我2核2G服务器的rust analyzer</li>
+<li>安全，安全，还是安全！</li>
+<li>特征，特征对象,超牛的泛型编程方式</li>
+</ul>
+<h1 id="又见堆栈"><a href="#又见堆栈" class="headerlink" title="又见堆栈"></a>又见堆栈</h1><p>我原本是以<code>C/C++</code>为主语言的，在使用<code>Python</code>或<code>Java</code>这种有<code>GC垃圾回收机制</code>的语言时，对堆栈并不强调，没想到遇上<code>Rust</code>，堆栈的概念再一次被强调了起来，但与<code>C/C++</code>这种对堆栈，尤其是堆区的分配的过于自由的管理相比，<code>Rust</code>对堆栈的管理十分严格，且涉及到<code>Rust</code>是如何在没有<code>GC</code>机制的前提下，既能高效使用内存，又能保证安全。</p>
+<h2 id="所有权与借用"><a href="#所有权与借用" class="headerlink" title="所有权与借用"></a>所有权与借用</h2><p>对于变量的数据，它有一个所有权规则，没错，变量和数据之间的联系更为松散，<strong>存在通过所有权转移导致数据还在，但变量已经失效的情况</strong></p>
+<p>以上是一点，而还有一点就是当变量拥有分配在堆上的数据的所有权时，变量一旦带着所有权被释放时，堆上的数据会一并被自动回收，这样就不用担心内存泄漏的问题了，也不用手动释放内存。</p>
+<p><strong>不想转移所有权?</strong>,那就试试使用<code>克隆clone</code>吧，这样就会额外在堆上创建新的数据，把新数据的所有权转移给变量</p>
+<p><strong>只想访问而不想要所有权？</strong>，那就试试<code>借用&amp;</code>吧,借用变量本质是一个指针，它没有被借用变量的所有权，它的释放不会导致数据的释放。不过由于只读和可读写不能存在安全问题，所以编译器对各种借用的数量和生命周期管理有严格要求</p>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><code>Rust</code>对生命周期有着严格的管理，防止各种<code>借用</code>有权限访问到已经被释放的资源（这是非常不安全的！），尽管编译器很聪明，绝大部分生命周期它都能自动推导出来，但是当出现复杂的，多样的情况时，还是需要程序员手动标注<strong>生命周期约束</strong>。</p>
+<h2 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配"></a>模式匹配</h2><p><code>match</code>很好理解，主要是<code>if let</code>需要特别关注一下，它只匹配某一种模式条件，因此有很多巧用，但是可能一时又想不起来<code>if let</code>怎么用的</p>
+<p>类型&#x2F;枚举匹配可以用<code>matches!</code>宏</p>
+<h1 id="泛型编程和特征"><a href="#泛型编程和特征" class="headerlink" title="泛型编程和特征"></a>泛型编程和特征</h1><h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><p>与许多其它语言一样，rust提供了函数模板和结构体模板，好吧，还有枚举模板</p>
+<h2 id="const泛型"><a href="#const泛型" class="headerlink" title="const泛型"></a>const泛型</h2><p>特别的，针对那些因为值不同而导致的类型不同的一类类型（比如列表类型<code>[i32,T]</code>），我们使用const泛型编程把它们统一起来,例子如下</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">func</span>&lt;T:std::fmt::<span class="built_in">Debug</span>,<span class="keyword">const</span> N:<span class="type">usize</span>&gt;(arr:[T])</span><br></pre></td></tr></table></figure>
+
+<p><em>const fn常量函数</em></p>
+<p>emm,它们只是长得像,不属于泛型编程，但是这个函数非常好用，既能简化代码，又没有运行时损耗，因为函数的求值都在编译阶段完成！</p>
+<h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><p>特征规定了一系列必须实现的方法，它有很好的<strong>约束作用</strong></p>
+<h2 id="特征约束"><a href="#特征约束" class="headerlink" title="特征约束"></a>特征约束</h2><p>有了特征约束，我们就能约束模板参数中的类型必须实现了什么方法才是合法的，这样我们就能放心地在函数中调用方法了。</p>
+<h2 id="特征对象"><a href="#特征对象" class="headerlink" title="特征对象"></a>特征对象</h2><p>让函数的传参只需满足特征即可，而对具体类型没有要求</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2025/03/31/rust-week1/">http://supdriver.top/2025/03/31/rust-week1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052352864.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/03/29/rust-axum-seaorm/" title="Rust框架入门之Axum+Sea-ORM实现MySQL增删查改"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052348139.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Rust框架入门之Axum+Sea-ORM实现MySQL增删查改</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E6%8B%AC%E4%B8%80%E4%B8%8BRust%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">概括一下Rust的特点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%88%E8%A7%81%E5%A0%86%E6%A0%88"><span class="toc-number">2.</span> <span class="toc-text">又见堆栈</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E6%9D%83%E4%B8%8E%E5%80%9F%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text">所有权与借用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.2.</span> <span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="toc-number">2.3.</span> <span class="toc-text">模式匹配</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B%E5%92%8C%E7%89%B9%E5%BE%81"><span class="toc-number">3.</span> <span class="toc-text">泛型编程和特征</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF"><span class="toc-number">3.1.</span> <span class="toc-text">模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#const%E6%B3%9B%E5%9E%8B"><span class="toc-number">3.2.</span> <span class="toc-text">const泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81"><span class="toc-number">3.3.</span> <span class="toc-text">特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E7%BA%A6%E6%9D%9F"><span class="toc-number">3.4.</span> <span class="toc-text">特征约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.5.</span> <span class="toc-text">特征对象</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2025 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="/js/title.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
