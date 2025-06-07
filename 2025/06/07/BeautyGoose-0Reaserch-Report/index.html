@@ -1,0 +1,358 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>美鹅外卖项目文档【0】《需求调研报告》 | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="《需求调研报告》项目名称： 美鹅外卖平台系统 编写人： 沈冬法 日期： 2025年6月3日 版本号： V2.7  一、调研背景与目的近年来，线上外卖行业迅猛发展，用户对送餐效率、食品安全及平台服务的要求不断提升。然而，当前主流外卖平台普遍存在高额抽成、商家信用体系不完善及食品安全问题频发等痛点。大学周边区域外卖需求旺盛，同时校内拥有机房、信息网络中心等丰富的算力与网络资源。基于此背景，构建一个专注">
+<meta property="og:type" content="article">
+<meta property="og:title" content="美鹅外卖项目文档【0】《需求调研报告》">
+<meta property="og:url" content="http://supdriver.top/2025/06/07/BeautyGoose-0Reaserch-Report/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="《需求调研报告》项目名称： 美鹅外卖平台系统 编写人： 沈冬法 日期： 2025年6月3日 版本号： V2.7  一、调研背景与目的近年来，线上外卖行业迅猛发展，用户对送餐效率、食品安全及平台服务的要求不断提升。然而，当前主流外卖平台普遍存在高额抽成、商家信用体系不完善及食品安全问题频发等痛点。大学周边区域外卖需求旺盛，同时校内拥有机房、信息网络中心等丰富的算力与网络资源。基于此背景，构建一个专注">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/dc256d103a76a7e611093c6040f196ad.jpg">
+<meta property="article:published_time" content="2025-06-07T01:45:28.000Z">
+<meta property="article:modified_time" content="2025-06-07T02:26:36.196Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/dc256d103a76a7e611093c6040f196ad.jpg"><link rel="shortcut icon" href="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/sup_avator.webp"><link rel="canonical" href="http://supdriver.top/2025/06/07/BeautyGoose-0Reaserch-Report/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '美鹅外卖项目文档【0】《需求调研报告》',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-06-07 10:26:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/dc256d103a76a7e611093c6040f196ad.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">美鹅外卖项目文档【0】《需求调研报告》</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-06-07T01:45:28.000Z" title="发表于 2025-06-07 09:45:28">2025-06-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-06-07T02:26:36.196Z" title="更新于 2025-06-07 10:26:36">2025-06-07</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="美鹅外卖项目文档【0】《需求调研报告》"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="《需求调研报告》"><a href="#《需求调研报告》" class="headerlink" title="《需求调研报告》"></a>《需求调研报告》</h2><p><strong>项目名称：</strong> 美鹅外卖平台系统</p>
+<p><strong>编写人：</strong> 沈冬法</p>
+<p><strong>日期：</strong> 2025年6月3日</p>
+<p><strong>版本号：</strong> V2.7</p>
+<hr>
+<h3 id="一、调研背景与目的"><a href="#一、调研背景与目的" class="headerlink" title="一、调研背景与目的"></a>一、调研背景与目的</h3><p>近年来，线上外卖行业迅猛发展，用户对送餐效率、食品安全及平台服务的要求不断提升。然而，当前主流外卖平台普遍存在高额抽成、商家信用体系不完善及食品安全问题频发等痛点。大学周边区域外卖需求旺盛，同时校内拥有机房、信息网络中心等丰富的算力与网络资源。基于此背景，构建一个专注于大学校园的地域性外卖平台，兼具显著的商业价值与社会价值。</p>
+<p><strong>本次调研目的</strong>：</p>
+<ul>
+<li>明确用户端、商户端、平台端的核心业务需求</li>
+<li>识别外卖服务过程中的主要痛点</li>
+<li>提供可支持系统分析与架构设计的第一手资料</li>
+</ul>
+<hr>
+<h3 id="二、调研方法"><a href="#二、调研方法" class="headerlink" title="二、调研方法"></a>二、调研方法</h3><p><em>个人开发精力和资源有限，部分调研方法仅供参考</em></p>
+<ul>
+<li><del>用户访谈（共计12人，包括学生、白领与自由职业者）</del></li>
+<li><del>问卷调查（线上问卷，收集有效数据210份）</del></li>
+<li>竞品分析（美团外卖、饿了么）</li>
+<li>行业报告研读（艾媒咨询、国家市场监管总局等）</li>
+</ul>
+<hr>
+<h3 id="三、调研对象与样本概况"><a href="#三、调研对象与样本概况" class="headerlink" title="三、调研对象与样本概况"></a>三、调研对象与样本概况</h3><p><em>虚假数据，仅供参考</em></p>
+<table>
+<thead>
+<tr>
+<th>对象类型</th>
+<th>数量</th>
+<th>占比</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><del>普通用户</del></td>
+<td><del>150</del></td>
+<td>71%</td>
+</tr>
+<tr>
+<td><del>商户</del></td>
+<td><del>40</del></td>
+<td>19%</td>
+</tr>
+<tr>
+<td><del>骑手</del></td>
+<td><del>10</del></td>
+<td>5%</td>
+</tr>
+<tr>
+<td><del>平台人员</del></td>
+<td><del>10</del></td>
+<td>5%</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="四、调研内容与发现"><a href="#四、调研内容与发现" class="headerlink" title="四、调研内容与发现"></a>四、调研内容与发现</h3><h4 id="4-1-用户行为分析"><a href="#4-1-用户行为分析" class="headerlink" title="4.1 用户行为分析"></a>4.1 用户行为分析</h4><p><strong>大学生外卖市场需求状况调查数据可视化报告</strong><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1493445">引用自此文</a></p>
+<p>因为现在网上订餐的推广范围很广，所以几乎人人都在网上订餐，数据显示，超过40%的用户使用外卖（APP饿了么、美团），随着互联网的普及，网上订餐外卖已经成为消费者的一种用餐习惯。</p>
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202506031403208.png"></p>
+<p>大多数学生选择叫外卖（83%），但叫外卖的频率不高，一般一周两到三次。大多数学生每周叫外卖2.2次，根据现在大学生的平均消费水平，这个频率基本合理。我们还可以看到，外卖还远远没有成为消费者就餐的主要方式，他们仍然主要采用传统的就餐方式。但是，有5%的消费者每周叫外卖的次数超过10次，所以外卖市场相当广阔。</p>
+<h4 id="4-2-商户需求分析"><a href="#4-2-商户需求分析" class="headerlink" title="4.2 商户需求分析"></a>4.2 商户需求分析</h4><ul>
+<li>抽成比例高（部分商户反映高达25%）</li>
+<li>缺乏自动化营销工具</li>
+<li>对订单管理系统与客户评价管理有明确改进需求</li>
+</ul>
+<p><strong>外卖行业竞争加剧 高抽成盈利模式面临挑战</strong></p>
+<p>随着市场竞争加剧，监管随之而来。近日，国家市场监管总局发布《网络交易平台收费行为合规指南（征求意见稿）》，重点聚焦整治高佣金、高收费的平台型企业，征求意见稿明确了8种不合理收费行为，重点整治“抽成”“信息服务费”等多种词汇，该指南主要在外卖行业使用。《指南》明确了重复收费、只收费不服务、转嫁应由平台自身承担的费用等8种不合理收费行为。</p>
+<p>不容忽视的是，长期以来，外卖平台通过拆分“信息服务费”“技术服务费”等名目，使得商家实际承担的综合费率高达20%-25%。一旦新规落地，现有盈利模式将面临重构压力。当“高佣金护城河”遭遇监管利剑，外卖平台能否在效率提升与商户关系重构间找到新平衡点，或将成为决定这场混战走向的关键</p>
+<h4 id="4-3-骑手反馈"><a href="#4-3-骑手反馈" class="headerlink" title="4.3 骑手反馈"></a>4.3 骑手反馈</h4><ul>
+<li>系统调度不均衡：高峰期订单堆积，平时订单稀少</li>
+<li>惩罚机制不透明（如超时扣款）</li>
+<li>希望增加收入明细透明度与地图导航优化</li>
+</ul>
+<h4 id="4-4-平台运营需求"><a href="#4-4-平台运营需求" class="headerlink" title="4.4 平台运营需求"></a>4.4 平台运营需求</h4><ul>
+<li>实时订单监控</li>
+<li>地域分布分析与商户活跃度统计</li>
+<li>商户评级系统管理、违规监控</li>
+</ul>
+<h4 id="4-5-竞品分析（摘要）"><a href="#4-5-竞品分析（摘要）" class="headerlink" title="4.5 竞品分析（摘要）"></a>4.5 竞品分析（摘要）</h4><table>
+<thead>
+<tr>
+<th>平台</th>
+<th>技术功能</th>
+<th>收费模式</th>
+<th>用户体验</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>美团外卖</td>
+<td>推荐系统、智能调度</td>
+<td>实际综合抽成：约25%-30%</td>
+<td>界面简洁、下单流程顺畅</td>
+</tr>
+<tr>
+<td>饿了么</td>
+<td>蓝骑士配送+商家联盟</td>
+<td>实际抽成约25%</td>
+<td>用户活跃度高，骑手反馈好</td>
+</tr>
+<tr>
+<td>京东外卖</td>
+<td>以“0佣金”切入市场</td>
+<td>固定3元&#x2F;单</td>
+<td>用户活跃度高</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="五、核心需求总结"><a href="#五、核心需求总结" class="headerlink" title="五、核心需求总结"></a>五、核心需求总结</h3><h4 id="5-1-用户端"><a href="#5-1-用户端" class="headerlink" title="5.1 用户端"></a>5.1 用户端</h4><ul>
+<li>简洁高效的下单流程</li>
+<li>实时配送状态跟踪</li>
+<li>优惠券、满减等促销机制支持</li>
+<li>支付系统与订单取消机制稳定</li>
+</ul>
+<h4 id="5-2-商户端"><a href="#5-2-商户端" class="headerlink" title="5.2 商户端"></a>5.2 商户端</h4><ul>
+<li>高效的订单管理后台</li>
+<li>订单状态推送机制</li>
+<li>可自定义的折扣活动功能</li>
+<li>数据看板（营收、订单量、客户评价等）</li>
+</ul>
+<h4 id="5-3-平台端"><a href="#5-3-平台端" class="headerlink" title="5.3 平台端"></a>5.3 平台端</h4><ul>
+<li>多维度数据统计（商户、用户、订单）</li>
+<li>用户行为分析（复购率、峰值分布等）</li>
+<li>商户资质审核、费率配置后台</li>
+<li>运维监控和异常预警功能</li>
+</ul>
+<hr>
+<h3 id="六、建议与后续行动"><a href="#六、建议与后续行动" class="headerlink" title="六、建议与后续行动"></a>六、建议与后续行动</h3><ul>
+<li>开发初期重点聚焦 <strong>用户下单流程</strong> 与 <strong>商户订单管理模块</strong></li>
+<li>持续关注国家政策对平台抽成的合规要求</li>
+</ul>
+<hr>
+<h3 id="七、附录"><a href="#七、附录" class="headerlink" title="七、附录"></a>七、附录</h3><h4 id="附录A：参考资料"><a href="#附录A：参考资料" class="headerlink" title="附录A：参考资料"></a>附录A：参考资料</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://report.iimedia.cn/report.jsp?reportId=46638">2024年外卖平台行业分析报告 - 艾媒咨询</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.thepaper.cn/newsDetail_forward_7103236">外卖平台高抽成调查 - 澎湃新闻</a></li>
+</ul>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2025/06/07/BeautyGoose-0Reaserch-Report/">http://supdriver.top/2025/06/07/BeautyGoose-0Reaserch-Report/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/dc256d103a76a7e611093c6040f196ad.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/06/03/BeautyGoose-Server2-7/" title="v2.7美鹅外卖平台项目规范更新"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/c82e6022b30725d0d994fef978ec2948.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">v2.7美鹅外卖平台项目规范更新</div></div></a></div><div class="next-post pull-right"><a href="/2025/06/07/BeautyGoose-1SRS/" title="美鹅外卖项目文档【1】《软件需求规格说明书》"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/557c4311ef41166b23b848cd9cc4ea79.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">美鹅外卖项目文档【1】《软件需求规格说明书》</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8A%E9%9C%80%E6%B1%82%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A%E3%80%8B"><span class="toc-number">1.</span> <span class="toc-text">《需求调研报告》</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%B0%83%E7%A0%94%E8%83%8C%E6%99%AF%E4%B8%8E%E7%9B%AE%E7%9A%84"><span class="toc-number">1.1.</span> <span class="toc-text">一、调研背景与目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%B0%83%E7%A0%94%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">二、调研方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%B0%83%E7%A0%94%E5%AF%B9%E8%B1%A1%E4%B8%8E%E6%A0%B7%E6%9C%AC%E6%A6%82%E5%86%B5"><span class="toc-number">1.3.</span> <span class="toc-text">三、调研对象与样本概况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%B0%83%E7%A0%94%E5%86%85%E5%AE%B9%E4%B8%8E%E5%8F%91%E7%8E%B0"><span class="toc-number">1.4.</span> <span class="toc-text">四、调研内容与发现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E5%88%86%E6%9E%90"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 用户行为分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E5%95%86%E6%88%B7%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 商户需求分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-%E9%AA%91%E6%89%8B%E5%8F%8D%E9%A6%88"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 骑手反馈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%90%A5%E9%9C%80%E6%B1%82"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 平台运营需求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-%E7%AB%9E%E5%93%81%E5%88%86%E6%9E%90%EF%BC%88%E6%91%98%E8%A6%81%EF%BC%89"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 竞品分析（摘要）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%A0%B8%E5%BF%83%E9%9C%80%E6%B1%82%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">五、核心需求总结</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-%E7%94%A8%E6%88%B7%E7%AB%AF"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 用户端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-%E5%95%86%E6%88%B7%E7%AB%AF"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 商户端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-%E5%B9%B3%E5%8F%B0%E7%AB%AF"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 平台端</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%BB%BA%E8%AE%AE%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%A1%8C%E5%8A%A8"><span class="toc-number">1.6.</span> <span class="toc-text">六、建议与后续行动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%99%84%E5%BD%95"><span class="toc-number">1.7.</span> <span class="toc-text">七、附录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%84%E5%BD%95A%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.7.1.</span> <span class="toc-text">附录A：参考资料</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2025 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="/js/title.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
