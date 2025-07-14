@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>什么是领域驱动设计（DDD） | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="软件设计不止UML在软件开发的世界中，设计方法论层出不穷。从早期的结构化设计到面向对象设计，再到如今备受关注的领域驱动设计（Domain-Driven Design，DDD），每一种方法都在试图解决软件复杂性不断增长的问题。虽然UML作为统一建模语言在软件设计中发挥了重要作用，但它并不是唯一的解决方案。 UML简介统一建模语言（Unified Modeling Language，UML）是一种标准">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是领域驱动设计（DDD）">
+<meta property="og:url" content="http://supdriver.top/2025/07/14/whatsDDD/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="软件设计不止UML在软件开发的世界中，设计方法论层出不穷。从早期的结构化设计到面向对象设计，再到如今备受关注的领域驱动设计（Domain-Driven Design，DDD），每一种方法都在试图解决软件复杂性不断增长的问题。虽然UML作为统一建模语言在软件设计中发挥了重要作用，但它并不是唯一的解决方案。 UML简介统一建模语言（Unified Modeling Language，UML）是一种标准">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191624174.jpg">
+<meta property="article:published_time" content="2025-07-14T13:58:11.000Z">
+<meta property="article:modified_time" content="2025-07-14T14:21:30.597Z">
+<meta property="article:author" content="副驾supdriver">
+<meta property="article:tag" content="软件设计">
+<meta property="article:tag" content="DDD">
+<meta property="article:tag" content="领域驱动设计">
+<meta property="article:tag" content="架构设计">
+<meta property="article:tag" content="微服务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191624174.jpg"><link rel="shortcut icon" href="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/sup_avator.webp"><link rel="canonical" href="http://supdriver.top/2025/07/14/whatsDDD/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '什么是领域驱动设计（DDD）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-07-14 22:21:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191624174.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">什么是领域驱动设计（DDD）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-14T13:58:11.000Z" title="发表于 2025-07-14 21:58:11">2025-07-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-14T14:21:30.597Z" title="更新于 2025-07-14 22:21:30">2025-07-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="什么是领域驱动设计（DDD）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="软件设计不止UML"><a href="#软件设计不止UML" class="headerlink" title="软件设计不止UML"></a>软件设计不止UML</h1><p>在软件开发的世界中，设计方法论层出不穷。从早期的结构化设计到面向对象设计，再到如今备受关注的领域驱动设计（Domain-Driven Design，DDD），每一种方法都在试图解决软件复杂性不断增长的问题。虽然UML作为统一建模语言在软件设计中发挥了重要作用，但它并不是唯一的解决方案。</p>
+<h2 id="UML简介"><a href="#UML简介" class="headerlink" title="UML简介"></a>UML简介</h2><p>统一建模语言（Unified Modeling Language，UML）是一种标准化的建模语言，用于软件系统的可视化设计。UML提供了多种图形符号和规则，包括用例图、类图、序列图、活动图等十几种不同类型的图表。</p>
+<p>UML的主要特点：</p>
+<ul>
+<li><strong>标准化</strong>：提供了统一的建模符号和语法</li>
+<li><strong>全面性</strong>：涵盖了软件开发生命周期的各个阶段</li>
+<li><strong>工具支持</strong>：有丰富的建模工具支持</li>
+<li><strong>文档化</strong>：便于团队沟通和知识传承</li>
+</ul>
+<p>然而，UML也存在一些局限性：</p>
+<ul>
+<li>学习曲线陡峭，需要掌握大量符号和规则</li>
+<li>过于技术导向，业务人员难以理解</li>
+<li>容易陷入过度设计的陷阱</li>
+<li>维护成本高，文档与代码容易脱节</li>
+</ul>
+<h2 id="DDD的起源"><a href="#DDD的起源" class="headerlink" title="DDD的起源"></a>DDD的起源</h2><p>领域驱动设计（DDD）由Eric Evans在2003年的同名著作中首次提出。这一设计方法论的诞生背景是软件项目日益复杂，传统的技术驱动开发方式难以应对复杂业务逻辑的挑战。</p>
+<p>Evans观察到许多软件项目失败的根本原因不在于技术问题，而在于：</p>
+<ul>
+<li>开发团队对业务领域理解不足</li>
+<li>技术实现与业务需求脱节</li>
+<li>缺乏统一的领域语言</li>
+<li>复杂性管理不当</li>
+</ul>
+<p>DDD的核心思想是将业务领域放在软件设计的中心位置，通过与领域专家的紧密合作，建立准确的领域模型，并在代码中忠实地反映这个模型。</p>
+<h1 id="怎么画DDD图"><a href="#怎么画DDD图" class="headerlink" title="怎么画DDD图"></a>怎么画DDD图</h1><p>DDD提供了一套相对简单但强大的建模工具，主要包括以下几种图形表示：</p>
+<h2 id="1-领域模型图（Domain-Model）"><a href="#1-领域模型图（Domain-Model）" class="headerlink" title="1. 领域模型图（Domain Model）"></a>1. 领域模型图（Domain Model）</h2><p>领域模型图是DDD的核心，用于表示业务领域中的关键概念及其关系。</p>
+<p><strong>基本元素：</strong></p>
+<ul>
+<li><strong>实体（Entity）</strong>：具有唯一标识的业务对象</li>
+<li><strong>值对象（Value Object）</strong>：没有标识，以属性值区分的对象</li>
+<li><strong>聚合（Aggregate）</strong>：相关实体和值对象的集合</li>
+<li><strong>聚合根（Aggregate Root）</strong>：聚合的入口点</li>
+</ul>
+<p><strong>绘制要点：</strong></p>
+<ul>
+<li>使用简单的矩形表示实体和值对象</li>
+<li>用实线连接表示关联关系</li>
+<li>用虚线边框表示聚合边界</li>
+<li>标注聚合根</li>
+</ul>
+<h2 id="2-上下文映射图（Context-Map）"><a href="#2-上下文映射图（Context-Map）" class="headerlink" title="2. 上下文映射图（Context Map）"></a>2. 上下文映射图（Context Map）</h2><p>上下文映射图用于描述不同限界上下文之间的关系和集成方式。</p>
+<p><strong>关系类型：</strong></p>
+<ul>
+<li><strong>合作关系（Partnership）</strong>：两个上下文团队合作</li>
+<li><strong>共享内核（Shared Kernel）</strong>：共享部分领域模型</li>
+<li><strong>客户供应商（Customer-Supplier）</strong>：上下游依赖关系</li>
+<li><strong>遵循者（Conformist）</strong>：下游遵循上游模型</li>
+<li><strong>防腐层（Anti-corruption Layer）</strong>：隔离外部系统影响</li>
+</ul>
+<h2 id="3-事件风暴图（Event-Storming）"><a href="#3-事件风暴图（Event-Storming）" class="headerlink" title="3. 事件风暴图（Event Storming）"></a>3. 事件风暴图（Event Storming）</h2><p>事件风暴是一种协作式的建模技术，通过便利贴和时间线来发现领域事件。</p>
+<p><strong>颜色约定：</strong></p>
+<ul>
+<li><strong>橙色</strong>：领域事件</li>
+<li><strong>蓝色</strong>：命令</li>
+<li><strong>黄色</strong>：聚合</li>
+<li><strong>绿色</strong>：视图&#x2F;读模型</li>
+<li><strong>紫色</strong>：策略&#x2F;业务规则</li>
+<li><strong>红色</strong>：问题和关注点</li>
+</ul>
+<p>什么？颜色太多记不住？别担心，DDD图的易读性让你即使记不住颜色的意义也能很快理解其内容</p>
+<h1 id="DDD与微服务架构设计"><a href="#DDD与微服务架构设计" class="headerlink" title="DDD与微服务架构设计"></a>DDD与微服务架构设计</h1><p>DDD与微服务架构有着天然的契合性，两者在理念上高度一致。</p>
+<h2 id="限界上下文与微服务边界"><a href="#限界上下文与微服务边界" class="headerlink" title="限界上下文与微服务边界"></a>限界上下文与微服务边界</h2><p><strong>限界上下文（Bounded Context）</strong>是DDD中的重要概念，它定义了特定领域模型的适用边界。在微服务架构中，每个微服务通常对应一个限界上下文。</p>
+<p><strong>设计原则：</strong></p>
+<ul>
+<li>一个微服务对应一个限界上下文</li>
+<li>避免跨界上下文的数据共享</li>
+<li>通过领域事件进行服务间通信</li>
+<li>每个服务拥有独立的数据存储</li>
+</ul>
+<h2 id="聚合与服务粒度"><a href="#聚合与服务粒度" class="headerlink" title="聚合与服务粒度"></a>聚合与服务粒度</h2><p>聚合的大小和复杂度可以指导微服务的粒度设计：</p>
+<ul>
+<li><strong>小聚合</strong>：可能合并到一个微服务中</li>
+<li><strong>大聚合</strong>：可能需要拆分为多个微服务</li>
+<li><strong>聚合间的事务边界</strong>：对应微服务的边界</li>
+</ul>
+<h2 id="领域事件驱动的架构"><a href="#领域事件驱动的架构" class="headerlink" title="领域事件驱动的架构"></a>领域事件驱动的架构</h2><p>DDD中的领域事件为微服务之间的异步通信提供了理论基础：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">订单服务 -&gt; 订单已创建事件 -&gt; 库存服务</span><br><span class="line">库存服务 -&gt; 库存已预留事件 -&gt; 支付服务</span><br><span class="line">支付服务 -&gt; 支付已完成事件 -&gt; 发货服务</span><br></pre></td></tr></table></figure>
+
+<h2 id="实施策略"><a href="#实施策略" class="headerlink" title="实施策略"></a>实施策略</h2><ol>
+<li><strong>由内而外</strong>：先设计领域模型，再确定服务边界</li>
+<li><strong>统一语言</strong>：确保跨服务的概念一致性</li>
+<li><strong>渐进式拆分</strong>：从单体开始，逐步拆分为微服务</li>
+<li><strong>事件溯源</strong>：使用事件存储来追踪状态变化</li>
+</ol>
+<h1 id="DDD-的好处"><a href="#DDD-的好处" class="headerlink" title="DDD 的好处"></a>DDD 的好处</h1><h2 id="1-简化复杂性管理"><a href="#1-简化复杂性管理" class="headerlink" title="1. 简化复杂性管理"></a>1. 简化复杂性管理</h2><p>相比于UML过于复杂过于专业，DDD设计更简单易懂，利于整个团队都参与到软件设计中来。DDD的建模工具相对简单，不需要掌握复杂的符号系统，业务人员也能快速理解和参与。</p>
+<h2 id="2-促进领域知识的积累"><a href="#2-促进领域知识的积累" class="headerlink" title="2. 促进领域知识的积累"></a>2. 促进领域知识的积累</h2><p>DDD强调与领域专家的合作，通过统一语言（Ubiquitous Language）确保团队对业务的理解一致。这种方法有助于：</p>
+<ul>
+<li>减少需求理解偏差</li>
+<li>积累可复用的领域知识</li>
+<li>提高团队的业务敏感度</li>
+<li>形成共同的认知基础</li>
+</ul>
+<h2 id="3-提高代码质量和可维护性"><a href="#3-提高代码质量和可维护性" class="headerlink" title="3. 提高代码质量和可维护性"></a>3. 提高代码质量和可维护性</h2><p>通过将业务逻辑封装在领域模型中，DDD可以：</p>
+<ul>
+<li>减少代码重复</li>
+<li>提高代码的表达力</li>
+<li>增强系统的可测试性</li>
+<li>降低维护成本</li>
+</ul>
+<h2 id="4-支持持续演化"><a href="#4-支持持续演化" class="headerlink" title="4. 支持持续演化"></a>4. 支持持续演化</h2><p>DDD的模块化设计和限界上下文概念，使得系统能够：</p>
+<ul>
+<li>灵活应对需求变化</li>
+<li>支持团队独立开发</li>
+<li>降低系统变更的风险</li>
+<li>便于新功能的添加</li>
+</ul>
+<h2 id="5-改善团队协作"><a href="#5-改善团队协作" class="headerlink" title="5. 改善团队协作"></a>5. 改善团队协作</h2><p>统一语言和共同的领域模型促进了：</p>
+<ul>
+<li>开发人员与业务人员的沟通</li>
+<li>跨团队的协作效率</li>
+<li>知识的传承和共享</li>
+<li>决策的一致性</li>
+</ul>
+<h2 id="6-降低技术债务"><a href="#6-降低技术债务" class="headerlink" title="6. 降低技术债务"></a>6. 降低技术债务</h2><p>通过明确的领域边界和职责分离，DDD有助于：</p>
+<ul>
+<li>避免过度耦合</li>
+<li>减少技术债务的积累</li>
+<li>提高系统的健壮性</li>
+<li>支持长期的技术演进</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>领域驱动设计作为一种以业务为中心的设计方法论，为复杂软件系统的开发提供了有效的指导。它不仅简化了建模过程，还促进了团队协作和知识积累。在微服务架构日益普及的今天，DDD的理念和方法显得更加重要和实用。</p>
+<p>虽然DDD并不是银弹，但它为我们提供了一种更好的方式来思考和设计软件系统。通过关注业务领域、建立统一语言、明确边界和职责，我们可以构建出更加健壮、可维护和可扩展的软件系统。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2025/07/14/whatsDDD/">http://supdriver.top/2025/07/14/whatsDDD/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><a class="post-meta__tags" href="/tags/DDD/">DDD</a><a class="post-meta__tags" href="/tags/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/">领域驱动设计</a><a class="post-meta__tags" href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">架构设计</a><a class="post-meta__tags" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191624174.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/07/08/servitization/" title="【架构】浅谈服务化"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052350711.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">【架构】浅谈服务化</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%B8%8D%E6%AD%A2UML"><span class="toc-number">1.</span> <span class="toc-text">软件设计不止UML</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UML%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">UML简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDD%E7%9A%84%E8%B5%B7%E6%BA%90"><span class="toc-number">1.2.</span> <span class="toc-text">DDD的起源</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E7%94%BBDDD%E5%9B%BE"><span class="toc-number">2.</span> <span class="toc-text">怎么画DDD图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A2%86%E5%9F%9F%E6%A8%A1%E5%9E%8B%E5%9B%BE%EF%BC%88Domain-Model%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">1. 领域模型图（Domain Model）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%98%A0%E5%B0%84%E5%9B%BE%EF%BC%88Context-Map%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">2. 上下文映射图（Context Map）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BA%8B%E4%BB%B6%E9%A3%8E%E6%9A%B4%E5%9B%BE%EF%BC%88Event-Storming%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">3. 事件风暴图（Event Storming）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DDD%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">3.</span> <span class="toc-text">DDD与微服务架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%90%E7%95%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%BE%B9%E7%95%8C"><span class="toc-number">3.1.</span> <span class="toc-text">限界上下文与微服务边界</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E4%B8%8E%E6%9C%8D%E5%8A%A1%E7%B2%92%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">聚合与服务粒度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%86%E5%9F%9F%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E7%9A%84%E6%9E%B6%E6%9E%84"><span class="toc-number">3.3.</span> <span class="toc-text">领域事件驱动的架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%96%BD%E7%AD%96%E7%95%A5"><span class="toc-number">3.4.</span> <span class="toc-text">实施策略</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DDD-%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-number">4.</span> <span class="toc-text">DDD 的好处</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E5%8C%96%E5%A4%8D%E6%9D%82%E6%80%A7%E7%AE%A1%E7%90%86"><span class="toc-number">4.1.</span> <span class="toc-text">1. 简化复杂性管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BF%83%E8%BF%9B%E9%A2%86%E5%9F%9F%E7%9F%A5%E8%AF%86%E7%9A%84%E7%A7%AF%E7%B4%AF"><span class="toc-number">4.2.</span> <span class="toc-text">2. 促进领域知识的积累</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8F%90%E9%AB%98%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E5%92%8C%E5%8F%AF%E7%BB%B4%E6%8A%A4%E6%80%A7"><span class="toc-number">4.3.</span> <span class="toc-text">3. 提高代码质量和可维护性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%94%AF%E6%8C%81%E6%8C%81%E7%BB%AD%E6%BC%94%E5%8C%96"><span class="toc-number">4.4.</span> <span class="toc-text">4. 支持持续演化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%94%B9%E5%96%84%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C"><span class="toc-number">4.5.</span> <span class="toc-text">5. 改善团队协作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E9%99%8D%E4%BD%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1"><span class="toc-number">4.6.</span> <span class="toc-text">6. 降低技术债务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2025 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="/js/title.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
