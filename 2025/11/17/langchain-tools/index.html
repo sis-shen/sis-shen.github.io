@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>LangChain AI】使用Tool工具 | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="⼯具调⽤根本作⽤是让⼤语⾔模型（LLM）具备与外部世界交互的能⼒。LLM本⾝是⼀个封闭的知识系统，其能⼒受限于其训练数据（存在滞后性）和内在的⽂本⽣成逻辑。如果没有工具调用，它⽆法执⾏直接计算、查询实时信息、操作数据库或调⽤任何外部API。⼯具调⽤打破了这层壁垒，其作⽤具体体现在：  扩展能⼒边界：模型可以借助⼯具完成它⾃⾝⽆法完成的任务，如执⾏数学计算、搜索⽹络、查询数据库等。 保证信息实时性：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LangChain AI】使用Tool工具">
+<meta property="og:url" content="http://supdriver.top/2025/11/17/langchain-tools/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="⼯具调⽤根本作⽤是让⼤语⾔模型（LLM）具备与外部世界交互的能⼒。LLM本⾝是⼀个封闭的知识系统，其能⼒受限于其训练数据（存在滞后性）和内在的⽂本⽣成逻辑。如果没有工具调用，它⽆法执⾏直接计算、查询实时信息、操作数据库或调⽤任何外部API。⼯具调⽤打破了这层壁垒，其作⽤具体体现在：  扩展能⼒边界：模型可以借助⼯具完成它⾃⾝⽆法完成的任务，如执⾏数学计算、搜索⽹络、查询数据库等。 保证信息实时性：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/7be4e5cabc1892f13a8ce4d55cbd787c.jpg">
+<meta property="article:published_time" content="2025-11-17T03:40:24.000Z">
+<meta property="article:modified_time" content="2025-11-19T01:53:03.243Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/7be4e5cabc1892f13a8ce4d55cbd787c.jpg"><link rel="shortcut icon" href="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/sup_avator.webp"><link rel="canonical" href="http://supdriver.top/2025/11/17/langchain-tools/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LangChain AI】使用Tool工具',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-11-19 09:53:03'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">122</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/7be4e5cabc1892f13a8ce4d55cbd787c.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">LangChain AI】使用Tool工具</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-17T03:40:24.000Z" title="发表于 2025-11-17 11:40:24">2025-11-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-11-19T01:53:03.243Z" title="更新于 2025-11-19 09:53:03">2025-11-19</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="LangChain AI】使用Tool工具"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>⼯具调⽤根本作⽤是让⼤语⾔模型（LLM）具备与外部世界交互的能⼒。<br>LLM本⾝是⼀个封闭的知识系统，其能⼒受限于其训练数据（存在滞后性）和内在的⽂本⽣成逻辑。<br><strong>如果没有工具调用，它⽆法执⾏直接计算、查询实时信息、操作数据库或调⽤任何外部API</strong>。⼯具调⽤打破了这层壁垒，其<br>作⽤具体体现在：</p>
+<ol>
+<li><strong>扩展能⼒边界</strong>：模型可以借助⼯具完成它⾃⾝⽆法完成的任务，如执⾏数学计算、搜索⽹络、查询<br>数据库等。</li>
+<li><strong>保证信息实时性</strong>：通过调⽤搜索⼯具或数据库查询⼯具，LLM可以获取最新的、训练数据中不存在<br>的信息，避免回答过时或“⼀本正经地胡说⼋道”。</li>
+<li><strong>处理复杂任务</strong>：将⼀个复杂的⽤⼾请求（如“分析我上个⽉的消费趋势”）分解成多个步骤，并依<br>次调⽤不同的⼯具（如“从数据库获取数据”-&gt;“⽤Python进⾏数据分析”-&gt;“⽣成图表”）<br>来协同完成。协调这件事这更体现在Agent智能体上。</li>
+<li><strong>连接现有系统</strong>：可以将企业内部已有的系统、API和数据库封装成⼯具，让LLM成为⼀个⽤⾃然语<br>⾔驱动的统⼀接⼝，极⼤地提升了⾃动化和集成能⼒</li>
+</ol>
+<ul>
+<li>如，当我们希望获取当前天⽓情况时，由于LLM⽆法获取实时信息，此时我们就可以借助<code>天气搜索⼯具</code>，通过外部服务进⾏搜索完成查询</li>
+<li>再如，当我们希望获取数据库表中的数据时，由于LLM⽆法直接获取表数据，此时我们就可以借助<code>数据库查询⼯具</code>，通过与数据库交互完成查询</li>
+</ul>
+<h1 id="创建工具"><a href="#创建工具" class="headerlink" title="创建工具"></a>创建工具</h1><p>langchain提供了几种创建工具的方式</p>
+<h2 id="使用-tool修饰器实现工具"><a href="#使用-tool修饰器实现工具" class="headerlink" title="使用@tool修饰器实现工具"></a>使用@tool修饰器实现工具</h2><p>LangChain提供了<code>@tool</code>修饰器<code>from langchain_core.tools import tool</code></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_core.tools <span class="keyword">import</span> tool</span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">multiply</span>(<span class="params">a:<span class="built_in">int</span>,b :<span class="built_in">int</span></span>)-&gt;<span class="built_in">int</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot; 两个整数相乘</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        a: 第一个整数</span></span><br><span class="line"><span class="string">        b: 第二个整数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> a * b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 已经可以对工具进行调用了</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(multiply.invoke(&#123;<span class="string">&quot;a&quot;</span>: <span class="number">2</span>, <span class="string">&quot;b&quot;</span>: <span class="number">3</span>&#125;)) <span class="comment"># 输出:6</span></span><br><span class="line"><span class="built_in">print</span>(multiply.name)</span><br><span class="line"><span class="built_in">print</span>(multiply.description)</span><br><span class="line"><span class="built_in">print</span>(multiply.args)</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，⼯具通过<code>@tool</code>修饰的<code>Python函数</code>实现，其中：</p>
+<ul>
+<li>该装饰器默认使⽤函数名称作为<code>⼯具名称</code>。</li>
+<li>该装饰器将使⽤函数的⽂档字符串作为<code>⼯具的描述</code>。<br>因此，函数名、类型提⽰和⽂档字符串都是传递给⼯具<code>Schema</code>的⼀部分，不可缺失。定义好的描述是使模型良好运⾏的重要部分</li>
+</ul>
+<h2 id="使用Pydantic类"><a href="#使用Pydantic类" class="headerlink" title="使用Pydantic类"></a>使用Pydantic类</h2><p>我们可以先使用<code>Pydantic</code>类对工具的结构化输入参数和描述进行描述</p>
+<p>这样我们就可以用结构化的类描述结构化的输入了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel,Field</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AddInput</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;两个整数相加求和&quot;&quot;&quot;</span></span><br><span class="line">    a: <span class="built_in">int</span> = Field(..., description=<span class="string">&quot;First Integer&quot;</span>)</span><br><span class="line">    b: <span class="built_in">int</span> = Field(..., description=<span class="string">&quot;Second Integer&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MulInput</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;两数相乘求积&quot;&quot;&quot;</span></span><br><span class="line">    a: <span class="built_in">int</span> = Field(..., description=<span class="string">&quot;First Integer&quot;</span>)</span><br><span class="line">    b: <span class="built_in">int</span> = Field(..., description=<span class="string">&quot;Second Integer&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain.tools <span class="keyword">import</span> tool</span><br><span class="line"></span><br><span class="line"><span class="meta">@tool(<span class="params">args_schema=AddInput</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">a:<span class="built_in">int</span>, b:<span class="built_in">int</span></span>)-&gt;<span class="built_in">int</span>:</span><br><span class="line">    <span class="keyword">return</span> a+b</span><br><span class="line"></span><br><span class="line"><span class="meta">@tool(<span class="params">args_schema=MulInput</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mul</span>(<span class="params">a:<span class="built_in">int</span>, b:<span class="built_in">int</span></span>)-&gt;<span class="built_in">int</span>:</span><br><span class="line">    <span class="keyword">return</span> a*b</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用Annotated类型"><a href="#使用Annotated类型" class="headerlink" title="使用Annotated类型"></a>使用Annotated类型</h2><p>我们使用f<code>rom typing_extensions import Annotated</code>来指定工具函数的输入参数并添加描述</p>
+<p>这样只需要声明一个函数即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing_extensions <span class="keyword">import</span> Annotated</span><br><span class="line"><span class="keyword">from</span> langchain.tools <span class="keyword">import</span> tool</span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params"></span></span><br><span class="line"><span class="params">    a:Annotated[<span class="built_in">int</span>, ..., <span class="string">&quot;First integer&quot;</span>],</span></span><br><span class="line"><span class="params">    b: Annotated[<span class="built_in">int</span>, ..., <span class="string">&quot;Second integer&quot;</span>]</span></span><br><span class="line"><span class="params"></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;两数相加&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> a+b</span><br></pre></td></tr></table></figure>
+
+<h2 id="借助StructuredTool-from-function函数创建"><a href="#借助StructuredTool-from-function函数创建" class="headerlink" title="借助StructuredTool.from_function函数创建"></a>借助StructuredTool.from_function函数创建</h2><p>这个函数的定义如下</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">from_function</span>(<span class="params"></span></span><br><span class="line"><span class="params">    cls,</span></span><br><span class="line"><span class="params">    func: <span class="type">Callable</span> | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    coroutine: <span class="type">Callable</span>[..., Awaitable[<span class="type">Any</span>]] | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    name: <span class="built_in">str</span> | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    description: <span class="built_in">str</span> | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    return_direct: <span class="built_in">bool</span> = <span class="literal">False</span>,  <span class="comment"># noqa: FBT001,FBT002</span></span></span><br><span class="line"><span class="params">    args_schema: ArgsSchema | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    infer_schema: <span class="built_in">bool</span> = <span class="literal">True</span>,  <span class="comment"># noqa: FBT001,FBT002</span></span></span><br><span class="line"><span class="params">    *,</span></span><br><span class="line"><span class="params">    response_format: <span class="type">Literal</span>[<span class="string">&quot;content&quot;</span>, <span class="string">&quot;content_and_artifact&quot;</span>] = <span class="string">&quot;content&quot;</span>,</span></span><br><span class="line"><span class="params">    parse_docstring: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    error_on_invalid_docstring: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    **kwargs: <span class="type">Any</span>,</span></span><br><span class="line"><span class="params"></span>) -&gt; StructuredTool:</span><br></pre></td></tr></table></figure>
+
+<h3 id="关键参数说明"><a href="#关键参数说明" class="headerlink" title="关键参数说明"></a>关键参数说明</h3><ul>
+<li><strong>func</strong>：要设置的工具函数</li>
+<li><strong>coroutine</strong>：协程函数，要设置的异步工具函数</li>
+<li><strong>name</strong>：工具名称。默认为函数名称</li>
+<li><strong>description</strong>：工具描述。默认为函数文档字符串</li>
+<li><strong>args_schema</strong>：工具输入参数的 schema。默认为 None</li>
+<li><strong>response_format</strong>：工具响应格式。默认为 <code>content</code></li>
+</ul>
+<h3 id="常规用法：直接使用函数创建工具"><a href="#常规用法：直接使用函数创建工具" class="headerlink" title="常规用法：直接使用函数创建工具"></a>常规用法：直接使用函数创建工具</h3><p>实际上基本上就仅仅是代替了<code>@tool</code>修饰器</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_core.tools.structured <span class="keyword">import</span> StructuredTool</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">multiply</span>(<span class="params">a:<span class="built_in">int</span>,b :<span class="built_in">int</span></span>)-&gt;<span class="built_in">int</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot; 两个整数相乘</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        a: 第一个整数</span></span><br><span class="line"><span class="string">        b: 第二个整数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> a * b</span><br><span class="line"></span><br><span class="line">mul_tool = StructuredTool.from_function(func=multiply)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(mul_tool.invoke(&#123;<span class="string">&quot;a&quot;</span>: <span class="number">2</span>, <span class="string">&quot;b&quot;</span>: <span class="number">3</span>&#125;)) <span class="comment"># 输出:6</span></span><br><span class="line"><span class="built_in">print</span>(mul_tool.name)</span><br><span class="line"><span class="built_in">print</span>(mul_tool.description)</span><br><span class="line"><span class="built_in">print</span>(mul_tool.args)</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">D:\program_software\AnaConda\envs\langChainP13\python.exe D:\codes\code_pycharm\langChainTool\tool.py </span><br><span class="line">6</span><br><span class="line">multiply</span><br><span class="line">两个整数相乘</span><br><span class="line"></span><br><span class="line">Args:</span><br><span class="line">    a: 第一个整数</span><br><span class="line">    b: 第二个整数</span><br><span class="line">&#123;&#x27;a&#x27;: &#123;&#x27;title&#x27;: &#x27;A&#x27;, &#x27;type&#x27;: &#x27;integer&#x27;&#125;, &#x27;b&#x27;: &#123;&#x27;title&#x27;: &#x27;B&#x27;, &#x27;type&#x27;: &#x27;integer&#x27;&#125;&#125;</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="依赖Pydantic类，并进行配置"><a href="#依赖Pydantic类，并进行配置" class="headerlink" title="依赖Pydantic类，并进行配置"></a>依赖Pydantic类，并进行配置</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel,Field</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MulInput</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;两数相乘求积&quot;&quot;&quot;</span></span><br><span class="line">    a: <span class="built_in">int</span> = Field(..., description=<span class="string">&quot;First Integer&quot;</span>)</span><br><span class="line">    b: <span class="built_in">int</span> = Field(..., description=<span class="string">&quot;Second Integer&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mul</span>(<span class="params">a:<span class="built_in">int</span>, b:<span class="built_in">int</span></span>)-&gt;<span class="built_in">int</span>:</span><br><span class="line">    <span class="keyword">return</span> a*b</span><br><span class="line"><span class="keyword">from</span> langchain_core.tools <span class="keyword">import</span> StructuredTool</span><br><span class="line"></span><br><span class="line">mul_tool = StructuredTool.from_function(</span><br><span class="line">    func=mul,</span><br><span class="line">    name=<span class="string">&quot;Calculator&quot;</span>,</span><br><span class="line">    description=<span class="string">&quot;两数相乘求积&quot;</span>,</span><br><span class="line">    args_schema=MulInput</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(mul_tool.invoke(&#123;<span class="string">&quot;a&quot;</span>: <span class="number">2</span>, <span class="string">&quot;b&quot;</span>: <span class="number">3</span>&#125;)) <span class="comment"># 输出:6</span></span><br><span class="line"><span class="built_in">print</span>(mul_tool.name)</span><br><span class="line"><span class="built_in">print</span>(mul_tool.description)</span><br><span class="line"><span class="built_in">print</span>(mul_tool.args)</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">D:\program_software\AnaConda\envs\langChainP13\python.exe D:\codes\code_pycharm\langChainTool\tool.py </span><br><span class="line">6</span><br><span class="line">Calculator</span><br><span class="line">两数相乘求积</span><br><span class="line">&#123;&#x27;a&#x27;: &#123;&#x27;description&#x27;: &#x27;First Integer&#x27;, &#x27;title&#x27;: &#x27;A&#x27;, &#x27;type&#x27;: &#x27;integer&#x27;&#125;, &#x27;b&#x27;: &#123;&#x27;description&#x27;: &#x27;Second Integer&#x27;, &#x27;title&#x27;: &#x27;B&#x27;, &#x27;type&#x27;: &#x27;integer&#x27;&#125;&#125;</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置额外返回输出原始内容"><a href="#配置额外返回输出原始内容" class="headerlink" title="配置额外返回输出原始内容"></a>配置额外返回输出原始内容</h3><p>之前的工具配置都是只会返回用于构建AI消息的<code>content</code>，但是如果我们需要借助工具获取原始数据进行进一步数据加工的话，我们可以在创建工具时配置函数传参<code>response_format</code>为<code>&quot;content_and_artifact&quot;</code>，即可在原本仅返回<code>content</code>的基础上返回<code>artifact</code>，即其它工件，通常数据类型为python字典或者列表。<strong>此时返回类型应该标注为元组<code>Tuple[]</code></strong></p>
+<p>下面是一个简单的示例</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel,Field</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Tuple</span>,<span class="type">List</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MulInput</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;两数相乘求积&quot;&quot;&quot;</span></span><br><span class="line">    a: <span class="built_in">int</span> = Field(..., description=<span class="string">&quot;First Integer&quot;</span>)</span><br><span class="line">    b: <span class="built_in">int</span> = Field(..., description=<span class="string">&quot;Second Integer&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mul</span>(<span class="params">a:<span class="built_in">int</span>, b:<span class="built_in">int</span></span>)-&gt;<span class="type">Tuple</span>[<span class="built_in">int</span>,<span class="type">List</span>[<span class="built_in">int</span>]]:</span><br><span class="line">    nums = [a,b]</span><br><span class="line">    content = <span class="string">f&quot;<span class="subst">&#123;nums&#125;</span>相乘的结果为<span class="subst">&#123;a*b&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">return</span> content,nums</span><br><span class="line"><span class="keyword">from</span> langchain_core.tools <span class="keyword">import</span> StructuredTool</span><br><span class="line"></span><br><span class="line">mul_tool = StructuredTool.from_function(</span><br><span class="line">    func=mul,</span><br><span class="line">    name=<span class="string">&quot;Calculator&quot;</span>,</span><br><span class="line">    description=<span class="string">&quot;两数相乘求积&quot;</span>,</span><br><span class="line">    args_schema=MulInput,</span><br><span class="line">    response_format=<span class="string">&quot;content_and_artifact&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(mul_tool.invoke(&#123;<span class="string">&quot;a&quot;</span>: <span class="number">2</span>, <span class="string">&quot;b&quot;</span>: <span class="number">3</span>&#125;)) <span class="comment"># 输出只有content:6</span></span><br><span class="line"><span class="built_in">print</span>(mul_tool.name)</span><br><span class="line"><span class="built_in">print</span>(mul_tool.description)</span><br><span class="line"><span class="built_in">print</span>(mul_tool.args)</span><br></pre></td></tr></table></figure>
+<p>但是此时直接调用的输出只有content</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">D:\program_software\AnaConda\envs\langChainP13\python.exe D:\codes\code_pycharm\langChainTool\tool.py </span><br><span class="line">[2, 3]相乘的结果为6</span><br><span class="line">Calculator</span><br><span class="line">两数相乘求积</span><br><span class="line">&#123;&#x27;a&#x27;: &#123;&#x27;description&#x27;: &#x27;First Integer&#x27;, &#x27;title&#x27;: &#x27;A&#x27;, &#x27;type&#x27;: &#x27;integer&#x27;&#125;, &#x27;b&#x27;: &#123;&#x27;description&#x27;: &#x27;Second Integer&#x27;, &#x27;title&#x27;: &#x27;B&#x27;, &#x27;type&#x27;: &#x27;integer&#x27;&#125;&#125;</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>若要输出<code>artifact</code>的内容，则需要模拟大模型调用的传参</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(mul_tool.invoke(&#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Calculator&quot;</span>,</span><br><span class="line">    <span class="string">&quot;args&quot;</span>: &#123;<span class="string">&quot;a&quot;</span>: <span class="number">2</span>, <span class="string">&quot;b&quot;</span>: <span class="number">3</span>&#125;,</span><br><span class="line">    <span class="string">&quot;id&quot;</span>: <span class="string">&quot;123&quot;</span>,</span><br><span class="line">    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;tool_call&quot;</span></span><br><span class="line">&#125;))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">content=&#x27;[2, 3]相乘的结果为6&#x27; name=&#x27;Calculator&#x27; tool_call_id=&#x27;123&#x27; artifact=[2, 3]</span><br></pre></td></tr></table></figure>
+
+<h1 id="绑定工具"><a href="#绑定工具" class="headerlink" title="绑定工具"></a>绑定工具</h1><p>创建完工具后就该给大模型示例绑定工具了。使用大模型实例的<code>.bind_tool()</code>方法即可，咱们着重了解下接口参数</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">bind_tools</span>(<span class="params"></span></span><br><span class="line"><span class="params">    self,</span></span><br><span class="line"><span class="params">    tools: <span class="type">Sequence</span>[<span class="built_in">dict</span>[<span class="built_in">str</span>, <span class="type">Any</span>] | <span class="built_in">type</span> | <span class="type">Callable</span> | BaseTool],</span></span><br><span class="line"><span class="params">    *,</span></span><br><span class="line"><span class="params">    tool_choice: <span class="built_in">dict</span> | <span class="built_in">str</span> | <span class="built_in">bool</span> | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    strict: <span class="built_in">bool</span> | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    parallel_tool_calls: <span class="built_in">bool</span> | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    response_format: _DictOrPydanticClass | <span class="literal">None</span> = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    **kwargs: <span class="type">Any</span>,</span></span><br><span class="line"><span class="params"></span>) -&gt; Runnable[LanguageModelInput, AIMessage]:</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>tools</code>：工具列表</li>
+<li><code>tool_choice</code>:默认为<code>None</code>,要求模型要使用哪些工具<ul>
+<li>形为<code>&lt;&lt;tool_name&gt;&gt;</code>的str，调用<code>&lt;tool_name&gt;</code>工具</li>
+<li><code>&#39;auto&#39;</code>：自动选择工具（包括不使用</li>
+<li><code>&#39;none&#39;</code>或者<code>False</code>或者<code>None</code>:不调用工具</li>
+<li><code>any</code>或者<code>required</code>或者<code>True</code>:强制至少使用一个工具</li>
+</ul>
+</li>
+<li>strict:默认为N<code>one</code><ul>
+<li><code>True</code>:要求模型输出与工具定义中的<code>Json Schema</code>完全匹配，输入也将根据<code>Schema</code>进行验证</li>
+<li><code>False</code>:不验证输入或输出</li>
+<li><code>None</code>:不传参</li>
+</ul>
+</li>
+<li><code>parallel_tool_calls</code> ：是否允许并行工具的使用，默认允许，值为<code>None</code></li>
+<li><code>kwargs(Any)</code>:附加参数</li>
+<li></li>
+</ul>
+<p>返回值：一个Runnable实例，就跟前面的大模型实例是同一个类型</p>
+<h1 id="调用工具"><a href="#调用工具" class="headerlink" title="调用工具"></a>调用工具</h1><p>前面代码不变，我们来调用一下大模型</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"></span><br><span class="line">model = ChatOpenAI(model=<span class="string">&quot;deepseek-chat&quot;</span>,openai_api_base=<span class="string">&quot;https://api.deepseek.com/v1&quot;</span>)</span><br><span class="line">model_with_tool =model.bind_tools([mul_tool])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(model_with_tool.invoke(<span class="string">&quot;3乘5等于多少&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202511182104144.webp"></p>
+<p>可以看到大模型返回的参数中有一段工具调用的内容，由于云端的大模型只知道要调用哪些工具，具体的执行只能交给api调用者执行，所以我们只能收到调用工具的指令，具体的调用还得自己完成，但是已经可以自动化了</p>
+<h1 id="强制执行"><a href="#强制执行" class="headerlink" title="强制执行"></a>强制执行</h1><p>前面绑定工具列表时的<code>tool_choice</code>参数的某些选项能强制调用工具</p>
+<h1 id="工具属性"><a href="#工具属性" class="headerlink" title="工具属性"></a>工具属性</h1><p>我们知道模型调用的返回值时<code>AIMessage</code>类型，但是如果这次返回的消息调用了工具，那它将具有一个<code>tool_calls</code>属性，可以调用一下并打印出来</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">result = model_with_tool.invoke(<span class="string">&quot;3乘5等于多少&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result.tool_calls)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出[&#123;&#x27;name&#x27;: &#x27;Calculator&#x27;, &#x27;args&#x27;: &#123;&#x27;a&#x27;: 3, &#x27;b&#x27;: 5&#125;, &#x27;id&#x27;: &#x27;call_00_hJ7KVoqEQTwhsKGK8oAUCM6U&#x27;, &#x27;type&#x27;: &#x27;tool_call&#x27;&#125;]</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="发送ToolMessage"><a href="#发送ToolMessage" class="headerlink" title="发送ToolMessage"></a>发送ToolMessage</h1><p>前面可以看到，模型初次调用只告诉了我们要调用哪些工具，所以现在要调用工具实例获取<code>ToolMessage</code>加入到消息列表中，再通知大模型工具调用的结果。</p>
+<p>特别的，我们可以借助<code>result.tool_calls[index][&quot;name&quot;]</code>字段来指定要调用的工具</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain_core.messages <span class="keyword">import</span> HumanMessage,ToolMessage</span><br><span class="line"></span><br><span class="line">model = ChatOpenAI(model=<span class="string">&quot;deepseek-chat&quot;</span>,openai_api_base=<span class="string">&quot;https://api.deepseek.com/v1&quot;</span>)</span><br><span class="line">model_with_tool =model.bind_tools([mul_tool])</span><br><span class="line"></span><br><span class="line">messages = [</span><br><span class="line">    HumanMessage(<span class="string">&quot;3乘5等于多少&quot;</span>)</span><br><span class="line">]</span><br><span class="line">ai_msg = model_with_tool.invoke(messages)</span><br><span class="line"></span><br><span class="line">messages.append(ai_msg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> tool_call <span class="keyword">in</span> ai_msg.tool_calls:</span><br><span class="line">    selected_tool = &#123;</span><br><span class="line">        <span class="string">&quot;Calculator&quot;</span>:mul_tool</span><br><span class="line">    &#125;</span><br><span class="line">    tool_msg = selected_tool[tool_call[<span class="string">&quot;name&quot;</span>]].invoke(tool_call)</span><br><span class="line">    messages.append(tool_msg)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(messages)</span><br><span class="line">result = model_with_tool.invoke(messages)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"><span class="built_in">print</span>(result.content)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">D:\program_software\AnaConda\envs\langChainP13\python.exe D:\codes\code_pycharm\langChainTool\tool.py </span><br><span class="line">[HumanMessage(content=&#x27;3乘5等于多少&#x27;, additional_kwargs=&#123;&#125;, response_metadata=&#123;&#125;), AIMessage(content=&#x27;我来帮您计算3乘5等于多少。&#x27;, additional_kwargs=&#123;&#x27;refusal&#x27;: None&#125;, response_metadata=&#123;&#x27;token_usage&#x27;: &#123;&#x27;completion_tokens&#x27;: 28, &#x27;prompt_tokens&#x27;: 175, &#x27;total_tokens&#x27;: 203, &#x27;completion_tokens_details&#x27;: None, &#x27;prompt_tokens_details&#x27;: &#123;&#x27;audio_tokens&#x27;: None, &#x27;cached_tokens&#x27;: 128&#125;, &#x27;prompt_cache_hit_tokens&#x27;: 128, &#x27;prompt_cache_miss_tokens&#x27;: 47&#125;, &#x27;model_provider&#x27;: &#x27;openai&#x27;, &#x27;model_name&#x27;: &#x27;deepseek-chat&#x27;, &#x27;system_fingerprint&#x27;: &#x27;fp_ffc7281d48_prod0820_fp8_kvcache&#x27;, &#x27;id&#x27;: &#x27;5a7b936c-ca69-4491-a231-0c34147e5af7&#x27;, &#x27;finish_reason&#x27;: &#x27;tool_calls&#x27;, &#x27;logprobs&#x27;: None&#125;, id=&#x27;lc_run--58ac78eb-d13a-484f-9f5f-af5024ff82af-0&#x27;, tool_calls=[&#123;&#x27;name&#x27;: &#x27;Calculator&#x27;, &#x27;args&#x27;: &#123;&#x27;a&#x27;: 3, &#x27;b&#x27;: 5&#125;, &#x27;id&#x27;: &#x27;call_00_TWuelsiwNZTxJS9ih1sxXRBI&#x27;, &#x27;type&#x27;: &#x27;tool_call&#x27;&#125;], usage_metadata=&#123;&#x27;input_tokens&#x27;: 175, &#x27;output_tokens&#x27;: 28, &#x27;total_tokens&#x27;: 203, &#x27;input_token_details&#x27;: &#123;&#x27;cache_read&#x27;: 128&#125;, &#x27;output_token_details&#x27;: &#123;&#125;&#125;), ToolMessage(content=&#x27;[3, 5]相乘的结果为15&#x27;, name=&#x27;Calculator&#x27;, tool_call_id=&#x27;call_00_TWuelsiwNZTxJS9ih1sxXRBI&#x27;, artifact=[3, 5])]</span><br><span class="line">content=&#x27;3乘5等于15。&#x27; additional_kwargs=&#123;&#x27;refusal&#x27;: None&#125; response_metadata=&#123;&#x27;token_usage&#x27;: &#123;&#x27;completion_tokens&#x27;: 6, &#x27;prompt_tokens&#x27;: 216, &#x27;total_tokens&#x27;: 222, &#x27;completion_tokens_details&#x27;: None, &#x27;prompt_tokens_details&#x27;: &#123;&#x27;audio_tokens&#x27;: None, &#x27;cached_tokens&#x27;: 192&#125;, &#x27;prompt_cache_hit_tokens&#x27;: 192, &#x27;prompt_cache_miss_tokens&#x27;: 24&#125;, &#x27;model_provider&#x27;: &#x27;openai&#x27;, &#x27;model_name&#x27;: &#x27;deepseek-chat&#x27;, &#x27;system_fingerprint&#x27;: &#x27;fp_ffc7281d48_prod0820_fp8_kvcache&#x27;, &#x27;id&#x27;: &#x27;6027b7d0-5a81-4bff-b5bb-7ac5ad47e405&#x27;, &#x27;finish_reason&#x27;: &#x27;stop&#x27;, &#x27;logprobs&#x27;: None&#125; id=&#x27;lc_run--70c07587-8100-40a8-bc4c-b362a74ec83d-0&#x27; usage_metadata=&#123;&#x27;input_tokens&#x27;: 216, &#x27;output_tokens&#x27;: 6, &#x27;total_tokens&#x27;: 222, &#x27;input_token_details&#x27;: &#123;&#x27;cache_read&#x27;: 192&#125;, &#x27;output_token_details&#x27;: &#123;&#125;&#125;</span><br><span class="line">3乘5等于15。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到最后它得出了乘法的答案</p>
+<h1 id="LangChain提供的工具"><a href="#LangChain提供的工具" class="headerlink" title="LangChain提供的工具"></a>LangChain提供的工具</h1><p>LangChain网站也提供了很多现成的工具，<a target="_blank" rel="noopener" href="https://docs.langchain.com/oss/python/integrations/tools">点这里跳转🔗</a> </p>
+<h2 id="使用示例：TavilySearch"><a href="#使用示例：TavilySearch" class="headerlink" title="使用示例：TavilySearch"></a>使用示例：TavilySearch</h2><p>TavilySearch 类可以⽀持我们进⾏搜索，Tavily是⼀个专⻔为AI设计的搜索引擎，专为智能体检索与<br>推理需求量⾝打造的⼯具。</p>
+<p>Tavily 不仅提供了⾼度可编程的API接⼝，还具备显著优于传统搜索引擎的上下⽂相关性理解能⼒。<br>能够以结构化、可解析的形式返回搜索结果，便于将检索到的信息直接⽤于后续的推理、⽣成或任务<br>执⾏流程</p>
+<p>我们需要<strong>挂梯子</strong>去官网申请Tavily的API KEY，<a target="_blank" rel="noopener" href="https://www.tavily.com/">戳我去官网</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2025/11/17/langchain-tools/">http://supdriver.top/2025/11/17/langchain-tools/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/7be4e5cabc1892f13a8ce4d55cbd787c.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/11/15/langchain-start/" title="LangChain AI】 初步认识并接入deepseek模型api"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/8c09fac433d3d448ca54bbf0c079c59d.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">LangChain AI】 初步认识并接入deepseek模型api</div></div></a></div><div class="next-post pull-right"><a href="/2025/11/17/git-vsc-code-diff/" title="vscode git插件超实用技巧之代码差异对比"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191626076.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">vscode git插件超实用技巧之代码差异对比</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">122</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">创建工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-tool%E4%BF%AE%E9%A5%B0%E5%99%A8%E5%AE%9E%E7%8E%B0%E5%B7%A5%E5%85%B7"><span class="toc-number">1.1.</span> <span class="toc-text">使用@tool修饰器实现工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Pydantic%E7%B1%BB"><span class="toc-number">1.2.</span> <span class="toc-text">使用Pydantic类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Annotated%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">使用Annotated类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%9F%E5%8A%A9StructuredTool-from-function%E5%87%BD%E6%95%B0%E5%88%9B%E5%BB%BA"><span class="toc-number">1.4.</span> <span class="toc-text">借助StructuredTool.from_function函数创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="toc-number">1.4.1.</span> <span class="toc-text">关键参数说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E7%94%A8%E6%B3%95%EF%BC%9A%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E5%88%9B%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="toc-number">1.4.2.</span> <span class="toc-text">常规用法：直接使用函数创建工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96Pydantic%E7%B1%BB%EF%BC%8C%E5%B9%B6%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.3.</span> <span class="toc-text">依赖Pydantic类，并进行配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%A2%9D%E5%A4%96%E8%BF%94%E5%9B%9E%E8%BE%93%E5%87%BA%E5%8E%9F%E5%A7%8B%E5%86%85%E5%AE%B9"><span class="toc-number">1.4.4.</span> <span class="toc-text">配置额外返回输出原始内容</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%91%E5%AE%9A%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">绑定工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">3.</span> <span class="toc-text">调用工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%BA%E5%88%B6%E6%89%A7%E8%A1%8C"><span class="toc-number">4.</span> <span class="toc-text">强制执行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%B1%9E%E6%80%A7"><span class="toc-number">5.</span> <span class="toc-text">工具属性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%91%E9%80%81ToolMessage"><span class="toc-number">6.</span> <span class="toc-text">发送ToolMessage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LangChain%E6%8F%90%E4%BE%9B%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="toc-number">7.</span> <span class="toc-text">LangChain提供的工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B%EF%BC%9ATavilySearch"><span class="toc-number">7.1.</span> <span class="toc-text">使用示例：TavilySearch</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2025 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="/js/title.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
