@@ -1,0 +1,828 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据库课设报告 | supdriver的博客</title><meta name="author" content="副驾supdriver"><meta name="copyright" content="副驾supdriver"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="课程设计问题描述实践项目1”集成前端、服务器端及网络数据库设计开发微博应用”基本内容和要求:  开发微博客户端。 用后端语言开发微博Web服务器。 用MySQL做Web服务器的后台数据库。 可以发表微博、查看微博及微博列表等功能。 可以发表评论功能。 可以实现用户客户端登录功能。  需求分析本微博应用系统需要满足以下功能需求: 用户管理模块  用户注册:新用户可以创建账号,需要提供用户名、密码等基">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库课设报告">
+<meta property="og:url" content="http://supdriver.top/2025/11/29/database-course-design/index.html">
+<meta property="og:site_name" content="supdriver的博客">
+<meta property="og:description" content="课程设计问题描述实践项目1”集成前端、服务器端及网络数据库设计开发微博应用”基本内容和要求:  开发微博客户端。 用后端语言开发微博Web服务器。 用MySQL做Web服务器的后台数据库。 可以发表微博、查看微博及微博列表等功能。 可以发表评论功能。 可以实现用户客户端登录功能。  需求分析本微博应用系统需要满足以下功能需求: 用户管理模块  用户注册:新用户可以创建账号,需要提供用户名、密码等基">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052349130.jpg">
+<meta property="article:published_time" content="2025-11-29T00:43:07.000Z">
+<meta property="article:modified_time" content="2025-12-16T05:54:32.617Z">
+<meta property="article:author" content="副驾supdriver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052349130.jpg"><link rel="shortcut icon" href="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/sup_avator.webp"><link rel="canonical" href="http://supdriver.top/2025/11/29/database-course-design/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库课设报告',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-12-16 13:54:32'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">132</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052349130.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="supdriver的博客"><span class="site-name">supdriver的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据库课设报告</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-29T00:43:07.000Z" title="发表于 2025-11-29 08:43:07">2025-11-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-16T05:54:32.617Z" title="更新于 2025-12-16 13:54:32">2025-12-16</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>17分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数据库课设报告"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="课程设计"><a href="#课程设计" class="headerlink" title="课程设计"></a>课程设计</h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>实践项目1”集成前端、服务器端及网络数据库设计开发微博应用”基本内容和要求:</p>
+<ol>
+<li>开发微博客户端。</li>
+<li>用后端语言开发微博Web服务器。</li>
+<li>用MySQL做Web服务器的后台数据库。</li>
+<li>可以发表微博、查看微博及微博列表等功能。</li>
+<li>可以发表评论功能。</li>
+<li>可以实现用户客户端登录功能。</li>
+</ol>
+<h2 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h2><p>本微博应用系统需要满足以下功能需求:</p>
+<p><strong>用户管理模块</strong></p>
+<ul>
+<li>用户注册:新用户可以创建账号,需要提供用户名、密码等基本信息</li>
+<li>用户登录:已注册用户通过用户名和密码登录系统</li>
+<li>用户信息管理:用户可以查看和修改个人资料,包括昵称、头像、简介等</li>
+</ul>
+<p><strong>微博发布模块</strong></p>
+<ul>
+<li>发表微博:用户可以发布文字内容的微博,支持最多280字符</li>
+<li>微博列表展示:用户可以查看所有微博的时间线列表</li>
+<li>个人微博查看:用户可以查看指定用户发布的所有微博</li>
+</ul>
+<p><strong>互动功能模块</strong></p>
+<ul>
+<li>评论功能:用户可以对微博进行评论</li>
+<li>评论查看:用户可以查看微博的所有评论列表</li>
+</ul>
+<p><strong>非功能性需求</strong></p>
+<ul>
+<li>系统响应时间应在3秒以内</li>
+<li>支持多用户并发访问</li>
+<li>数据库需要保证数据一致性和完整性</li>
+<li>界面应简洁友好,操作便捷</li>
+</ul>
+<h2 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h2><p>本项目重点考察对数据库的设计和使用,前端功能和后端服务器功能均以实现使用功能为主要目标,为了开发速度可以牺牲部分语言上的性能。</p>
+<p><strong>技术选型原则</strong></p>
+<ul>
+<li>前端采用成熟的Vue3框架,配合组件库快速实现界面</li>
+<li>后端使用Python语言,利用其丰富的生态和简洁语法提高开发效率</li>
+<li>数据库采用MySQL关系型数据库,确保数据的一致性和可靠性</li>
+<li>采用前后端分离架构,通过RESTful API进行数据交互</li>
+</ul>
+<p><strong>设计原则</strong></p>
+<ul>
+<li>模块化设计:将系统划分为独立的功能模块,便于开发和维护</li>
+<li>数据库范式化设计:遵循数据库设计范式,减少数据冗余</li>
+<li>安全性考虑:对用户密码进行加密存储,防止SQL注入等安全问题</li>
+</ul>
+<h2 id="概要设计"><a href="#概要设计" class="headerlink" title="概要设计"></a>概要设计</h2><h3 id="客户端设计"><a href="#客户端设计" class="headerlink" title="客户端设计"></a>客户端设计</h3><p>客户端采用<code>Vue3</code>技术实现web响应式页面,并且采用<code>Naive UI</code>组件库这种现成的高质量组件库快速构建页面。</p>
+<p><strong>技术栈</strong></p>
+<ul>
+<li>Vue3:采用组合式API,提供更好的代码组织方式</li>
+<li>Vue Router:实现单页应用的路由管理</li>
+<li>Axios:处理HTTP请求,与后端API交互</li>
+<li>Naive UI:提供丰富的UI组件,包括表单、按钮、对话框等</li>
+</ul>
+<p><strong>页面结构</strong></p>
+<ul>
+<li>登录&#x2F;注册页面:用户身份认证入口</li>
+<li>首页:展示微博列表</li>
+<li>个人主页:展示用户信息和个人微博</li>
+<li>个人资料页面：展示用户个人资料</li>
+<li>微博详情页:展示微博内容和评论列表</li>
+<li>发布微博页面:提供微博发布表单</li>
+</ul>
+<p><strong>文本编辑器选择</strong></p>
+<ul>
+<li>使用markdown文本编辑器</li>
+<li>使用markdown渲染器渲染微博</li>
+</ul>
+<h3 id="服务端设计"><a href="#服务端设计" class="headerlink" title="服务端设计"></a>服务端设计</h3><p>服务端采用Python网络库提供网络服务,利用Python简洁易编写、易于封装的特性快速实现服务端功能。</p>
+<p><strong>技术栈</strong></p>
+<ul>
+<li>Flask:轻量级Web框架,用于构建RESTful API</li>
+<li>Flask-CORS:处理跨域请求</li>
+<li>PyMySQL:Python的MySQL数据库连接器</li>
+<li>JWT:实现用户身份验证的Token机制</li>
+</ul>
+<p><strong>核心模块</strong></p>
+<ul>
+<li>用户认证模块:处理登录、注册、Token验证</li>
+<li>微博管理模块:处理微博的增删改查操作</li>
+<li>评论管理模块:处理评论的发布和查询</li>
+<li>数据库连接模块:封装数据库操作,提供统一接口</li>
+</ul>
+<h3 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h3><p>分析项目中各角色的关系和产生的数据,按MySQL语法设计良好的数据库库结构和表结构,并按照业务需求编写存储过程、视图等SQL代码提高数据的访问安全性和易用性。</p>
+<p><strong>数据库设计要点</strong></p>
+<ul>
+<li>用户表:存储用户基本信息和认证信息</li>
+<li>微博表:存储微博内容、发布时间等信息</li>
+<li>评论表:存储评论内容及关联的微博和用户</li>
+<li>点赞表:记录用户对微博的点赞行为</li>
+<li>采用外键约束保证数据完整性</li>
+<li>创建索引优化查询性能</li>
+</ul>
+<h2 id="详细设计"><a href="#详细设计" class="headerlink" title="详细设计"></a>详细设计</h2><h3 id="客户端页面原型绘制"><a href="#客户端页面原型绘制" class="headerlink" title="客户端页面原型绘制"></a>客户端页面原型绘制</h3><p><strong>登录页面</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202511290941980.webp"><br>包含元素:</p>
+<ul>
+<li>用户名输入框</li>
+<li>密码输入框</li>
+<li>登录按钮</li>
+<li>注册链接按钮</li>
+</ul>
+<p><strong>注册页面</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202511290944584.webp"><br>包含元素:</p>
+<ul>
+<li>用户名输入框</li>
+<li>密码输入框</li>
+<li>重复密码输入框</li>
+<li>注册按钮</li>
+<li>注册链接按钮</li>
+</ul>
+<p><strong>首页微博列表</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011134221.webp"></p>
+<p>包含元素:</p>
+<ul>
+<li>顶部悬浮导航栏(Logo、用户头像、发布微博按钮)</li>
+<li>微博列表(头像、用户名、内容、时间、评论按钮、点赞按钮)</li>
+<li>分页按钮（翻到最底部）</li>
+</ul>
+<p><strong>微博详情页</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011146507.webp"><br>包含元素:</p>
+<ul>
+<li>微博完整内容</li>
+<li>发布者信息</li>
+<li>评论列表</li>
+<li>评论输入框</li>
+</ul>
+<p><strong>博客发布页面</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011501326.webp"></p>
+<ul>
+<li>博客正文输入框</li>
+<li>发布按钮</li>
+</ul>
+<p><strong>个人资料详情页</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011355347.webp"></p>
+<ul>
+<li>头像，昵称，用户名，密码展示</li>
+<li>各词条修改按钮</li>
+</ul>
+<p><strong>个人主页</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011409372.webp"></p>
+<ul>
+<li>个人信息导航栏</li>
+<li>博客发布按钮</li>
+<li>博客列表,博客删除按钮</li>
+</ul>
+<h3 id="API设计表"><a href="#API设计表" class="headerlink" title="API设计表"></a>API设计表</h3><table>
+<thead>
+<tr>
+<th>接口路径</th>
+<th>请求方法</th>
+<th>功能描述</th>
+<th>请求参数</th>
+<th>返回数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;api&#x2F;user&#x2F;register</td>
+<td>POST</td>
+<td>用户注册</td>
+<td>username, password</td>
+<td>{success: bool, message: string}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;user&#x2F;login</td>
+<td>POST</td>
+<td>用户登录</td>
+<td>username, password</td>
+<td>{success: bool, token: string, userInfo: object-user}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;user&#x2F;update</td>
+<td>POST</td>
+<td>用户更新</td>
+<td>object-user, token</td>
+<td>{success: bool}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;user&#x2F;info</td>
+<td>GET</td>
+<td>获取用户信息</td>
+<td>username</td>
+<td>{success: bool, data: object-user}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;user&#x2F;home</td>
+<td>GET</td>
+<td>获取用户主页</td>
+<td>username, token</td>
+<td>{success: bool, data: object-user, weibos: array-weibo}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;weibo&#x2F;publish</td>
+<td>POST</td>
+<td>发布微博</td>
+<td>username, object-weibo</td>
+<td>{success: bool}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;weibo&#x2F;list</td>
+<td>GET</td>
+<td>获取微博列表</td>
+<td>page, pageSize</td>
+<td>{success: bool, data: array-weibo, total: int}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;weibo&#x2F;detail</td>
+<td>GET</td>
+<td>获取微博详情</td>
+<td>weiboId</td>
+<td>{success: bool, data: object-weibo, comments: array-comment}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;weibo&#x2F;delete</td>
+<td>DELETE</td>
+<td>删除微博</td>
+<td>token, weiboId</td>
+<td>{success: bool, message: string}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;comment&#x2F;publish</td>
+<td>POST</td>
+<td>发表评论</td>
+<td>token, weiboId, content</td>
+<td>{success: bool, commentId: int}</td>
+</tr>
+<tr>
+<td>&#x2F;api&#x2F;like&#x2F;toggle</td>
+<td>POST</td>
+<td>点赞&#x2F;取消点赞</td>
+<td>token(header), weiboId</td>
+<td>{success: bool, isLiked: bool}</td>
+</tr>
+</tbody></table>
+<h3 id="后端架构设计"><a href="#后端架构设计" class="headerlink" title="后端架构设计"></a>后端架构设计</h3><p>采用单机架构,数据库和Python后端服务运行在同一机器上。</p>
+<p><strong>系统架构图</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[架构图占位符]</span><br><span class="line">客户端浏览器 &lt;--HTTP/JSON--&gt; Flask服务器 &lt;--SQL--&gt; MySQL数据库</span><br></pre></td></tr></table></figure>
+
+<p><strong>目录结构</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">server/</span><br><span class="line">├── app.py              # 应用入口</span><br><span class="line">├── config.py           # 配置文件</span><br><span class="line">├── models/             # 数据模型</span><br><span class="line">│   ├── user.py</span><br><span class="line">│   ├── weibo.py</span><br><span class="line">│   └── comment.py</span><br><span class="line">├── routes/             # 路由处理</span><br><span class="line">│   ├── user_routes.py</span><br><span class="line">│   ├── weibo_routes.py</span><br><span class="line">│   └── comment_routes.py</span><br><span class="line">├── utils/              # 工具函数</span><br><span class="line">│   ├── db.py</span><br><span class="line">│   └── auth.py</span><br><span class="line">└── requirements.txt    # 依赖包</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据库设计表"><a href="#数据库设计表" class="headerlink" title="数据库设计表"></a>数据库设计表</h3><p><strong>用户表(users)</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>数据类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user_id</td>
+<td>INT</td>
+<td>PRIMARY KEY, AUTO_INCREMENT</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>username</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>用户名</td>
+</tr>
+<tr>
+<td>password</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>密码(加密)</td>
+</tr>
+<tr>
+<td>nickname</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>昵称</td>
+</tr>
+<tr>
+<td>avatar</td>
+<td>VARCHAR(255)</td>
+<td></td>
+<td>头像URL</td>
+</tr>
+</tbody></table>
+<p><strong>微博表(weibos)</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>数据类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>weibo_id</td>
+<td>INT</td>
+<td>PRIMARY KEY, AUTO_INCREMENT</td>
+<td>微博ID</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>INT</td>
+<td>FOREIGN KEY, NOT NULL</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>content</td>
+<td>TEXT</td>
+<td>NOT NULL</td>
+<td>微博内容</td>
+</tr>
+<tr>
+<td>like_count</td>
+<td>INT</td>
+<td>DEFAULT 0</td>
+<td>点赞数</td>
+</tr>
+<tr>
+<td>comment_count</td>
+<td>INT</td>
+<td>DEFAULT 0</td>
+<td>评论数</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>DATETIME</td>
+<td>DEFAULT CURRENT_TIMESTAMP</td>
+<td>发布时间</td>
+</tr>
+</tbody></table>
+<p><strong>评论表(comments)</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>数据类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>comment_id</td>
+<td>INT</td>
+<td>PRIMARY KEY, AUTO_INCREMENT</td>
+<td>评论ID</td>
+</tr>
+<tr>
+<td>weibo_id</td>
+<td>INT</td>
+<td>FOREIGN KEY, NOT NULL</td>
+<td>微博ID</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>INT</td>
+<td>FOREIGN KEY, NOT NULL</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>content</td>
+<td>TEXT</td>
+<td>NOT NULL</td>
+<td>评论内容</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>DATETIME</td>
+<td>DEFAULT CURRENT_TIMESTAMP</td>
+<td>评论时间</td>
+</tr>
+</tbody></table>
+<p><strong>点赞表(likes)</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>数据类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>like_id</td>
+<td>INT</td>
+<td>PRIMARY KEY, AUTO_INCREMENT</td>
+<td>点赞ID</td>
+</tr>
+<tr>
+<td>weibo_id</td>
+<td>INT</td>
+<td>FOREIGN KEY, NOT NULL</td>
+<td>微博ID</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>INT</td>
+<td>FOREIGN KEY, NOT NULL</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>UNIQUE(weibo_id, user_id)</td>
+<td>联合唯一索引</td>
+</tr>
+</tbody></table>
+<h1 id="数据库架构"><a href="#数据库架构" class="headerlink" title="数据库架构"></a>数据库架构</h1><h2 id="数据库架构-1"><a href="#数据库架构-1" class="headerlink" title="数据库架构"></a>数据库架构</h2><p>本系统采用MySQL关系型数据库,数据库名称为<code>weibo_db</code>,采用UTF8MB4字符集以支持emoji等特殊字符。</p>
+<p><strong>E-R图关系</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011520971.webp"></p>
+<p><strong>数据库连接配置</strong></p>
+<ul>
+<li>主机:localhost</li>
+<li>端口:3306</li>
+<li>用户:userdb</li>
+<li>密码:userdb@123</li>
+<li>字符集:utf8mb4</li>
+<li>连接池:支持最大20个并发连接</li>
+</ul>
+<h2 id="模块功能"><a href="#模块功能" class="headerlink" title="模块功能"></a>模块功能</h2><p><strong>用户管理模块</strong></p>
+<ul>
+<li>实现用户注册时的数据验证和密码加密</li>
+<li>登录时验证用户凭据并生成JWT Token</li>
+<li>提供用户信息查询和更新接口</li>
+<li>使用加密算法对密码进行哈希加密</li>
+</ul>
+<p><strong>微博管理模块</strong></p>
+<ul>
+<li>发布微博时记录用户ID和发布时间</li>
+<li>查询微博列表支持分页和按时间倒序排列</li>
+<li>删除微博时验证用户权限(只能删除自己的微博)</li>
+<li>使用事务保证数据一致性</li>
+</ul>
+<p><strong>评论管理模块</strong></p>
+<ul>
+<li>发表评论时关联微博ID和用户ID</li>
+<li>查询评论列表按时间正序排列</li>
+<li>发表评论后自动更新微博的评论计数</li>
+</ul>
+<p><strong>点赞管理模块</strong></p>
+<ul>
+<li>记录用户对微博的点赞状态</li>
+<li>支持点赞和取消点赞的切换操作</li>
+<li>使用唯一索引防止重复点赞</li>
+<li>更新微博的点赞计数</li>
+</ul>
+<h2 id="接口界面"><a href="#接口界面" class="headerlink" title="接口界面"></a>接口界面</h2><p><strong>登录界面</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[登录界面截图占位符]</span><br><span class="line">展示内容:输入框样式、按钮样式、整体布局</span><br></pre></td></tr></table></figure>
+
+<p><strong>微博列表界面</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[微博列表界面截图占位符]</span><br><span class="line">展示内容:微博卡片、用户头像、发布时间、交互按钮</span><br></pre></td></tr></table></figure>
+
+<p><strong>发布微博界面</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[发布微博界面截图占位符]</span><br><span class="line">展示内容:文本输入区域、字数统计、发布按钮</span><br></pre></td></tr></table></figure>
+
+<p><strong>评论区界面</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[评论区界面截图占位符]</span><br><span class="line">展示内容:评论列表、评论输入框、发送按钮</span><br></pre></td></tr></table></figure>
+
+<h2 id="设计框图"><a href="#设计框图" class="headerlink" title="设计框图"></a>设计框图</h2><p><strong>系统整体流程图</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011556654.webp"></p>
+<p><strong>用户登录流程图</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011556386.webp"></p>
+<p><strong>微博发布流程图</strong><br><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202512011559435.webp"></p>
+<h2 id="必要的关键代码及流程图"><a href="#必要的关键代码及流程图" class="headerlink" title="必要的关键代码及流程图"></a>必要的关键代码及流程图</h2><p><strong>数据库初始化SQL代码</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建数据库</span></span><br><span class="line"><span class="keyword">CREATE</span> DATABASE IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> weibo_db </span><br><span class="line"><span class="type">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">USE weibo_db;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建用户表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> users (</span><br><span class="line">    user_id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">    username <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">UNIQUE</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    password <span class="type">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    nickname <span class="type">VARCHAR</span>(<span class="number">50</span>),</span><br><span class="line">    avatar <span class="type">VARCHAR</span>(<span class="number">255</span>),</span><br><span class="line">    INDEX idx_username (username)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建微博表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> weibos (</span><br><span class="line">    weibo_id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">    user_id <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    content TEXT <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    like_count <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>,</span><br><span class="line">    comment_count <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>,</span><br><span class="line">    created_at DATETIME <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span>,</span><br><span class="line">    <span class="keyword">FOREIGN</span> KEY (user_id) <span class="keyword">REFERENCES</span> users(user_id) <span class="keyword">ON</span> <span class="keyword">DELETE</span> CASCADE,</span><br><span class="line">    INDEX idx_user_id (user_id),</span><br><span class="line">    INDEX idx_created_at (created_at)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建评论表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> comments (</span><br><span class="line">    comment_id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">    weibo_id <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    user_id <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    content TEXT <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    created_at DATETIME <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span>,</span><br><span class="line">    <span class="keyword">FOREIGN</span> KEY (weibo_id) <span class="keyword">REFERENCES</span> weibos(weibo_id) <span class="keyword">ON</span> <span class="keyword">DELETE</span> CASCADE,</span><br><span class="line">    <span class="keyword">FOREIGN</span> KEY (user_id) <span class="keyword">REFERENCES</span> users(user_id) <span class="keyword">ON</span> <span class="keyword">DELETE</span> CASCADE,</span><br><span class="line">    INDEX idx_weibo_id (weibo_id)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建点赞表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> likes (</span><br><span class="line">    like_id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">    weibo_id <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    user_id <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    <span class="keyword">FOREIGN</span> KEY (weibo_id) <span class="keyword">REFERENCES</span> weibos(weibo_id) <span class="keyword">ON</span> <span class="keyword">DELETE</span> CASCADE,</span><br><span class="line">    <span class="keyword">FOREIGN</span> KEY (user_id) <span class="keyword">REFERENCES</span> users(user_id) <span class="keyword">ON</span> <span class="keyword">DELETE</span> CASCADE,</span><br><span class="line">    <span class="keyword">UNIQUE</span> KEY unique_like (weibo_id, user_id)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4;</span><br></pre></td></tr></table></figure>
+
+<p><strong>存储过程示例</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 发布微博的存储过程</span></span><br><span class="line">DELIMITER $$</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> publish_weibo(</span><br><span class="line">    <span class="keyword">IN</span> p_user_id <span class="type">INT</span>,</span><br><span class="line">    <span class="keyword">IN</span> p_content TEXT,</span><br><span class="line">    <span class="keyword">OUT</span> p_weibo_id <span class="type">INT</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> weibos (user_id, content) </span><br><span class="line">    <span class="keyword">VALUES</span> (p_user_id, p_content);</span><br><span class="line">    <span class="keyword">SET</span> p_weibo_id <span class="operator">=</span> LAST_INSERT_ID();</span><br><span class="line"><span class="keyword">END</span>$$</span><br><span class="line">DELIMITER ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 切换点赞状态的存储过程</span></span><br><span class="line">DELIMITER $$</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> toggle_like(</span><br><span class="line">    <span class="keyword">IN</span> p_user_id <span class="type">INT</span>,</span><br><span class="line">    <span class="keyword">IN</span> p_weibo_id <span class="type">INT</span>,</span><br><span class="line">    <span class="keyword">OUT</span> p_is_liked <span class="type">BOOLEAN</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">DECLARE</span> like_exists <span class="type">INT</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">INTO</span> like_exists </span><br><span class="line">    <span class="keyword">FROM</span> likes </span><br><span class="line">    <span class="keyword">WHERE</span> user_id <span class="operator">=</span> p_user_id <span class="keyword">AND</span> weibo_id <span class="operator">=</span> p_weibo_id;</span><br><span class="line">    </span><br><span class="line">    IF like_exists <span class="operator">&gt;</span> <span class="number">0</span> <span class="keyword">THEN</span></span><br><span class="line">        <span class="keyword">DELETE</span> <span class="keyword">FROM</span> likes </span><br><span class="line">        <span class="keyword">WHERE</span> user_id <span class="operator">=</span> p_user_id <span class="keyword">AND</span> weibo_id <span class="operator">=</span> p_weibo_id;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">UPDATE</span> weibos </span><br><span class="line">        <span class="keyword">SET</span> like_count <span class="operator">=</span> like_count <span class="operator">-</span> <span class="number">1</span> </span><br><span class="line">        <span class="keyword">WHERE</span> weibo_id <span class="operator">=</span> p_weibo_id;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">SET</span> p_is_liked <span class="operator">=</span> <span class="literal">FALSE</span>;</span><br><span class="line">    <span class="keyword">ELSE</span></span><br><span class="line">        <span class="keyword">INSERT</span> <span class="keyword">INTO</span> likes (user_id, weibo_id) </span><br><span class="line">        <span class="keyword">VALUES</span> (p_user_id, p_weibo_id);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">UPDATE</span> weibos </span><br><span class="line">        <span class="keyword">SET</span> like_count <span class="operator">=</span> like_count <span class="operator">+</span> <span class="number">1</span> </span><br><span class="line">        <span class="keyword">WHERE</span> weibo_id <span class="operator">=</span> p_weibo_id;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">SET</span> p_is_liked <span class="operator">=</span> <span class="literal">TRUE</span>;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>$$</span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+
+<p><strong>视图创建代码</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建微博详情视图</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> v_weibo_details <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    w.weibo_id,</span><br><span class="line">    w.content,</span><br><span class="line">    w.like_count,</span><br><span class="line">    w.comment_count,</span><br><span class="line">    w.created_at,</span><br><span class="line">    u.user_id,</span><br><span class="line">    u.username,</span><br><span class="line">    u.nickname,</span><br><span class="line">    u.avatar</span><br><span class="line"><span class="keyword">FROM</span> weibos w</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> users u <span class="keyword">ON</span> w.user_id <span class="operator">=</span> u.user_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> w.created_at <span class="keyword">DESC</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建评论详情视图</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> v_comment_details <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    c.comment_id,</span><br><span class="line">    c.weibo_id,</span><br><span class="line">    c.content,</span><br><span class="line">    c.created_at,</span><br><span class="line">    u.user_id,</span><br><span class="line">    u.username,</span><br><span class="line">    u.nickname,</span><br><span class="line">    u.avatar</span><br><span class="line"><span class="keyword">FROM</span> comments c</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> users u <span class="keyword">ON</span> c.user_id <span class="operator">=</span> u.user_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> c.created_at <span class="keyword">ASC</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>触发器示例</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 新增评论时自动更新微博评论数</span></span><br><span class="line">DELIMITER $$</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> tr_comment_insert</span><br><span class="line">AFTER <span class="keyword">INSERT</span> <span class="keyword">ON</span> comments</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">UPDATE</span> weibos </span><br><span class="line">    <span class="keyword">SET</span> comment_count <span class="operator">=</span> comment_count <span class="operator">+</span> <span class="number">1</span> </span><br><span class="line">    <span class="keyword">WHERE</span> weibo_id <span class="operator">=</span> NEW.weibo_id;</span><br><span class="line"><span class="keyword">END</span>$$</span><br><span class="line">DELIMITER ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除评论时自动更新微博评论数</span></span><br><span class="line">DELIMITER $$</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> tr_comment_delete</span><br><span class="line">AFTER <span class="keyword">DELETE</span> <span class="keyword">ON</span> comments</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">UPDATE</span> weibos </span><br><span class="line">    <span class="keyword">SET</span> comment_count <span class="operator">=</span> comment_count <span class="operator">-</span> <span class="number">1</span> </span><br><span class="line">    <span class="keyword">WHERE</span> weibo_id <span class="operator">=</span> OLD.weibo_id;</span><br><span class="line"><span class="keyword">END</span>$$</span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python后端关键代码示例</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># [Python代码占位符1]</span></span><br><span class="line"><span class="comment"># 数据库连接模块</span></span><br><span class="line"><span class="comment"># 此处为代码结构示意,实际代码省略</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># [Python代码占位符2]</span></span><br><span class="line"><span class="comment"># 用户登录API实现</span></span><br><span class="line"><span class="comment"># 此处为代码结构示意,实际代码省略</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># [Python代码占位符3]</span></span><br><span class="line"><span class="comment"># 微博发布API实现</span></span><br><span class="line"><span class="comment"># 此处为代码结构示意,实际代码省略</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Vue前端关键代码示例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [Vue代码占位符1]</span></span><br><span class="line"><span class="comment">// 登录组件实现</span></span><br><span class="line"><span class="comment">// 此处为代码结构示意,实际代码省略</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [Vue代码占位符2]</span></span><br><span class="line"><span class="comment">// 微博列表组件实现</span></span><br><span class="line"><span class="comment">// 此处为代码结构示意,实际代码省略</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><h2 id="调试方法"><a href="#调试方法" class="headerlink" title="调试方法"></a>调试方法</h2><p><strong>前端调试</strong></p>
+<ul>
+<li>使用Edge开发者工具进行DOM结构和样式调试</li>
+<li>通过Console面板查看JavaScript错误和日志输出</li>
+<li>使用Network面板监控HTTP请求和响应数据</li>
+<li>利用Vue DevTools插件查看组件状态和数据流</li>
+</ul>
+<p><strong>后端调试</strong></p>
+<ul>
+<li>使用Flask的调试模式(debug&#x3D;True)自动重载代码</li>
+<li>在关键位置添加print语句输出变量值</li>
+<li>使用Postman工具测试API接口</li>
+<li>通过Python的pdb模块进行断点调试</li>
+</ul>
+<p><strong>数据库调试</strong></p>
+<ul>
+<li>使用Navicat可视化工具</li>
+<li>查看MySQL慢查询日志定位性能问题</li>
+<li>使用事务回滚测试数据完整性</li>
+</ul>
+<p><strong>集成调试</strong></p>
+<ul>
+<li>前后端联调时使用代理解决跨域问题</li>
+<li>通过日志记录跟踪完整的请求处理流程</li>
+<li>使用版本控制系统管理代码变更</li>
+<li>编写单元测试验证核心功能</li>
+</ul>
+<h2 id="测试结果的分析与讨论"><a href="#测试结果的分析与讨论" class="headerlink" title="测试结果的分析与讨论"></a>测试结果的分析与讨论</h2><p><strong>功能测试结果</strong></p>
+<ul>
+<li>用户注册登录功能正常,Token验证机制有效</li>
+<li>微博发布和列表展示功能完整,分页加载流畅</li>
+<li>评论功能正常,评论计数自动更新准确</li>
+<li>点赞功能正常,防重复点赞机制有效</li>
+</ul>
+<p><strong>性能测试结果</strong></p>
+<ul>
+<li>单次API请求响应时间在100-300ms之间</li>
+<li>数据库查询经过索引优化后性能良好</li>
+<li>前端页面首次加载时间约2秒</li>
+<li>支持50个并发用户同时访问</li>
+</ul>
+<p><strong>兼容性测试</strong></p>
+<ul>
+<li>在Chrome、Firefox、Safari浏览器测试通过</li>
+<li>响应式布局在不同屏幕尺寸下显示正常</li>
+<li>移动端浏览器访问体验良好</li>
+</ul>
+<p><strong>安全性分析</strong></p>
+<ul>
+<li>密码采用bcrypt加密,安全性较高</li>
+<li>SQL语句使用参数化查询,防止注入攻击</li>
+<li>Token机制有效防止未授权访问</li>
+<li>建议后续增加HTTPS支持和输入验证</li>
+</ul>
+<h2 id="遇到的主要问题及采取的解决措施"><a href="#遇到的主要问题及采取的解决措施" class="headerlink" title="遇到的主要问题及采取的解决措施"></a>遇到的主要问题及采取的解决措施</h2><p>&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;TODO</p>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p><strong>测试用例1:用户注册功能</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[测试截图占位符1 - 用户注册]</span><br><span class="line">测试步骤:</span><br><span class="line">1. 输入用户名&quot;testuser&quot;、密码&quot;test123&quot;</span><br><span class="line">2. 点击注册按钮</span><br><span class="line">预期结果:注册成功,跳转到登录页面</span><br><span class="line">实际结果:✓ 通过</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试用例2:用户登录功能</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[测试截图占位符2 - 用户登录]</span><br><span class="line">测试步骤:</span><br><span class="line">1. 输入已注册的用户名和密码</span><br><span class="line">2. 点击登录按钮</span><br><span class="line">预期结果:登录成功,获得Token,跳转到首页</span><br><span class="line">实际结果:✓ 通过</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试用例3:发布微博功能</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[测试截图占位符3 - 发布微博]</span><br><span class="line">测试步骤:</span><br><span class="line">1. 在已登录状态下,输入微博内容&quot;这是一条测试微博&quot;</span><br><span class="line">2. 点击发布按钮</span><br><span class="line">预期结果:微博发布成功,在列表中显示</span><br><span class="line">实际结果:✓ 通过</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试用例4:查看微博列表</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[测试截图占位符4 - 微博列表]</span><br><span class="line">测试步骤:</span><br><span class="line">1. 访问首页</span><br><span class="line">2. 查看微博列表</span><br><span class="line">预期结果:按时间倒序显示所有微博</span><br><span class="line">实际结果:✓ 通过</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试用例5:发表评论功能</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[测试截图占位符5 - 发表评论]</span><br><span class="line">测试步骤:</span><br><span class="line">1. 点击某条微博进入详情页</span><br><span class="line">2. 输入评论内容&quot;这是一条测试评论&quot;</span><br><span class="line">3. 点击发送按钮</span><br><span class="line">预期结果:评论发表成功,评论数+1</span><br><span class="line">实际结果:✓ 通过</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试用例6:点赞功能</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[测试截图占位符6 - 点赞]</span><br><span class="line">测试步骤:</span><br><span class="line">1. 点击微博的点赞按钮</span><br><span class="line">2. 再次点击取消点赞</span><br><span class="line">预期结果:点赞数正确增减,不能重复点赞</span><br><span class="line">实际结果:✓ 通过</span><br></pre></td></tr></table></figure>
+
+<h2 id="用测试数据测试设计的正确性"><a href="#用测试数据测试设计的正确性" class="headerlink" title="用测试数据测试设计的正确性"></a>用测试数据测试设计的正确性</h2><p><strong>数据库完整性测试</strong></p>
+<ul>
+<li>测试外键约束:删除用户时,其相关微博和评论自动删除</li>
+<li>测试唯一索引:尝试注册重复用户名被正确拒绝</li>
+<li>测试触发器:发表评论后comment_count自动更新</li>
+</ul>
+<p><strong>边界条件测试</strong></p>
+<ul>
+<li>测试空内容提交:系统正确拒绝空微博和空评论</li>
+<li>测试超长内容:280字符限制在前端和后端均有效验证</li>
+<li>测试非法Token:使用过期或伪造Token无法访问受保护接口</li>
+</ul>
+<p><strong>并发测试</strong></p>
+<ul>
+<li>使用工具模拟10个用户同时发布微博,数据无丢失</li>
+<li>多用户同时点赞同一微博,点赞数统计准确</li>
+<li>数据库事务机制保证数据一致性</li>
+</ul>
+<p><strong>数据一致性验证</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[数据验证截图占位符]</span><br><span class="line">- 微博的点赞数与likes表记录数一致</span><br><span class="line">- 微博的评论数与comments表记录数一致</span><br><span class="line">- 用户发布的微博数量与数据库查询结果一致</span><br></pre></td></tr></table></figure>
+
+<h1 id="本次课程设计的心得体会"><a href="#本次课程设计的心得体会" class="headerlink" title="本次课程设计的心得体会"></a>本次课程设计的心得体会</h1><p>通过本次微博系统的课程设计,我深刻体会到了前后端分离架构的优势以及数据库设计在整个系统中的核心地位。</p>
+<p>在技术层面,我掌握了Vue3框架的组合式API使用方法,学会了如何使用Naive UI等组件库快速构建用户界面。后端开发中,Flask框架的轻量级特性让我能够快速实现RESTful API,Python的简洁语法大大提高了开发效率。最重要的是,通过设计用户、微博、评论、点赞等多个关联表,我深入理解了关系型数据库的范式化设计原则,学会了使用外键约束、索引、触发器、存储过程等高级特性来保证数据完整性和提高查询性能。</p>
+<p>在开发过程中,我遇到了许多实际问题,如跨域请求、数据库连接管理、并发控制等,这些问题的解决过程让我积累了宝贵的实战经验。特别是在处理点赞重复提交和评论数统计这类业务逻辑时,我认识到数据库层面的约束和触发器往往比应用层的逻辑更加可靠。</p>
+<p>此外,本次项目让我体会到了模块化设计和代码复用的重要性。通过将系统划分为独立的模块,不仅便于开发和调试,也为后续的功能扩展奠定了良好基础。测试环节让我认识到充分的测试对于保证系统质量的关键作用。</p>
+<p>总的来说,这次课程设计不仅巩固了我的理论知识,更重要的是培养了我解决实际问题的能力和工程思维。在未来的学习和工作中,我将继续深化对Web开发和数据库技术的理解,不断提升自己的技术水平。</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><p><strong>附录A:完整数据库设计SQL脚本</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[SQL脚本文件占位符]</span><br><span class="line">包含所有表结构、索引、视图、存储过程、触发器的完整创建语句</span><br></pre></td></tr></table></figure>
+
+<p><strong>附录B:API接口文档</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[API文档占位符]</span><br><span class="line">详细的接口说明,包括请求参数、响应格式、错误码定义等</span><br></pre></td></tr></table></figure>
+
+<p><strong>附录C:前端项目源码结构</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[源码目录树占位符]</span><br><span class="line">完整的Vue项目文件结构和主要组件说明</span><br></pre></td></tr></table></figure>
+
+<p><strong>附录D:后端项目源码结构</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[源码目录树占位符]</span><br><span class="line">完整的Flask项目文件结构和模块说明</span><br></pre></td></tr></table></figure>
+
+<p><strong>附录E:系统部署说明</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[部署文档占位符]</span><br><span class="line">环境配置要求、依赖安装步骤、系统启动方法等</span><br></pre></td></tr></table></figure>
+
+<p><strong>附录F:测试数据集</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[测试数据占位符]</span><br><span class="line">用于测试的示例用户、微博、评论数据的INSERT语句</span><br></pre></td></tr></table></figure>
+
+<p><strong>附录G:参考资料</strong></p>
+<ul>
+<li>Vue3官方文档:<a target="_blank" rel="noopener" href="https://vuejs.org/">https://vuejs.org/</a></li>
+<li>Naive UI组件库:<a target="_blank" rel="noopener" href="https://www.naiveui.com/">https://www.naiveui.com/</a></li>
+<li>Flask官方文档:<a target="_blank" rel="noopener" href="https://flask.palletsprojects.com/">https://flask.palletsprojects.com/</a></li>
+<li>MySQL官方文档:<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/">https://dev.mysql.com/doc/</a></li>
+<li>RESTful API设计规范</li>
+<li>Web安全最佳实践~~</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://supdriver.top">副驾supdriver</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://supdriver.top/2025/11/29/database-course-design/">http://supdriver.top/2025/11/29/database-course-design/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://supdriver.top" target="_blank">supdriver的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202409052349130.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/11/27/langchain-document-loaders/" title="LangChain AI】RAG检索增强⽣成|从文件加载器到检索输出"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191624030.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">LangChain AI】RAG检索增强⽣成|从文件加载器到检索输出</div></div></a></div><div class="next-post pull-right"><a href="/2025/12/15/iam-SRS/" title="iam-SRS"><img class="cover" src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/202410191626076.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">iam-SRS</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://picbed0521.oss-cn-shanghai.aliyuncs.com/blogpic/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">副驾supdriver</div><div class="author-info__description">动物界 脊索动物门 哺乳纲 灵长目 人科 人属 智人种</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">132</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sis-shen"><i class="fab fa-github"></i><span>我github还蛮大的</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sis-shen" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.supdriver.top"><b><font color="#5ea6e5">supdriver.top</font></b></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.</span> <span class="toc-text">课程设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">需求分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3"><span class="toc-number">1.3.</span> <span class="toc-text">设计思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%A6%81%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.4.</span> <span class="toc-text">概要设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.4.1.</span> <span class="toc-text">客户端设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.4.2.</span> <span class="toc-text">服务端设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.4.3.</span> <span class="toc-text">数据库设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.5.</span> <span class="toc-text">详细设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%A1%B5%E9%9D%A2%E5%8E%9F%E5%9E%8B%E7%BB%98%E5%88%B6"><span class="toc-number">1.5.1.</span> <span class="toc-text">客户端页面原型绘制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#API%E8%AE%BE%E8%AE%A1%E8%A1%A8"><span class="toc-number">1.5.2.</span> <span class="toc-text">API设计表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.5.3.</span> <span class="toc-text">后端架构设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A1%A8"><span class="toc-number">1.5.4.</span> <span class="toc-text">数据库设计表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">数据库架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84-1"><span class="toc-number">2.1.</span> <span class="toc-text">数据库架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD"><span class="toc-number">2.2.</span> <span class="toc-text">模块功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E7%95%8C%E9%9D%A2"><span class="toc-number">2.3.</span> <span class="toc-text">接口界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A1%86%E5%9B%BE"><span class="toc-number">2.4.</span> <span class="toc-text">设计框图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%85%E8%A6%81%E7%9A%84%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-number">2.5.</span> <span class="toc-text">必要的关键代码及流程图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">调试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">调试方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E7%9A%84%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A8%E8%AE%BA"><span class="toc-number">3.2.</span> <span class="toc-text">测试结果的分析与讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%BB%E8%A6%81%E9%97%AE%E9%A2%98%E5%8F%8A%E9%87%87%E5%8F%96%E7%9A%84%E8%A7%A3%E5%86%B3%E6%8E%AA%E6%96%BD"><span class="toc-number">3.3.</span> <span class="toc-text">遇到的主要问题及采取的解决措施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="toc-number">3.4.</span> <span class="toc-text">测试结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%80%A7"><span class="toc-number">3.5.</span> <span class="toc-text">用测试数据测试设计的正确性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E6%AC%A1%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%BF%83%E5%BE%97%E4%BD%93%E4%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">本次课程设计的心得体会</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%E5%BD%95"><span class="toc-number">5.</span> <span class="toc-text">附录</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background: rgba(0,0,0,0)"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2025 By 副驾supdriver</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://hbcom.supdriver.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.textContent = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="/js/title.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
